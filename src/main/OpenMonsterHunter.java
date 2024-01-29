@@ -44,6 +44,7 @@ public class OpenMonsterHunter extends PApplet {
 		background(0);
 		if (gameManager.gameState == GameState.GAME) {
 			game.Render();
+			game.Update();
 		}
 		ui.Render(this);
 	}

@@ -60,7 +60,7 @@ public class UI {
 				return p.connectionToWorld != null && p.connectionToWorld.isConnected();
 			}
 		});
-		
+
 		// Deconnexion
 				allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
 						new GameManager.GameState[] { GameManager.GameState.TITLE }, "Deconnexion") {

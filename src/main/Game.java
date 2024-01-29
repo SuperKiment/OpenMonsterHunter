@@ -1,11 +1,13 @@
 package main;
 
+import logic.Player;
 import processing.core.*;
 
 public class Game {
-	
-	PApplet papplet;
-	world.ConnectionToWorld connexion;
+
+	private PApplet papplet;
+	private world.ConnectionToWorld connexion;
+	public Player controlledPlayer;
 
 	Game(PApplet p, world.ConnectionToWorld connexion) {
 		papplet = p;
@@ -14,7 +16,7 @@ public class Game {
 
 	public void Update() {
 		if (connexion != null && connexion.isConnected()) {
-
+			connexion.Update();
 		}
 
 	}
@@ -24,13 +26,13 @@ public class Game {
 			papplet.background(0);
 			papplet.push();
 			papplet.fill(255);
-			papplet.text("Connexion : "+connexion.client.ip(), 50, 50);
+			papplet.text("Connexion : " + connexion.client.ip(), 50, 100);
 			papplet.pop();
-		}else {
+		} else {
 			papplet.background(0);
 			papplet.push();
 			papplet.fill(255);
-			papplet.text("Pas de connexion au monde", 50, 50);
+			papplet.text("Pas de connexion au monde", 50, 100);
 			papplet.pop();
 		}
 	}
