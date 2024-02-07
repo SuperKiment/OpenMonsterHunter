@@ -8,14 +8,12 @@ import processing.net.Client;
 import java.util.*;
 
 public class EntityManager {
-	World world;
 	ArrayList<Entity> entities;
 	ArrayList<Player> players;
 	HashMap<Client, Player> clientToPlayers;
 	HashMap<Player, Client> playersToClient;
 
-	EntityManager(World w) {
-		world = w;
+	public EntityManager() {
 		entities = new ArrayList<Entity>();
 		players = new ArrayList<Player>();
 		clientToPlayers = new HashMap<Client, Player>();
@@ -38,11 +36,7 @@ public class EntityManager {
 	}
 
 	public Player addPlayer(JSONObject data, Client client) {
-		// TODO C'est le monde qui donne la position
-		PVector pos = new PVector(50, 50);
-
-		Player p = new Player(data.getString("name"), pos);
-
+		Player p = JSONToPlayer(data);
 		addPlayer(p, client);
 		return p;
 	}
@@ -53,6 +47,22 @@ public class EntityManager {
 		players.remove(player);
 		clientToPlayers.remove(playersToClient.get(player));
 		playersToClient.remove(player);
+	}
+
+	public Player addControllablePlayer(JSONObject json) {
+		Player p = JSONToPlayer(json);
+		addEntity(p);
+		System.out.println("added controllable player");
+		return p;
+	}
+
+	public Player JSONToPlayer(JSONObject json) {
+		// TODO C'est le monde qui donne la position
+		PVector pos = new PVector(50, 50);
+
+		Player p = new Player(json.getString("name"), pos);
+
+		return p;
 	}
 
 	public ArrayList<Player> getPlayers() {

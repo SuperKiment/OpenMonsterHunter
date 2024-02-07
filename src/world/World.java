@@ -41,7 +41,7 @@ public class World extends PApplet {
 		this.name = name;
 		this.render = render;
 
-		entityManager = new EntityManager(this);
+		entityManager = new EntityManager();
 	}
 
 	public void settings() {
@@ -85,7 +85,8 @@ public class World extends PApplet {
 			if (c != null) {
 				try {
 					translate(0, 100);
-					text(c.ip() + " : " + entityManager.clientToPlayers.get(c).name, 10, 20 * compt++);
+					Player p = entityManager.clientToPlayers.get(c);
+					text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
 				} catch (Exception e) {
 
 				}
@@ -113,12 +114,15 @@ public class World extends PApplet {
 
 		JSONObject requete = JSONObject.parse(fullData);
 
-		println("requete : " + requete);
+		// println("requete : " + requete);
 		switch (requete.getString("type")) {
 		case BONJOUR_DU_CLIENT:
 			Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
-			client.write(createRequest(SERVER_TO_PLAYER_FIRST_DATA, p.getJSON(), "server").toString());
+			client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
 
+			break;
+		case UPDATE_PLAYER_DATA:
+			entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
 			break;
 		default:
 			println("Jsp comment traiter : " + fullData);

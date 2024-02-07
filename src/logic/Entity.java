@@ -18,8 +18,6 @@ public class Entity {
 			ID += ch;
 		}
 
-		System.out.println(ID);
-
 	}
 
 	public void Update() {

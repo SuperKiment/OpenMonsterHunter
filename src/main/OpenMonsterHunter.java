@@ -1,7 +1,12 @@
 package main;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
+import logic.Player;
 import main.GameManager.GameState;
 import processing.core.*;
+import processing.data.JSONObject;
 import world.ConnectionToWorld;
 
 public class OpenMonsterHunter extends PApplet {
@@ -29,6 +34,18 @@ public class OpenMonsterHunter extends PApplet {
 	}
 
 	public void setup() {
+		PrintStream outStream = null;
+		PrintStream errStream = null;
+		try {
+			outStream = new PrintStream(new FileOutputStream("output.log"));
+			errStream = new PrintStream(new FileOutputStream("error.log"));
+		} catch (Exception e) {
+			println("sheeesh");
+		}
+		println("lez gooo");
+		System.setOut(outStream);
+		System.setErr(errStream);
+
 		gameManager = new GameManager();
 		ui = new UI(gameManager, this);
 		println(playerName);
@@ -56,18 +73,26 @@ public class OpenMonsterHunter extends PApplet {
 	public void keyPressed() {
 		if (key != CODED)
 			ui.Key(key);
+		
+		if (game != null)
+			game.keyPressed(key);
 	}
 
 	public void CreateWorld(String name) {
 		PApplet.runSketch(new String[] { "MondeServerLocal" }, new world.World(name, true));
 		delay(500);
-		connectionToWorld = new ConnectionToWorld(this, "127.0.0.1");
-		game = new Game(this, connectionToWorld);
+		game = new Game(this, null);
+		connectionToWorld = new ConnectionToWorld(this, "127.0.0.1", game);
 	}
 
 	public void ConnectToWorld(String ip) {
-		connectionToWorld = new ConnectionToWorld(this, ip);
-		game = new Game(this, connectionToWorld);
+		game = new Game(this, null);
+		connectionToWorld = new ConnectionToWorld(this, ip, game);
+	}
+
+	public void setControllablePlayer(JSONObject player) {
+		game.controlledPlayer = game.entityManager.addControllablePlayer(player);
+		System.out.println("controlled player : " + game.controlledPlayer.name);
 	}
 
 }
