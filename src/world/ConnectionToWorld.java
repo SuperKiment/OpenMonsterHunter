@@ -50,29 +50,56 @@ public class ConnectionToWorld {
 
 	public void Update() {
 
-		if (client.available() > 0) {
-			omh.push();
-			omh.fill(255);
-			omh.textSize(10);
-			omh.text(client.readString(), 50, 150);
-			omh.pop();
-		}
+		JSONObject dataIn = RecuperationDonnees();
+		TraiterDonnees(dataIn, omh.game.entityManager);
 
 		// EnvoiDonneesPlayer();
 		EnvoiDonneesPlayer();
 	}
 
-	public void EnvoiDonneesPlayer() {
+	private void EnvoiDonneesPlayer() {
 //		client.write(null);
-		// TODO Envoyer de vraies données
 		client.write(World.createRequest(World.UPDATE_PLAYER_DATA, OpenMonsterHunter.game.controlledPlayer.getJSON(),
 				omh.playerName).toString());
 
 	}
 
-	public void EnvoiDonnees(String entete, HashMap<Object, Object> data) {
-		String strData = "";
+	private JSONObject RecuperationDonnees() {
+		if (client.available() > 0) {
+			JSONObject data = null;
+			try {
+				data = JSONObject.parse(client.readString());
+			} catch (Exception e) {
+				System.out.println("Pas réussi à parse !");
+			}
 
-		client.write(entete + World.DELIMITER_ENTETE + strData);
+			if (data != null) {
+				omh.push();
+				omh.fill(255);
+				omh.textSize(10);
+				omh.text(data.toString(), 50, 150);
+				omh.pop();
+			}
+
+			return data;
+
+		}
+
+		return null;
+
+	}
+
+	private void TraiterDonnees(JSONObject data, EntityManager ent) {
+		if (data == null)
+			return;
+
+//TODO traiter les données et les envoyer dans game. Ou alors tout envoyer
+		// dans game et c'est lui qui trie
+		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
+			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
+			System.out.println("Data : " + i);
+			System.out.println(playerJSON);
+		}
+
 	}
 }

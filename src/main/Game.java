@@ -49,11 +49,23 @@ public class Game {
 	}
 
 	private void DisplayGame() {
-		// Background
+		try {
+			// Background
 
-		// Entities
-		pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
+			// Entities
+			pap.push();
+			pap.fill(255);
+			pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
 
-		// UI
+			pap.fill(255, 0, 0);
+			for (Player p : entityManager.getPlayers()) {
+				pap.circle(p.pos.x, p.pos.y, 10);
+
+			}
+			pap.pop();
+			// UI
+		} catch (Exception e) {
+
+		}
 	}
 }
