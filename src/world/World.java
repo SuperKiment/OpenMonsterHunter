@@ -62,10 +62,11 @@ public class World extends PApplet {
 
 		entityManager.RemoveDisconnectedPlayers();
 
+		
 		TraiterClients();
 
 		for (Client c : server.clients) {
-			if (c != null) {
+			if (c != null && entityManager.clientToPlayers.containsKey(c)) {
 				c.write(getJSON().toString() + "\n");
 			}
 		}
@@ -78,13 +79,14 @@ public class World extends PApplet {
 		textSize(15);
 		text("Nombre de clients : " + server.clientCount, 50, 50);
 		text("Nom : " + name, 50, 70);
+		text("Nombre d'entités : " + entityManager.getEntities().size(), 50, 90);
 
 		int compt = 0;
 		push();
 		for (Client c : server.clients) {
 			if (c != null) {
 				try {
-					translate(0, 100);
+					translate(0, 200);
 					Player p = entityManager.clientToPlayers.get(c);
 					text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
 				} catch (Exception e) {
@@ -117,6 +119,7 @@ public class World extends PApplet {
 		// println("requete : " + requete);
 		switch (requete.getString("type")) {
 		case BONJOUR_DU_CLIENT:
+			System.out.println("Recu bonjour du client");
 			Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
 			client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
 

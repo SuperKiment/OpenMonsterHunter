@@ -1,7 +1,9 @@
 package world;
 
 import logic.*;
+import main.OpenMonsterHunter;
 import processing.core.PVector;
+import processing.data.JSONArray;
 import processing.data.JSONObject;
 import processing.net.Client;
 
@@ -83,5 +85,68 @@ public class EntityManager {
 				removePlayer(clientToPlayers.get(client));
 			}
 		}
+	}
+
+	public void addIfInexistant(JSONObject data) {
+
+		for (Object keyObj : data.keys().toArray()) {
+			String key = (String) keyObj;
+			JSONArray array = data.getJSONArray(key);
+
+			try {
+
+				Class arrayClass = Class.forName(key);
+
+				for (int i = 0; i < array.size(); i++) {
+					Entity obj = null;
+					JSONObject json = array.getJSONObject(i);
+
+					if (key.equals("logic.Player")) {
+						obj = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
+								.newInstance(json.getString("name"), new PVector(100, 100));
+					} else {
+						obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+					}
+					obj.ID = json.getString("ID");
+
+					boolean exists = false;
+					// TODO optimiser ça : (en faisant un tableau de IDs par exemple)
+					for (Entity entity : entities) {
+						if (entity.ID.equals(obj.ID)) {
+							exists = true;
+							break;
+						}
+					}
+
+					if (key.equals("logic.Player")
+							&& ((Player) obj).name.equals(OpenMonsterHunter.game.controlledPlayer.name))
+						exists = true;
+
+					if (!exists) {
+						addEntity(obj);
+						System.out.println("Ajouté " + obj.getClass().getName());
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("Pas trouvé : " + e);
+			}
+		}
+
+//		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
+//			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
+//			boolean exists = false;
+//			for (Player p : players) {
+//				if (p.name.equals(playerJSON.getString("name"))) {
+//					exists = true;
+//					break;
+//				}
+//			}
+//
+//			if (!exists) {
+//				addPlayer(playerJSON, null);
+//			}
+//
+//		}
+
 	}
 }

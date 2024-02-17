@@ -1,7 +1,5 @@
 package world;
 
-import java.util.HashMap;
-
 import main.Game;
 import main.OpenMonsterHunter;
 import processing.data.JSONObject;
@@ -23,8 +21,6 @@ public class ConnectionToWorld {
 		client.write(bonjourJSON.toString() + World.DELIMITER_ENTETE);
 		System.out.println("Mon player :");
 		omh.delay(200);
-		while (client.available() == 0) {
-		}
 
 		String dataString = client.readString();
 		JSONObject reponse = JSONObject.parse(dataString);
@@ -32,13 +28,24 @@ public class ConnectionToWorld {
 		game.connexion = this;
 
 		System.out.println("reponse :");
+		System.out.println(reponse);
 		System.out.println(reponse.getString("type"));
+
+		while (reponse.getString("type") == null) {
+
+			dataString = client.readString();
+			reponse = JSONObject.parse(dataString);
+
+			System.out.println("reponse :");
+			System.out.println(reponse);
+			System.out.println(reponse.getString("type"));
+		}
 		try {
 			if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
 				omh.setControllablePlayer(reponse.getJSONObject("data"));
 			}
 		} catch (Exception e) {
-
+			System.out.println(e.getMessage());
 		}
 
 		// TODO Traiter les données récup avec SERVER TO PLAYER etc.
@@ -50,8 +57,7 @@ public class ConnectionToWorld {
 
 	public void Update() {
 
-		JSONObject dataIn = RecuperationDonnees();
-		TraiterDonnees(dataIn, omh.game.entityManager);
+		TraiterDonnees(RecuperationDonnees());
 
 		// EnvoiDonneesPlayer();
 		EnvoiDonneesPlayer();
@@ -59,8 +65,9 @@ public class ConnectionToWorld {
 
 	private void EnvoiDonneesPlayer() {
 //		client.write(null);
-		client.write(World.createRequest(World.UPDATE_PLAYER_DATA, OpenMonsterHunter.game.controlledPlayer.getJSON(),
-				omh.playerName).toString());
+		if (OpenMonsterHunter.game.controlledPlayer != null)
+			client.write(World.createRequest(World.UPDATE_PLAYER_DATA,
+					OpenMonsterHunter.game.controlledPlayer.getJSON(), omh.playerName).toString());
 
 	}
 
@@ -89,17 +96,11 @@ public class ConnectionToWorld {
 
 	}
 
-	private void TraiterDonnees(JSONObject data, EntityManager ent) {
+	private void TraiterDonnees(JSONObject data) {
 		if (data == null)
 			return;
 
-//TODO traiter les données et les envoyer dans game. Ou alors tout envoyer
-		// dans game et c'est lui qui trie
-		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
-			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
-			System.out.println("Data : " + i);
-			System.out.println(playerJSON);
-		}
+		omh.game.TraiterData(data);
 
 	}
 }

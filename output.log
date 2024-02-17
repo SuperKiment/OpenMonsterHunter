@@ -1,7 +1,21 @@
-Player6941
+Player7394
 127.0.0.1
 Mon player :
 reponse :
+{
+  "data": {
+    "pos.x": 50,
+    "pos.y": 50,
+    "dir.x": 0,
+    "name": "Player7394",
+    "dir.y": 1,
+    "ID": "8zabirf42e2-àféd_sld",
+    "speed": 1
+  },
+  "sender": "server",
+  "type": "yeepii"
+}
 yeepii
 added controllable player
-controlled player : Player6941
+controlled player : Player7394
+Ajouté logic.Player

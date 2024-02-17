@@ -57,6 +57,17 @@ public class Entity {
 
 		obj.setString("ID", ID);
 		return obj;
+	}
 
+	public void UpdateFromJSON(JSONObject json) {
+		try {
+			pos.x = json.getFloat("pos.x");
+			pos.y = json.getFloat("pos.y");
+			dir.x = json.getFloat("dir.x");
+			dir.y = json.getFloat("dir.y");
+			speed = json.getFloat("speed");
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }

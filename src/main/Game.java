@@ -1,7 +1,9 @@
 package main;
 
+import logic.Entity;
 import logic.Player;
 import processing.core.*;
+import processing.data.JSONObject;
 import world.EntityManager;
 
 public class Game {
@@ -53,7 +55,6 @@ public class Game {
 			// Background
 
 			// Entities
-			pap.push();
 			pap.fill(255);
 			pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
 
@@ -62,10 +63,25 @@ public class Game {
 				pap.circle(p.pos.x, p.pos.y, 10);
 
 			}
-			pap.pop();
+
+			pap.fill(0, 255, 0);
+			for (Entity e : entityManager.getEntities()) {
+				pap.circle(e.pos.x, e.pos.y, 10);
+
+			}
 			// UI
 		} catch (Exception e) {
 
 		}
+	}
+
+	public void TraiterData(JSONObject data) {
+
+		entityManager.addIfInexistant(data);
+
+//		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
+//			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
+//			
+//		}
 	}
 }
