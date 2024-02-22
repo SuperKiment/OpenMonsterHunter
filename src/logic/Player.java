@@ -28,6 +28,7 @@ public class Player extends Entity {
 		return json;
 	}
 
+	@Override
 	public void UpdateFromJSON(JSONObject json) {
 		try {
 			pos.x = json.getFloat("pos.x");
