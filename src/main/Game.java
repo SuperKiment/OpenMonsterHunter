@@ -77,8 +77,6 @@ public class Game {
 
 	public void TraiterData(JSONObject data) {
 
-		// TODO Traiter data
-
 		entityManager.addIfInexistant(data);
 		
 		entityManager.updatePositions(data);

@@ -62,6 +62,7 @@ public class World extends PApplet {
 
 		entityManager.RemoveDisconnectedPlayers();
 
+		println(entityManager.entities.toArray());
 		
 		TraiterClients();
 
@@ -134,17 +135,6 @@ public class World extends PApplet {
 
 	}
 
-//	public HashMap<String, String> SplitDataToHashMap(String data) {
-//		HashMap<String, String> splitData = new HashMap<String, String>();
-//
-//		for (String infos : data.split(DELIMITER_INFOS)) {
-//			String[] donnee = infos.split(DELIMITER_DONNEE);
-//			splitData.put(donnee[0], donnee[1]);
-//		}
-//
-//		return splitData;
-//	}
-
 	public void keyPressed() {
 		if (key == 'h') {
 			for (Client client : server.clients) {
@@ -153,6 +143,12 @@ public class World extends PApplet {
 			}
 			surface.setVisible(false);
 			dispose();
+		}
+		
+		if (key == 'd') {
+			logic.Dog d = new logic.Dog();
+			d.pos.set(200, 200);
+			entityManager.addEntity(d);
 		}
 	}
 

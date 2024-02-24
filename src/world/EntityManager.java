@@ -59,7 +59,6 @@ public class EntityManager {
 	}
 
 	public Player JSONToPlayer(JSONObject json) {
-		// TODO C'est le monde qui donne la position
 		PVector pos = new PVector(50, 50);
 
 		Player p = new Player(json.getString("name"), pos);
@@ -87,6 +86,9 @@ public class EntityManager {
 		}
 	}
 
+	//
+	// Ajoute les entités ajoutées
+	// Supprime les entités absentes
 	public void addIfInexistant(JSONObject data) {
 
 		//
@@ -162,6 +164,8 @@ public class EntityManager {
 		}
 	}
 
+	//
+	// Update les positions de toutes les entités en fonction des données passées
 	public void updatePositions(JSONObject data) {
 
 		for (Object keyObj : data.keys().toArray()) {

@@ -73,9 +73,17 @@ public class OpenMonsterHunter extends PApplet {
 	public void keyPressed() {
 		if (key != CODED)
 			ui.Key(key);
-		
-		if (game != null)
+
+		if (game != null) {
 			game.keyPressed(key);
+			
+			//Tests d'entités
+			if (key == 'l') {
+				logic.Entity e = new logic.Entity();
+				//Envoyer données nouvelle entité
+			}
+		}
+
 	}
 
 	public void CreateWorld(String name) {

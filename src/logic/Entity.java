@@ -17,6 +17,9 @@ public class Entity {
 
 			ID += ch;
 		}
+		
+		pos = new PVector();
+		dir = new PVector();
 
 	}
 

@@ -59,10 +59,13 @@ public class ConnectionToWorld {
 
 		// EnvoiDonneesPlayer();
 		EnvoiDonneesPlayer();
+		
+		//TODO Envoyer un ajout d'entité (tir par exemple)
 	}
 
 	private void EnvoiDonneesPlayer() {
 //		client.write(null);
+		//TODO Ajouter un délimiteur de requete pour en envoyer plein d'un coup
 		if (OpenMonsterHunter.game.controlledPlayer != null)
 			client.write(World.createRequest(World.UPDATE_PLAYER_DATA,
 					OpenMonsterHunter.game.controlledPlayer.getJSON(), omh.playerName).toString());
