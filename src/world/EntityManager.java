@@ -89,6 +89,15 @@ public class EntityManager {
 
 	public void addIfInexistant(JSONObject data) {
 
+		//
+		// Copy les elements de la liste
+		ArrayList<Entity> entitiesToRemove = new ArrayList<Entity>();
+		for (Entity e : entities) {
+			entitiesToRemove.add(e);
+		}
+
+		//
+		//
 		for (Object keyObj : data.keys().toArray()) {
 			String key = (String) keyObj;
 			JSONArray array = data.getJSONArray(key);
@@ -97,10 +106,14 @@ public class EntityManager {
 
 				Class arrayClass = Class.forName(key);
 
+				//
+				// Pour chaque entité
 				for (int i = 0; i < array.size(); i++) {
 					Entity obj = null;
 					JSONObject json = array.getJSONObject(i);
 
+					//
+					// Construire un player ou une entité
 					if (key.equals("logic.Player")) {
 						obj = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
 								.newInstance(json.getString("name"), new PVector(100, 100));
@@ -109,19 +122,27 @@ public class EntityManager {
 					}
 					obj.ID = json.getString("ID");
 
+					//
+					// Vérifier l'existance
 					boolean exists = false;
-					// TODO optimiser ça : (en faisant un tableau de IDs par exemple)
-					for (Entity entity : entities) {
-						if (entity.ID.equals(obj.ID)) {
-							exists = true;
-							break;
-						}
-					}
 
 					if (key.equals("logic.Player")
 							&& ((Player) obj).name.equals(OpenMonsterHunter.game.controlledPlayer.name))
 						exists = true;
 
+					// TODO optimiser ça : (en faisant un tableau de IDs par exemple)
+					if (!exists) {
+						for (Entity entity : entities) {
+							if (entity.ID.equals(obj.ID)) {
+								exists = true;
+								entitiesToRemove.remove(entity);
+								break;
+							}
+						}
+					}
+
+					//
+					// S'il existe pas, ajouter
 					if (!exists) {
 						addEntity(obj);
 						System.out.println("Ajouté " + obj.getClass().getName());
@@ -132,21 +153,33 @@ public class EntityManager {
 			}
 		}
 
-//		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
-//			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
-//			boolean exists = false;
-//			for (Player p : players) {
-//				if (p.name.equals(playerJSON.getString("name"))) {
-//					exists = true;
-//					break;
-//				}
-//			}
-//
-//			if (!exists) {
-//				addPlayer(playerJSON, null);
-//			}
-//
-//		}
+		//
+		// Enlever les entites disparues
+		// TODO Ptet trouver une autre méthode
 
+		for (Entity e : entitiesToRemove) {
+			entities.remove(e);
+		}
+	}
+
+	public void updatePositions(JSONObject data) {
+
+		for (Object keyObj : data.keys().toArray()) {
+			String key = (String) keyObj;
+			JSONArray array = data.getJSONArray(key);
+
+			// TODO optimiser ça : (en faisant un tableau de IDs par exemple)
+
+			for (int i = 0; i < array.size(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+
+				for (Entity entity : entities) {
+					if (entity.ID.equals(obj.getString("ID"))) {
+						entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
+
+					}
+				}
+			}
+		}
 	}
 }

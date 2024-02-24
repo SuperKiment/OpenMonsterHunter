@@ -77,11 +77,17 @@ public class Game {
 
 	public void TraiterData(JSONObject data) {
 
-		entityManager.addIfInexistant(data);
+		// TODO Traiter data
 
-//		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
-//			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
-//			
-//		}
+		entityManager.addIfInexistant(data);
+		
+		entityManager.updatePositions(data);
+		
+		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
+			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
+			
+			
+
+		}
 	}
 }

@@ -47,8 +47,6 @@ public class ConnectionToWorld {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
-		// TODO Traiter les données récup avec SERVER TO PLAYER etc.
 	}
 
 	public boolean isConnected() {
