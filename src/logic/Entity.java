@@ -17,7 +17,7 @@ public class Entity {
 
 			ID += ch;
 		}
-		
+
 		pos = new PVector();
 		dir = new PVector();
 
@@ -56,6 +56,8 @@ public class Entity {
 		obj.setFloat("dir.x", dir.x);
 		obj.setFloat("dir.y", dir.y);
 
+		obj.setString("className", this.getClass().getName());
+
 		obj.setFloat("speed", speed);
 
 		obj.setString("ID", ID);
@@ -69,6 +71,8 @@ public class Entity {
 			dir.x = json.getFloat("dir.x");
 			dir.y = json.getFloat("dir.y");
 			speed = json.getFloat("speed");
+			ID = json.getString("ID");
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}

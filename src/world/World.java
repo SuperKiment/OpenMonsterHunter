@@ -17,6 +17,7 @@ public class World extends PApplet {
 	final static String BONJOUR_DU_SERVER = "yeepii";
 	final static String UPDATE_PLAYER_DATA = "coucoujupdate";
 	final static String SERVER_TO_PLAYER_FIRST_DATA = "heyy tes la";
+	final static String NEW_ENT_FROM_PLAYER = "draw her giving birth";
 
 	private Server server;
 	public String name = "NoName";
@@ -62,8 +63,8 @@ public class World extends PApplet {
 
 		entityManager.RemoveDisconnectedPlayers();
 
-		println(entityManager.entities.toArray());
-		
+		// println(entityManager.entities.toArray());
+
 		TraiterClients();
 
 		for (Client c : server.clients) {
@@ -106,7 +107,8 @@ public class World extends PApplet {
 			String clientData = client.readString();
 
 			for (String data : clientData.split(DELIMITER_ENTETE)) {
-				TraiterRequete(data, client);
+				if (!data.equals(""))
+					TraiterRequete(data, client);
 			}
 
 		}
@@ -128,6 +130,10 @@ public class World extends PApplet {
 		case UPDATE_PLAYER_DATA:
 			entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
 			break;
+		case NEW_ENT_FROM_PLAYER:
+			println(NEW_ENT_FROM_PLAYER, requete.getJSONObject("data"));
+			entityManager.addEntity(requete.getJSONObject("data"));
+			break;
 		default:
 			println("Jsp comment traiter : " + fullData);
 			break;
@@ -144,7 +150,7 @@ public class World extends PApplet {
 			surface.setVisible(false);
 			dispose();
 		}
-		
+
 		if (key == 'd') {
 			logic.Dog d = new logic.Dog();
 			d.pos.set(200, 200);

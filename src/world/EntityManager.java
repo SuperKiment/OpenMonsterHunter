@@ -26,6 +26,20 @@ public class EntityManager {
 		entities.add(entity);
 	}
 
+	public void addEntity(JSONObject json) {
+
+		try {
+			Entity e = null;
+			Class arrayClass = Class.forName(json.getString("className"));
+			e = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+			e.UpdateFromJSON(json);
+			addEntity(e);
+		} catch (Exception exe) {
+			System.out.println("Echec de création par JSON : " + exe);
+		}
+		
+	}
+
 	public void removeEntity(Entity entity) {
 		entities.remove(entity);
 	}

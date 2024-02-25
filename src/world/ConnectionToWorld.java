@@ -59,17 +59,23 @@ public class ConnectionToWorld {
 
 		// EnvoiDonneesPlayer();
 		EnvoiDonneesPlayer();
-		
-		//TODO Envoyer un ajout d'entité (tir par exemple)
+
+		// TODO Envoyer un ajout d'entité (tir par exemple)
 	}
 
 	private void EnvoiDonneesPlayer() {
 //		client.write(null);
-		//TODO Ajouter un délimiteur de requete pour en envoyer plein d'un coup
+		// TODO Ajouter un délimiteur de requete pour en envoyer plein d'un coup
 		if (OpenMonsterHunter.game.controlledPlayer != null)
-			client.write(World.createRequest(World.UPDATE_PLAYER_DATA,
-					OpenMonsterHunter.game.controlledPlayer.getJSON(), omh.playerName).toString());
+			client.write(
+					World.createRequest(World.UPDATE_PLAYER_DATA, OpenMonsterHunter.game.controlledPlayer.getJSON(),
+							omh.playerName).toString() + World.DELIMITER_ENTETE);
+	}
 
+	public void EnvoiDonneesNouvelleEntite(JSONObject json) {
+		if (OpenMonsterHunter.game.controlledPlayer != null)
+			client.write(World.createRequest(World.NEW_ENT_FROM_PLAYER, json, omh.playerName).toString()
+					+ World.DELIMITER_ENTETE);
 	}
 
 	private JSONObject RecuperationDonnees() {

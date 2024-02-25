@@ -79,8 +79,11 @@ public class OpenMonsterHunter extends PApplet {
 			
 			//Tests d'entités
 			if (key == 'l') {
-				logic.Entity e = new logic.Entity();
+				logic.Dog e = new logic.Dog();
+				e.pos.set(200, 200);
 				//Envoyer données nouvelle entité
+				
+				connectionToWorld.EnvoiDonneesNouvelleEntite(e.getJSON());
 			}
 		}
 
