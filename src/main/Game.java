@@ -24,11 +24,18 @@ public class Game {
 			connexion.Update();
 		}
 
+		controlledPlayer.Update();
 	}
 
 	void keyPressed(char key) {
-		if (key == 'd') {
-			controlledPlayer.pos.x++;
+		if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+			controlledPlayer.keyPressed(key);
+		}
+	}
+
+	void keyReleased(char key) {
+		if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+			controlledPlayer.keyReleased(key);
 		}
 	}
 
@@ -78,13 +85,11 @@ public class Game {
 	public void TraiterData(JSONObject data) {
 
 		entityManager.addIfInexistant(data);
-		
+
 		entityManager.updatePositions(data);
-		
+
 		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
 			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
-			
-			
 
 		}
 	}

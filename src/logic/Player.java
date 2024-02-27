@@ -17,6 +17,8 @@ public class Player extends Entity {
 	@Override
 	public void Update() {
 		super.Update();
+
+		pos.add(PVector.mult(dir, speed));
 	}
 
 	@Override
@@ -39,5 +41,31 @@ public class Player extends Entity {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	public void keyPressed(char key) {
+		if (key == 'd')
+			dir.x = 1;
+		if (key == 'q')
+			dir.x = -1;
+		if (key == 's')
+			dir.y = 1;
+		if (key == 'z')
+			dir.y = -1;
+
+		dir.setMag(1);
+	}
+
+	public void keyReleased(char key) {
+		if (key == 'd')
+			dir.x = 0;
+		if (key == 'q')
+			dir.x = 0;
+		if (key == 's')
+			dir.y = 0;
+		if (key == 'z')
+			dir.y = 0;
+
+		dir.setMag(1);
 	}
 }

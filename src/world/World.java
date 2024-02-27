@@ -58,12 +58,12 @@ public class World extends PApplet {
 
 	public void draw() {
 
+		// RENDER
 		if (render)
 			Render();
 
+		// CLIENTS
 		entityManager.RemoveDisconnectedPlayers();
-
-		// println(entityManager.entities.toArray());
 
 		TraiterClients();
 
@@ -71,6 +71,12 @@ public class World extends PApplet {
 			if (c != null && entityManager.clientToPlayers.containsKey(c)) {
 				c.write(getJSON().toString() + "\n");
 			}
+		}
+
+		// UPDATE
+		for (Entity entity : entityManager.entities) {
+			if (entity.getClass().getName().equals(Player.class.getName()))
+				entity.Update();
 		}
 
 	}

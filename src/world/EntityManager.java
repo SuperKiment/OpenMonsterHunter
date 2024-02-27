@@ -130,7 +130,7 @@ public class EntityManager {
 
 					//
 					// Construire un player ou une entité
-					if (key.equals("logic.Player")) {
+					if (key.equals(Player.class.getName())) {
 						obj = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
 								.newInstance(json.getString("name"), new PVector(100, 100));
 					} else {
@@ -142,7 +142,7 @@ public class EntityManager {
 					// Vérifier l'existance
 					boolean exists = false;
 
-					if (key.equals("logic.Player")
+					if (key.equals(Player.class.getName())
 							&& ((Player) obj).name.equals(OpenMonsterHunter.game.controlledPlayer.name))
 						exists = true;
 
