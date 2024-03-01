@@ -12,6 +12,7 @@ public class Game {
 	public world.ConnectionToWorld connexion;
 	public Player controlledPlayer;
 	public EntityManager entityManager;
+	public Entity focusedEntity;
 
 	Game(PApplet p, world.ConnectionToWorld connexion) {
 		pap = p;
@@ -47,7 +48,13 @@ public class Game {
 			pap.text("Connexion : " + connexion.client.ip(), 50, 100);
 			pap.pop();
 
+			pap.push();
+
+			pap.translate(-controlledPlayer.pos.x + pap.width / 2, -controlledPlayer.pos.y + pap.height / 2);
+
 			DisplayGame();
+
+			pap.pop();
 		} else {
 			pap.background(0);
 			pap.push();
@@ -58,28 +65,54 @@ public class Game {
 	}
 
 	private void DisplayGame() {
-		try {
-			// Background
+		// try {
+		// Background
+		DisplayGrid();
 
-			// Entities
-			pap.fill(255);
-			pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
+		// Entities
+		pap.fill(255);
+		pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
 
-			pap.fill(255, 0, 0);
-			for (Player p : entityManager.getPlayers()) {
-				pap.circle(p.pos.x, p.pos.y, 10);
-
-			}
-
-			pap.fill(0, 255, 0);
-			for (Entity e : entityManager.getEntities()) {
-				pap.circle(e.pos.x, e.pos.y, 10);
-
-			}
-			// UI
-		} catch (Exception e) {
+		pap.fill(255, 0, 0);
+		for (Player p : entityManager.getPlayers()) {
+			pap.circle(p.pos.x, p.pos.y, 10);
 
 		}
+
+		pap.fill(0, 255, 0);
+		for (Entity e : entityManager.getEntities()) {
+			pap.circle(e.pos.x, e.pos.y, 10);
+
+		}
+		// UI
+		// } catch (Exception e) {
+		// System.out.println(e);
+		// }
+	}
+
+	private void DisplayGrid() {
+		pap.push();
+		pap.stroke(125, 125);
+		int tailleGrid = 50;
+		float posEcranGauche = (controlledPlayer.pos.x - pap.width / 2)
+				- (controlledPlayer.pos.x - pap.width / 2) % tailleGrid;
+		float posEcranDroite = (controlledPlayer.pos.x + pap.width / 2)
+				- (controlledPlayer.pos.x + pap.width / 2) % tailleGrid;
+		
+		float posEcranHaut = (controlledPlayer.pos.y - pap.height / 2)
+				- (controlledPlayer.pos.y - pap.height / 2) % tailleGrid;
+		float posEcranBas = (controlledPlayer.pos.y + pap.height / 2)
+				- (controlledPlayer.pos.y + pap.height / 2) % tailleGrid;
+		
+		for (float x = posEcranGauche; x < posEcranDroite; x += tailleGrid) {
+			pap.line(x, posEcranHaut, x, posEcranBas);
+		}
+
+		for (float y = posEcranHaut; y < posEcranBas; y += tailleGrid) {
+			pap.line(posEcranGauche, y, posEcranDroite, y);
+		}
+
+		pap.pop();
 	}
 
 	public void TraiterData(JSONObject data) {
@@ -92,5 +125,17 @@ public class Game {
 			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
 
 		}
+	}
+
+	public void setControllablePlayer(JSONObject player) {
+		controlledPlayer = entityManager.addControllablePlayer(player);
+		setFocusedEntity(controlledPlayer);
+		System.out.println("controlled player : " + controlledPlayer.name);
+	}
+
+	public void setFocusedEntity(Entity e) {
+		focusedEntity = e;
+		System.out.println("Focused switched to : " + e.ID + " / " + e.getClass().getName());
+
 	}
 }

@@ -55,14 +55,16 @@ public class OpenMonsterHunter extends PApplet {
 
 		if (connectionToWorld != null && connectionToWorld.client.ip() == null) {
 			connectionToWorld = null;
-			println("bruh");
+			println("Déconnecté");
 		}
 
-		background(0);
 		if (gameManager.gameState == GameState.GAME) {
 			game.Render();
 			game.Update();
+		} else {
+			background(0);
 		}
+
 		ui.Render(this);
 	}
 
@@ -107,8 +109,7 @@ public class OpenMonsterHunter extends PApplet {
 	}
 
 	public void setControllablePlayer(JSONObject player) {
-		game.controlledPlayer = game.entityManager.addControllablePlayer(player);
-		System.out.println("controlled player : " + game.controlledPlayer.name);
+		game.setControllablePlayer(player);
 	}
 
 }

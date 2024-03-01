@@ -43,7 +43,7 @@ public class UI {
 			public void Action() {
 				ChangePage(GameManager.GameState.CHOOSE_SOLO);
 			}
-			
+
 			public boolean NotActiveIf() {
 				return p.connectionToWorld != null && p.connectionToWorld.isConnected();
 			}
@@ -55,29 +55,31 @@ public class UI {
 			public void Action() {
 				ChangePage(GameManager.GameState.CHOOSE_MULTI);
 			}
-			
+
 			public boolean NotActiveIf() {
 				return p.connectionToWorld != null && p.connectionToWorld.isConnected();
 			}
 		});
 
 		// Deconnexion
-				allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
-						new GameManager.GameState[] { GameManager.GameState.TITLE }, "Deconnexion") {
-					public void Action() {
-						System.out.println("Deconnexion");
-						p.connectionToWorld.client.stop();
-						UpdateBouttons();
-					}
-					
-					public boolean NotActiveIf() {
-						return !(p.connectionToWorld != null && p.connectionToWorld.isConnected());
-					}
-				});
+		allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
+				new GameManager.GameState[] { GameManager.GameState.TITLE }, "Deconnexion") {
+			public void Action() {
+				System.out.println("Deconnexion");
+				p.connectionToWorld.client.stop();
+				UpdateBouttons();
+			}
+
+			public boolean NotActiveIf() {
+				return !(p.connectionToWorld != null && p.connectionToWorld.isConnected());
+			}
+		});
 
 		// Entrer IP
-		allBouttons.add(new TextInput(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
-				new GameManager.GameState[] { GameManager.GameState.CHOOSE_MULTI }));
+		TextInput entrerIP = new TextInput(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
+				new GameManager.GameState[] { GameManager.GameState.CHOOSE_MULTI });
+		entrerIP.text = "127.0.0.1";
+		allBouttons.add(entrerIP);
 
 		// Entrer Jeu Multi
 		allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4, 400, 80,
