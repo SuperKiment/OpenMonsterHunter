@@ -147,6 +147,13 @@ public class UI {
 			if (b.actif)
 				b.Render(p);
 		}
+		
+		p.push();
+		p.textSize(12);
+		p.textAlign(OpenMonsterHunter.RIGHT);
+		p.text(OpenMonsterHunter.deltaTime + "ms : Delta Time", p.width, 50);
+		p.text(OpenMonsterHunter.drawTime + "ms : Draw Time", p.width, 65);
+		p.pop();
 	}
 
 	public void ChangePage(GameManager.GameState state) {

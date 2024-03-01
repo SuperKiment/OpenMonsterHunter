@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 import processing.core.PVector;
 import processing.data.JSONObject;
 
@@ -7,6 +9,7 @@ public class Entity {
 	public float speed = 1;
 	public PVector pos, dir;
 	public String ID = "";
+	public ArrayList<Hitbox> hitboxes;
 
 	public Entity() {
 		String characters = "azertyuiopqsdfghjklmwxcvbn1234567890+-&éèâêô_@à=";
@@ -20,6 +23,9 @@ public class Entity {
 
 		pos = new PVector();
 		dir = new PVector();
+
+		hitboxes = new ArrayList<Hitbox>();
+		hitboxes.add(new Hitbox(new PVector(0, 0), 20));
 
 	}
 
@@ -72,7 +78,7 @@ public class Entity {
 			dir.y = json.getFloat("dir.y");
 			speed = json.getFloat("speed");
 			ID = json.getString("ID");
-			
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}

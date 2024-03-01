@@ -42,7 +42,7 @@ public class Game {
 
 	public void Render() {
 		if (connexion != null && connexion.isConnected()) {
-			pap.background(0);
+			pap.background(0, 50, 10);
 			pap.push();
 			pap.fill(255);
 			pap.text("Connexion : " + connexion.client.ip(), 50, 100);
@@ -66,25 +66,26 @@ public class Game {
 
 	private void DisplayGame() {
 		// try {
+
 		// Background
 		DisplayGrid();
 
 		// Entities
+		// TODO un hashmap class,function qui affiche en fonction de la classe
 		pap.fill(255);
 		pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
 
 		pap.fill(255, 0, 0);
 		for (Player p : entityManager.getPlayers()) {
 			pap.circle(p.pos.x, p.pos.y, 10);
-
 		}
 
 		pap.fill(0, 255, 0);
 		for (Entity e : entityManager.getEntities()) {
 			pap.circle(e.pos.x, e.pos.y, 10);
-
 		}
 		// UI
+
 		// } catch (Exception e) {
 		// System.out.println(e);
 		// }
@@ -98,12 +99,12 @@ public class Game {
 				- (controlledPlayer.pos.x - pap.width / 2) % tailleGrid;
 		float posEcranDroite = (controlledPlayer.pos.x + pap.width / 2)
 				- (controlledPlayer.pos.x + pap.width / 2) % tailleGrid;
-		
+
 		float posEcranHaut = (controlledPlayer.pos.y - pap.height / 2)
 				- (controlledPlayer.pos.y - pap.height / 2) % tailleGrid;
 		float posEcranBas = (controlledPlayer.pos.y + pap.height / 2)
 				- (controlledPlayer.pos.y + pap.height / 2) % tailleGrid;
-		
+
 		for (float x = posEcranGauche; x < posEcranDroite; x += tailleGrid) {
 			pap.line(x, posEcranHaut, x, posEcranBas);
 		}

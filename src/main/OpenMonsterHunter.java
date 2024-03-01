@@ -13,12 +13,10 @@ public class OpenMonsterHunter extends PApplet {
 
 	ConnectionToWorld connectionToWorld;
 	UI ui;
-
 	public static GameManager gameManager;
-
 	public static Game game;
-
 	public String playerName = "Player" + (int) random(10000);
+	public static float deltaTime = 0, lastTime = -1, drawTime = 0;
 
 	public static void main(String[] args) {
 		try {
@@ -53,6 +51,13 @@ public class OpenMonsterHunter extends PApplet {
 
 	public void draw() {
 
+		if (lastTime > 0) {
+			deltaTime = millis() - lastTime;
+			lastTime = millis();
+		} else {
+			lastTime = millis();
+		}
+
 		if (connectionToWorld != null && connectionToWorld.client.ip() == null) {
 			connectionToWorld = null;
 			println("Déconnecté");
@@ -66,6 +71,10 @@ public class OpenMonsterHunter extends PApplet {
 		}
 
 		ui.Render(this);
+		if (lastTime > 0) {
+			drawTime = millis() - lastTime;
+		}
+
 	}
 
 	public void mousePressed() {
