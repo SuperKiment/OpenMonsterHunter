@@ -9,6 +9,8 @@ public class Entity {
 	public float speed = 1;
 	public PVector pos, dir;
 	public String ID = "";
+
+	// TODO config les hitboxes
 	public ArrayList<Hitbox> hitboxes;
 
 	public Entity() {

@@ -1,5 +1,7 @@
 package main;
 
+import java.util.function.Function;
+
 import logic.Entity;
 import logic.Player;
 import processing.core.*;
@@ -84,6 +86,7 @@ public class Game {
 		for (Entity e : entityManager.getEntities()) {
 			pap.circle(e.pos.x, e.pos.y, 10);
 		}
+		// TODO Utiliser les Renders
 		// UI
 
 		// } catch (Exception e) {

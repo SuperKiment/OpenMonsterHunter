@@ -1,25 +1,54 @@
 package TestsRandoms;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.function.Function;
 
+import logic.Entity;
 import processing.data.JSONObject;
 
 public class Tester {
 
+	public void lezgo() {
+
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Début test");
-
-		JSONObject json = new JSONObject();
-		json.put("coucou", 5);
-		json.put("coucdezou", 55);
-		json.put("cozeghetucou", 54);
-
-		System.out.println(json.keys().toArray());
 		
-		for (Object str : json.keys().toArray()) {
-			System.out.println(str);
-			
-		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		HashMap<Class, Getmethod> hash = new HashMap<Class, Getmethod>();
+		hash.put(logic.Entity.class, new Getmethod() {
+			public void Action() {
+				System.out.println("coucou");
+			}
+		});
+
+		logic.Entity e = new logic.Entity();
+		logic.Dog d = new logic.Dog();
+
+		hash.get(e.getClass()).Action();
+		hash.get(d.getClass()).Action();
 	}
 
 	public void Classes() {
