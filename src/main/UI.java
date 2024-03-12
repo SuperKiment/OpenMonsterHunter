@@ -153,6 +153,8 @@ public class UI {
 			if (b.actif)
 				b.Render(p);
 		}
+		
+		Console.console.Update(p);
 
 		p.push();
 		p.textSize(12);

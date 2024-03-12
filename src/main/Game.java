@@ -31,17 +31,30 @@ public class Game {
 	}
 
 	void keyPressed(char key) {
-		if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
-			controlledPlayer.keyPressed(key);
-		}
-		
-		if (key == '\n') {
-			Console.console.Enter();
+		if (!Console.console.actif) {
+			if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
+				controlledPlayer.keyPressed(key);
+			}
+
+			// Tests d'entités
+			if (key == 'l') {
+				logic.Dog e = new logic.Dog();
+				e.pos.set(200, 200);
+				// Envoyer données nouvelle entité
+
+				connexion.EnvoiDonneesNouvelleEntite(e.getJSON());
+			}
+
+			if (key == '\n') {
+				Console.console.Toggle();
+			}
+		} else {
+
+			if (key == '\n') {
+				Console.console.Enter();
+			}
 		}
 
-		if (key == 't') {
-			Console.console.Toggle();
-		}
 	}
 
 	void keyReleased(char key) {

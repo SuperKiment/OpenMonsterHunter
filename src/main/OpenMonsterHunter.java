@@ -88,14 +88,7 @@ public class OpenMonsterHunter extends PApplet {
 		if (game != null) {
 			game.keyPressed(key);
 
-			// Tests d'entités
-			if (key == 'l') {
-				logic.Dog e = new logic.Dog();
-				e.pos.set(200, 200);
-				// Envoyer données nouvelle entité
-
-				connectionToWorld.EnvoiDonneesNouvelleEntite(e.getJSON());
-			}
+			
 		}
 	}
 
