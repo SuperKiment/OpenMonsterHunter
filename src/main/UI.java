@@ -6,12 +6,16 @@ import main.GameManager.GameState;
 import processing.core.*;
 
 public class UI {
-	GameManager gameManager;
-	ArrayList<Boutton> allBouttons;
+	private GameManager gameManager;
+	public ArrayList<Boutton> allBouttons;
+	public OpenMonsterHunter omh;
 
 	UI(GameManager gameManager, OpenMonsterHunter p) {
+		this.omh = p;
 		this.gameManager = gameManager;
 		allBouttons = new ArrayList<Boutton>();
+
+		Console.console = new Console(this);
 
 		// Retour Title
 		allBouttons.add(new Boutton(10, 10, 20, 20,
@@ -111,6 +115,8 @@ public class UI {
 		});
 
 		UpdateBouttons();
+
+		Console.console.setActif(false);
 	}
 
 	public void Render(PApplet p) {
@@ -147,7 +153,7 @@ public class UI {
 			if (b.actif)
 				b.Render(p);
 		}
-		
+
 		p.push();
 		p.textSize(12);
 		p.textAlign(OpenMonsterHunter.RIGHT);
@@ -181,7 +187,7 @@ public class UI {
 
 	// ============================================================================
 
-	private class Boutton {
+	public class Boutton {
 		boolean actif = false;
 		public PVector pos, taille;
 		public GameManager.GameState[] liaisons;
@@ -277,7 +283,7 @@ public class UI {
 
 	// ================================================================
 
-	private class TextInput extends Boutton {
+	public class TextInput extends Boutton {
 
 		boolean selectionne = false;
 

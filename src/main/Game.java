@@ -31,8 +31,16 @@ public class Game {
 	}
 
 	void keyPressed(char key) {
-		if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+		if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
 			controlledPlayer.keyPressed(key);
+		}
+		
+		if (key == '\n') {
+			Console.console.Enter();
+		}
+
+		if (key == 't') {
+			Console.console.Toggle();
 		}
 	}
 
