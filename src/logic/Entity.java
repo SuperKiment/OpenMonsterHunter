@@ -14,7 +14,7 @@ public class Entity {
 	public ArrayList<Hitbox> hitboxes;
 
 	public Entity() {
-		String characters = "azertyuiopqsdfghjklmwxcvbn1234567890+-&éèâêô_@à=";
+		String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
 
 		for (int i = 0; i < 20; i++) {
 			int rand = (int) Math.floor(Math.random() * characters.length());
