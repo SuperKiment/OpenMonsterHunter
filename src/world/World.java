@@ -13,13 +13,13 @@ public class World extends PApplet {
 
 	final static String DELIMITER_ENTETE = ":::::";
 
-	final static String BONJOUR_DU_CLIENT = "buongiorno";
-	final static String BONJOUR_DU_SERVER = "yeepii";
-	final static String UPDATE_PLAYER_DATA = "coucoujupdate";
-	final static String SERVER_TO_PLAYER_FIRST_DATA = "heyy tes la";
-	final static String NEW_ENT_FROM_PLAYER = "draw her giving birth";
+	public final static String BONJOUR_DU_CLIENT = "buongiorno";
+	public final static String BONJOUR_DU_SERVER = "yeepii";
+	public final static String UPDATE_PLAYER_DATA = "coucoujupdate";
+	public final static String SERVER_TO_PLAYER_FIRST_DATA = "heyy tes la";
+	public final static String NEW_ENT_FROM_PLAYER = "draw her giving birth";
 
-	private Server server;
+	public Server server;
 	public String name = "NoName";
 	private boolean render = false;
 
@@ -53,7 +53,8 @@ public class World extends PApplet {
 
 	public void setup() {
 		server = new Server(this, 5204);
-		frameRate(60);
+		if (render)
+			frameRate(60);
 	}
 
 	public void draw() {
