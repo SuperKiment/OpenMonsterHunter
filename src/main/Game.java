@@ -20,6 +20,7 @@ public class Game {
 		pap = p;
 		this.connexion = connexion;
 		entityManager = new EntityManager();
+		RenderManager.renderManager = new RenderManager(p);
 	}
 
 	public void Update() {
@@ -95,18 +96,17 @@ public class Game {
 
 		// Entities
 		// TODO un hashmap class,function qui affiche en fonction de la classe
-		pap.fill(255);
-		pap.circle(controlledPlayer.pos.x, controlledPlayer.pos.y, 10);
 
-		pap.fill(255, 0, 0);
-		for (Player p : entityManager.getPlayers()) {
-			pap.circle(p.pos.x, p.pos.y, 10);
-		}
+		/*
+		 * pap.fill(255, 0, 0); for (Player p : entityManager.getPlayers()) {
+		 * pap.circle(p.pos.x, p.pos.y, 10); }
+		 */
 
-		pap.fill(0, 255, 0);
 		for (Entity e : entityManager.getEntities()) {
-			pap.circle(e.pos.x, e.pos.y, 10);
+			RenderManager.renderManager.Render(e);
+			// pap.circle(e.pos.x, e.pos.y, 10);
 		}
+		RenderManager.renderManager.Render(controlledPlayer);
 		// TODO Utiliser les Renders
 		// UI
 
