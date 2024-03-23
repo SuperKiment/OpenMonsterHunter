@@ -8,6 +8,7 @@ import processing.net.Client;
 public class ConnectionToWorld {
 	main.OpenMonsterHunter omh;
 	public Client client;
+	public boolean isSpawned = false;
 
 	public ConnectionToWorld(main.OpenMonsterHunter omh, String address, Game game) {
 		this.omh = omh;
@@ -43,6 +44,7 @@ public class ConnectionToWorld {
 		try {
 			if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
 				omh.setControllablePlayer(reponse.getJSONObject("data"));
+				isSpawned = true;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -51,6 +53,10 @@ public class ConnectionToWorld {
 
 	public boolean isConnected() {
 		return client != null && client.ip() != null;
+	}
+	
+	public boolean isSpawned() {
+		return isSpawned;
 	}
 
 	public void Update() {

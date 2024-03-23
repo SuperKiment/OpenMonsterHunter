@@ -5,9 +5,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
+
+import main.Game;
 import processing.net.*;
 import processing.core.*;
 import processing.data.JSONObject;
+import world.ConnectionToWorld;
 import world.World;
 
 class WorldTest {
@@ -22,15 +25,31 @@ class WorldTest {
 		skip(5000);
 		try {
 			p = new PApplet();
-			c = new Client(p, "127.0.0.1", 5204);
+			c = new ConnectionToWorld(null, "127.0.0.1", g);
 			skip(5000);
 		} catch (Exception e) {
 		}
 	}
 
+	static public void bonjourClient() {
+		JSONObject dataPlayer = new JSONObject();
+		dataPlayer.put("name", "Player Test");
+		// c.write(World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, "Player
+		// test").toString());
+
+		skip(10000);
+
+		world.draw();
+		world.draw();
+		world.draw();
+
+		skip(10000);
+	}
+
 	static World world;
 	static PApplet p;
-	static Client c;
+	static ConnectionToWorld c;
+	static Game g;
 
 	@BeforeAll
 	static void initAll() {
@@ -54,22 +73,17 @@ class WorldTest {
 	@Test
 	void Should_Server_And_Client_Dire_Bonjour() {
 
-		JSONObject dataPlayer = new JSONObject();
-		dataPlayer.put("name", "Player Test");
-		c.write(World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, "Player test").toString());
+		bonjourClient();
 
-		skip(10000);
+		c.Update();
+		c.isSpawned();
 
-		world.draw();
-		world.draw();
-		world.draw();
+		assertEquals(true, c.isSpawned());
+	}
 
-		skip(10000);
+	@Test
+	void Should_Client_Spawn_Dog() {
+		bonjourClient();
 
-		String dataString = c.readString();
-		JSONObject json = JSONObject.parse(dataString);
-		System.out.println(json);
-
-		assertEquals(World.BONJOUR_DU_SERVER, json.get("type"));
 	}
 }
