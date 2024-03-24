@@ -1,8 +1,7 @@
 package TestsRandoms;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import logic.Entity;
 import processing.data.JSONObject;
@@ -15,40 +14,24 @@ public class Tester {
 
 	public static void main(String[] args) {
 		System.out.println("Début test");
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
-		HashMap<Class, Getmethod> hash = new HashMap<Class, Getmethod>();
-		hash.put(logic.Entity.class, new Getmethod() {
-			public void Action() {
-				System.out.println("coucou");
-			}
+		HashMap<String, Consumer<String>> commands = new HashMap<String, Consumer<String>>();
+
+		commands.put("a", (str) -> {
+			System.out.println(str);
 		});
 
-		logic.Entity e = new logic.Entity();
-		logic.Dog d = new logic.Dog();
+		commands.get("a").accept("coucou");
 
-		hash.get(e.getClass()).Action();
-		hash.get(d.getClass()).Action();
+		/*
+		 * HashMap<Class, Getmethod> hash = new HashMap<Class, Getmethod>();
+		 * hash.put(logic.Entity.class, new Getmethod() { public void Action() {
+		 * System.out.println("coucou"); } });
+		 * 
+		 * logic.Entity e = new logic.Entity(); logic.Dog d = new logic.Dog();
+		 * 
+		 * hash.get(e.getClass()).Action(); hash.get(d.getClass()).Action();
+		 */
 	}
 
 	public void Classes() {

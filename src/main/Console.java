@@ -1,6 +1,8 @@
 package main;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.ArrayList;
 
 import main.UI.Boutton;
@@ -17,11 +19,13 @@ public class Console {
 	private ArrayList<Pair<String, Integer>> inputs;
 	private ArrayList<Pair<String, Integer>> history;
 	private int hauteurLigne = 20;
+	private HashMap<String, Consumer<String[]>> commands;
 
 	public Console(UI ui) {
 		this.ui = ui;
 		inputs = new ArrayList<Pair<String, Integer>>();
 		history = new ArrayList<Pair<String, Integer>>();
+		commands = new HashMap<String, Consumer<String[]>>();
 
 		// Texte
 		textInput = ui.new TextInput(0, ui.omh.height - 50, ui.omh.width, 50, new GameManager.GameState[] {});
@@ -38,6 +42,10 @@ public class Console {
 
 		ui.allBouttons.add(bouttonInput);
 		bouttonInput.actif = false;
+
+		commands.put("/ping", (args) -> {
+			write("pong !!!!!!!!!!!!!!!!!");
+		});
 	}
 
 	public void Update(PApplet p) {
@@ -53,7 +61,7 @@ public class Console {
 			int value = pair.getSecond();
 			pair.setSecond(value - 1);
 
-			System.out.println(value);
+			// System.out.println(value);
 			p.push();
 			p.fill(0, value);
 			p.noStroke();
@@ -89,11 +97,28 @@ public class Console {
 		textInput.selectionne = a;
 	}
 
+	public void write(String str) {
+		if (str.length() == 0)
+			return;
+
+		System.out.println("Commande : " + str);
+		Pair<String, Integer> pair = new Pair<String, Integer>(
+				ui.omh.millis() + " | " + ui.omh.playerName + " : " + str, 300);
+		inputs.add(pair);
+		history.add(pair);
+
+		if (str.charAt(0) == '/') {
+			String[] command = str.split(" ");
+
+			commands.get(command[0]).accept(command);
+		}
+	}
+
 	public void Enter() {
-		System.out.println("Commande : " + textInput.text);
-		inputs.add(
-				new Pair<String, Integer>(ui.omh.millis() + " | " + ui.omh.playerName + " : " + textInput.text, 300));
+		write(textInput.text);
+
 		textInput.text = "";
+
 		Toggle();
 	}
 }
