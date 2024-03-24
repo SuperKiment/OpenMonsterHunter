@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import main.UI.Boutton;
 import main.UI.TextInput;
 import processing.core.PApplet;
+import utils.Pair;
 
 public class Console {
 	public static Console console;
@@ -13,12 +14,14 @@ public class Console {
 	private TextInput textInput;
 	private Boutton bouttonInput;
 	private UI ui;
-	private HashMap<String, Integer> allInputs;
+	private ArrayList<Pair<String, Integer>> inputs;
+	private ArrayList<Pair<String, Integer>> history;
 	private int hauteurLigne = 20;
 
 	public Console(UI ui) {
 		this.ui = ui;
-		allInputs = new HashMap<String, Integer>();
+		inputs = new ArrayList<Pair<String, Integer>>();
+		history = new ArrayList<Pair<String, Integer>>();
 
 		// Texte
 		textInput = ui.new TextInput(0, ui.omh.height - 50, ui.omh.width, 50, new GameManager.GameState[] {});
@@ -41,15 +44,15 @@ public class Console {
 		if (GameManager.GameState.GAME != OpenMonsterHunter.gameManager.gameState) {
 			return;
 		}
-		
-		ArrayList<String> aEnlever = new ArrayList<String>();
 
-		int compteur = allInputs.size();
+		ArrayList<Pair<String, Integer>> aEnlever = new ArrayList<Pair<String, Integer>>();
 
-		for (String key : allInputs.keySet()) {
-			int value = allInputs.get(key);
+		int compteur = inputs.size();
 
-			allInputs.put(key, allInputs.get(key) - 1);
+		for (Pair<String, Integer> pair : inputs) {
+			int value = pair.getSecond();
+			pair.setSecond(value - 1);
+
 			System.out.println(value);
 			p.push();
 			p.fill(0, value);
@@ -57,18 +60,18 @@ public class Console {
 			p.rect(0, p.height - 100 - compteur * hauteurLigne, p.width, hauteurLigne);
 			p.fill(255, value);
 			p.textSize(PApplet.round(hauteurLigne * 0.75f));
-			p.text(key, 20, p.height - 100 + PApplet.round(hauteurLigne * 0.75f) - compteur * hauteurLigne);
+			p.text(pair.getFirst(), 20, p.height - 100 + PApplet.round(hauteurLigne * 0.75f) - compteur * hauteurLigne);
 			p.pop();
 
 			if (value <= 0) {
-				aEnlever.add(key);
+				aEnlever.add(pair);
 			}
 
 			compteur--;
 		}
 
-		for (String key : aEnlever) {
-			allInputs.remove(key);
+		for (Pair<String, Integer> pair : aEnlever) {
+			inputs.remove(pair);
 		}
 	}
 
@@ -88,7 +91,8 @@ public class Console {
 
 	public void Enter() {
 		System.out.println("Commande : " + textInput.text);
-		allInputs.put(ui.omh.millis() + " | " + ui.omh.playerName + " : " + textInput.text, 300);
+		inputs.add(
+				new Pair<String, Integer>(ui.omh.millis() + " | " + ui.omh.playerName + " : " + textInput.text, 300));
 		textInput.text = "";
 		Toggle();
 	}
