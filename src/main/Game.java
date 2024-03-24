@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import logic.Entity;
 import logic.Player;
+import main.GameManager.GameState;
 import processing.core.*;
 import processing.data.JSONObject;
 import world.EntityManager;
@@ -32,27 +33,29 @@ public class Game {
 	}
 
 	void keyPressed(char key) {
-		if (!Console.console.actif) {
-			if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
-				controlledPlayer.keyPressed(key);
-			}
+		if (GameManager.GameState.GAME == OpenMonsterHunter.gameManager.gameState) {
+			if (!Console.console.actif) {
+				if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
+					controlledPlayer.keyPressed(key);
+				}
 
-			// Tests d'entités
-			if (key == 'l') {
-				logic.Dog e = new logic.Dog();
-				e.pos.set(200, 200);
-				// Envoyer données nouvelle entité
+				// Tests d'entités
+				if (key == 'l') {
+					logic.Dog e = new logic.Dog();
+					e.pos.set(200, 200);
+					// Envoyer données nouvelle entité
 
-				connexion.EnvoiDonneesNouvelleEntite(e.getJSON());
-			}
+					connexion.EnvoiDonneesNouvelleEntite(e.getJSON());
+				}
 
-			if (key == '\n') {
-				Console.console.Toggle();
-			}
-		} else {
+				if (key == '\n') {
+					Console.console.Toggle();
+				}
+			} else {
 
-			if (key == '\n') {
-				Console.console.Enter();
+				if (key == '\n') {
+					Console.console.Enter();
+				}
 			}
 		}
 

@@ -38,6 +38,10 @@ public class Console {
 	}
 
 	public void Update(PApplet p) {
+		if (GameManager.GameState.GAME != OpenMonsterHunter.gameManager.gameState) {
+			return;
+		}
+		
 		ArrayList<String> aEnlever = new ArrayList<String>();
 
 		int compteur = allInputs.size();
