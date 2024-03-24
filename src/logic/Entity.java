@@ -7,7 +7,7 @@ import processing.data.JSONObject;
 
 public class Entity {
 	public float speed = 1;
-	public PVector pos, dir;
+	public PVector pos, dir, remanantDir;
 	public String ID = "";
 
 	// TODO config les hitboxes
@@ -25,6 +25,7 @@ public class Entity {
 
 		pos = new PVector();
 		dir = new PVector();
+		remanantDir = new PVector();
 
 		hitboxes = new ArrayList<Hitbox>();
 		hitboxes.add(new Hitbox(new PVector(0, 0), 20));
@@ -38,6 +39,10 @@ public class Entity {
 	private void Deplacement() {
 		dir.setMag(speed);
 		pos.add(dir);
+
+		if (dir.mag() != 0) {
+			remanantDir.set(dir);
+		}
 	}
 
 	public void setDir(float x, float y) {
@@ -61,8 +66,8 @@ public class Entity {
 
 		obj.setFloat("pos.x", pos.x);
 		obj.setFloat("pos.y", pos.y);
-		obj.setFloat("dir.x", dir.x);
-		obj.setFloat("dir.y", dir.y);
+		obj.setFloat("dir.x", remanantDir.x);
+		obj.setFloat("dir.y", remanantDir.y);
 
 		obj.setString("className", this.getClass().getName());
 
@@ -76,8 +81,8 @@ public class Entity {
 		try {
 			pos.x = json.getFloat("pos.x");
 			pos.y = json.getFloat("pos.y");
-			dir.x = json.getFloat("dir.x");
-			dir.y = json.getFloat("dir.y");
+			remanantDir.x = json.getFloat("dir.x");
+			remanantDir.y = json.getFloat("dir.y");
 			speed = json.getFloat("speed");
 			ID = json.getString("ID");
 
