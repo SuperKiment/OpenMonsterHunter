@@ -65,7 +65,7 @@ public class RenderManager {
 
 	public void Render(logic.Entity entity) {
 		try {
-			System.out.println("sheeesh");
+			//System.out.println("sheeesh");
 
 			classToActions.get(entity.getClass()).Action(entity);
 		} catch (Exception e) {

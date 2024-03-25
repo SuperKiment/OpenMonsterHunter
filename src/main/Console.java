@@ -3,6 +3,9 @@ package main;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import logic.Entity;
+
 import java.util.ArrayList;
 
 import main.UI.Boutton;
@@ -45,6 +48,24 @@ public class Console {
 
 		commands.put("/ping", (args) -> {
 			write("pong !!!!!!!!!!!!!!!!!");
+		});
+
+		commands.put("/birth", (args) -> {
+			System.out.println(args.length);
+			if (args.length == 4) {
+				try {
+					Class arrayClass = Class.forName(args[3]);
+					Entity obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+					
+					obj.pos.set(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
+
+					ui.omh.connectionToWorld.EnvoiDonneesNouvelleEntite(obj.getJSON());
+					write("summoned " + args[3]);
+				} catch (Exception e) {
+					write(e.toString());
+				}
+
+			}
 		});
 	}
 
