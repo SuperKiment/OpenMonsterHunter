@@ -142,6 +142,10 @@ public class World extends PApplet {
 		pop();
 	}
 
+	/**
+	 * Etape 1 du traitement des données des clients. Passe par tous les clients et
+	 * exécute TraiterRequete
+	 */
 	private void TraiterClients() {
 		// Get the next available client
 		Client client = server.available();
@@ -157,6 +161,13 @@ public class World extends PApplet {
 		}
 	}
 
+	/**
+	 * Etape 2 du traitement des clients. Prend le string entier d'un client ainsi
+	 * que le client pour traiter la requête.
+	 * 
+	 * @param fullData
+	 * @param client
+	 */
 	private void TraiterRequete(String fullData, Client client) {
 		// println("fullData : " + fullData);
 
@@ -214,6 +225,10 @@ public class World extends PApplet {
 		}
 	}
 
+	/**
+	 * 
+	 * @return Toutes les données du World en JSONObject
+	 */
 	private JSONObject getJSON() {
 		JSONObject json = new JSONObject();
 
@@ -235,6 +250,15 @@ public class World extends PApplet {
 		return json;
 	}
 
+	/**
+	 * Crée un JSONObject qui contient toutes les informations d'un envoi. Permet la
+	 * standardisation
+	 * 
+	 * @param type   : constante de World
+	 * @param data   : les données
+	 * @param sender : l'envoyeur des données
+	 * @return JSONObject
+	 */
 	public static JSONObject createRequest(String type, JSONObject data, String sender) {
 		JSONObject json = new JSONObject();
 
@@ -246,10 +270,21 @@ public class World extends PApplet {
 
 	}
 
+	/**
+	 * Ajouter une entité à partir d'un JSON
+	 * 
+	 * @param json
+	 */
 	public void addEntity(JSONObject json) {
 		entityManager.addEntity(json);
 	}
 
+	/**
+	 * Envoie un String sur les consoles de tous les clients à part l'envoyeur
+	 * 
+	 * @param str
+	 * @param sender
+	 */
 	public void EnvoiConsoleTousClients(String str, Client sender) {
 		System.out.println("From Server : " + str);
 
