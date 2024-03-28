@@ -46,27 +46,20 @@ public class Console {
 		ui.allBouttons.add(bouttonInput);
 		bouttonInput.actif = false;
 
-		commands.put("/ping", (args) -> {
-			write("pong !!!!!!!!!!!!!!!!!");
-		});
-
-		commands.put("/birth", (args) -> {
-			System.out.println(args.length);
-			if (args.length == 4) {
-				try {
-					Class arrayClass = Class.forName(args[3]);
-					Entity obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
-					
-					obj.pos.set(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
-
-					ui.omh.connectionToWorld.EnvoiDonneesNouvelleEntite(obj.getJSON());
-					write("summoned " + args[3]);
-				} catch (Exception e) {
-					write(e.toString());
-				}
-
-			}
-		});
+		/*
+		 * commands.put("/ping", (args) -> { write("pong !!!!!!!!!!!!!!!!!"); });
+		 * 
+		 * commands.put("/birth", (args) -> { System.out.println(args.length); if
+		 * (args.length == 4) { try { Class arrayClass = Class.forName(args[3]); Entity
+		 * obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+		 * 
+		 * obj.pos.set(Float.parseFloat(args[1]), Float.parseFloat(args[2]));
+		 * 
+		 * ui.omh.connectionToWorld.EnvoiDonneesNouvelleEntite(obj.getJSON());
+		 * write("summoned " + args[3]); } catch (Exception e) { write(e.toString()); }
+		 * 
+		 * } });
+		 */
 	}
 
 	public void Update(PApplet p) {
@@ -118,25 +111,27 @@ public class Console {
 		textInput.selectionne = a;
 	}
 
-	public void write(String str) {
+	public void write(String str, boolean received) {
 		if (str.length() == 0)
 			return;
 
 		System.out.println("Commande : " + str);
-		Pair<String, Integer> pair = new Pair<String, Integer>(
-				ui.omh.millis() + " | " + ui.omh.playerName + " : " + str, 300);
+		Pair<String, Integer> pair = new Pair<String, Integer>("> " + str, 300);
 		inputs.add(pair);
 		history.add(pair);
 
-		if (str.charAt(0) == '/') {
-			String[] command = str.split(" ");
+		if (!received)
+			OpenMonsterHunter.game.connexion.EnvoiConsoleInput(str);
 
-			commands.get(command[0]).accept(command);
-		}
+		/*
+		 * if (str.charAt(0) == '/') { String[] command = str.split(" ");
+		 * 
+		 * commands.get(command[0]).accept(command); }
+		 */
 	}
 
 	public void Enter() {
-		write(textInput.text);
+		write(textInput.text, false);
 
 		textInput.text = "";
 

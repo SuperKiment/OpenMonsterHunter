@@ -11,17 +11,51 @@ import processing.net.*;
 
 public class World extends PApplet {
 
+	/**
+	 * Délimiteur entre les blocs de data
+	 */
 	final static String DELIMITER_ENTETE = ":::::";
 
-	final static String BONJOUR_DU_CLIENT = "buongiorno";
-	final static String BONJOUR_DU_SERVER = "yeepii";
-	final static String UPDATE_PLAYER_DATA = "coucoujupdate";
-	final static String SERVER_TO_PLAYER_FIRST_DATA = "heyy tes la";
-	final static String NEW_ENT_FROM_PLAYER = "draw her giving birth";
+	/**
+	 * Premier envoi des données du client au server
+	 */
+	final static String BONJOUR_DU_CLIENT = "buongiorno toi hihi";
+
+	/**
+	 * Premier envoi des données du server au client
+	 */
+	final static String BONJOUR_DU_SERVER = "yeepii cest moi le serv de la mort qui tue";
+
+	/**
+	 * Envoi des données du player du client au server
+	 */
+	final static String UPDATE_PLAYER_DATA = "coucoujupdate lez gooooooo";
+
+	/**
+	 * Envoi des données d'une entité créée par le client vers le server
+	 */
+	final static String NEW_ENT_FROM_PLAYER = "draw her giving  mouahahaha";
+
+	/**
+	 * Envoi d'un chat ou d'une commande du client au server
+	 */
+	final static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";
+
+	/**
+	 * Envoi des données de toutes les entités à montrer au client du server
+	 */
+	final static String UPDATE_WORLD_STATE_ENTITIES = "thats tim thats tom thats cthulhu";
+
+	/**
+	 * Envoi d'un nouvel input de console du server à tous les clients
+	 */
+	final static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
 
 	private Server server;
 	public String name = "NoName";
 	private boolean render = false;
+
+	private CommandsManager commandsManager;
 
 	private EntityManager entityManager;
 
@@ -42,6 +76,7 @@ public class World extends PApplet {
 		this.name = name;
 		this.render = render;
 
+		commandsManager = new CommandsManager(this);
 		entityManager = new EntityManager();
 	}
 
@@ -62,14 +97,16 @@ public class World extends PApplet {
 		if (render)
 			Render();
 
-		// CLIENTS
+		// CLIENTS RECUP
 		entityManager.RemoveDisconnectedPlayers();
 
 		TraiterClients();
 
+		// CLIENTS ENVOI
 		for (Client c : server.clients) {
 			if (c != null && entityManager.clientToPlayers.containsKey(c)) {
-				c.write(getJSON().toString() + "\n");
+				c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server").toString() + DELIMITER_ENTETE);
+
 			}
 		}
 
@@ -133,12 +170,25 @@ public class World extends PApplet {
 			client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
 
 			break;
+
 		case UPDATE_PLAYER_DATA:
 			entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
 			break;
+
 		case NEW_ENT_FROM_PLAYER:
 			println(NEW_ENT_FROM_PLAYER, requete.getJSONObject("data"));
 			entityManager.addEntity(requete.getJSONObject("data"));
+			break;
+
+		case NEW_CONSOLE_INPUT:
+			println(NEW_CONSOLE_INPUT, requete.getJSONObject("data"));
+			String input = requete.getJSONObject("data").getString("text");
+			if (input.charAt(0) == '/') {
+				commandsManager.TraiterCommande(input);
+			} else {
+				EnvoiConsoleTousClients(input, client);
+			}
+
 			break;
 		default:
 			println("Jsp comment traiter : " + fullData);
@@ -193,6 +243,25 @@ public class World extends PApplet {
 		json.put("sender", sender);
 
 		return json;
+
+	}
+
+	public void addEntity(JSONObject json) {
+		entityManager.addEntity(json);
+	}
+
+	public void EnvoiConsoleTousClients(String str, Client sender) {
+		System.out.println("From Server : " + str);
+
+		for (Client c : server.clients) {
+			if (c != null && c != sender) {
+				println(c.ip());
+				JSONObject json = new JSONObject();
+				json.setString("text", str);
+				json.setString("sender", sender == null ? "Server" : entityManager.clientToPlayers.get(sender).name);
+				c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server").toString() + DELIMITER_ENTETE);
+			}
+		}
 
 	}
 }
