@@ -10,4 +10,4 @@ Je n'ai utilisé aucune bibliothèque autre que le .net de Processing, qui perme
 J'ai 2-3 autres projets en réseau local mais aucun n'a vraiment été au point de fonctionnement, j'ai donc mis l'accent sur la conception de l'architecture pour ce projet. Une fois que j'aurai complètement compris et créé mon interface client-server, je pourrai la réutiliser pour créer beaucoup d'autres jeux en multijoueur local.
 
 # Comment lancer le jeu ?
-Le server et le client partagent le même code, il suffit alors de lancer OpenMonsterHunter.java pour lancer le client et World.java pour lancer un server. Une instance World.java est lancée automatiquement quand on clique sur "Jouer solo" dans le client.
+Lancer `OMH.exe` pour le client, `server.exe` pour lancer un server.
