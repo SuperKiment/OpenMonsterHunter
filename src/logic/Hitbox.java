@@ -41,6 +41,9 @@ public class Hitbox {
 		case CERCLE:
 			p.circle(pos.x, pos.y, range);
 			break;
+		default:
+			p.circle(pos.x, pos.y, 10);
+			break;
 		}
 	}
 }

@@ -7,11 +7,9 @@ import processing.core.PVector;
 import processing.data.JSONObject;
 
 public class Entity {
-	public float speed = 0.1f;
+	public float speed = 0.3f;
 	public PVector pos, dir, remanantDir;
 	public String ID = "";
-
-	// TODO config les hitboxes
 	public ArrayList<Hitbox> hitboxes;
 
 	public Entity() {

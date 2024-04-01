@@ -3,6 +3,7 @@ package main;
 import java.util.function.Function;
 
 import logic.Entity;
+import logic.Hitbox;
 import logic.Player;
 import main.GameManager.GameState;
 import processing.core.*;
@@ -107,15 +108,26 @@ public class Game {
 
 		for (Entity e : entityManager.getEntities()) {
 			RenderManager.renderManager.Render(e);
-			// pap.circle(e.pos.x, e.pos.y, 10);
+			
+			Hitbox.PushStyle(pap);
+			for (Hitbox h : e.hitboxes) {
+				pap.push();
+				pap.translate(e.pos.x, e.pos.y);
+				h.Render(pap);
+				pap.pop();
+			}
+			pap.pop();
 		}
+		
 		RenderManager.renderManager.Render(controlledPlayer);
-		// TODO Utiliser les Renders
-		// UI
-
-		// } catch (Exception e) {
-		// System.out.println(e);
-		// }
+		Hitbox.PushStyle(pap);
+		for (Hitbox h : controlledPlayer.hitboxes) {
+			pap.push();
+			pap.translate(controlledPlayer.pos.x, controlledPlayer.pos.y);
+			h.Render(pap);
+			pap.pop();
+		}
+		pap.pop();
 	}
 
 	private void DisplayGrid() {
