@@ -159,8 +159,9 @@ public class UI {
 		p.push();
 		p.textSize(12);
 		p.textAlign(OpenMonsterHunter.RIGHT);
-		p.text(OpenMonsterHunter.deltaTime + "ms : Delta Time", p.width, 50);
+		p.text(Time.deltaTime + "ms : Delta Time", p.width, 50);
 		p.text(OpenMonsterHunter.drawTime + "ms : Draw Time", p.width, 65);
+		p.text(omh.frameRate + " : frameRate", p.width, 80);
 		p.pop();
 	}
 

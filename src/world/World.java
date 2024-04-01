@@ -88,7 +88,7 @@ public class World extends PApplet {
 
 	public void setup() {
 		server = new Server(this, 5204);
-		frameRate(60);
+		frameRate(1000);
 	}
 
 	public void draw() {
@@ -122,6 +122,7 @@ public class World extends PApplet {
 		background(0);
 		fill(255);
 		textSize(15);
+		text("FrameRate : " + frameRate, 50, 30);
 		text("Nombre de clients : " + server.clientCount, 50, 50);
 		text("Nom : " + name, 50, 70);
 		text("Nombre d'entités : " + entityManager.getEntities().size(), 50, 90);

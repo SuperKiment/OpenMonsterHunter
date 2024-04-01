@@ -2,11 +2,12 @@ package logic;
 
 import java.util.ArrayList;
 
+import main.Time;
 import processing.core.PVector;
 import processing.data.JSONObject;
 
 public class Entity {
-	public float speed = 1;
+	public float speed = 0.1f;
 	public PVector pos, dir, remanantDir;
 	public String ID = "";
 
@@ -37,8 +38,9 @@ public class Entity {
 	}
 
 	private void Deplacement() {
-		dir.setMag(speed);
-		pos.add(dir);
+		PVector dirTemp = dir.copy();
+		dirTemp.setMag(speed * Time.deltaTime);
+		pos.add(dirTemp);
 
 		if (dir.mag() != 0) {
 			remanantDir.set(dir);

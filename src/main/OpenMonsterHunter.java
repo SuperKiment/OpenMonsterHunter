@@ -16,7 +16,7 @@ public class OpenMonsterHunter extends PApplet {
 	public static GameManager gameManager;
 	public static Game game;
 	public String playerName = "Player" + (int) random(10000);
-	public static float deltaTime = 0, lastTime = -1, drawTime = 0;
+	public static float drawTime = 0;
 
 	public static void main(String[] args) {
 		try {
@@ -32,6 +32,8 @@ public class OpenMonsterHunter extends PApplet {
 	}
 
 	public void setup() {
+		frameRate(30);
+		
 		PrintStream outStream = null;
 		PrintStream errStream = null;
 		try {
@@ -51,12 +53,7 @@ public class OpenMonsterHunter extends PApplet {
 
 	public void draw() {
 
-		if (lastTime > 0) {
-			deltaTime = millis() - lastTime;
-			lastTime = millis();
-		} else {
-			lastTime = millis();
-		}
+		Time.Update(this);
 
 		if (connectionToWorld != null && connectionToWorld.client.ip() == null) {
 			connectionToWorld = null;
@@ -71,8 +68,8 @@ public class OpenMonsterHunter extends PApplet {
 		}
 
 		ui.Render(this);
-		if (lastTime > 0) {
-			drawTime = millis() - lastTime;
+		if (Time.lastTime > 0) {
+			drawTime = millis() - Time.lastTime;
 		}
 
 	}
@@ -88,7 +85,6 @@ public class OpenMonsterHunter extends PApplet {
 		if (game != null) {
 			game.keyPressed(key);
 
-			
 		}
 	}
 
