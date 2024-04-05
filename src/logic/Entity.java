@@ -2,15 +2,18 @@ package logic;
 
 import java.util.ArrayList;
 
+import main.OpenMonsterHunter;
 import main.Time;
 import processing.core.PVector;
 import processing.data.JSONObject;
+import world.EntityManager;
 
 public class Entity {
 	public float speed = 0.3f;
 	public PVector pos, dir, remanantDir;
 	public String ID = "";
 	public ArrayList<Hitbox> hitboxes;
+	private EntityManager entityManager;
 
 	public Entity() {
 		String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
@@ -27,12 +30,13 @@ public class Entity {
 		remanantDir = new PVector();
 
 		hitboxes = new ArrayList<Hitbox>();
-		hitboxes.add(new Hitbox(new PVector(0, 0), 20));
+		hitboxes.add(new Hitbox(this, new PVector(0, 0), 20));
 
 	}
 
 	public void Update() {
 		Deplacement();
+		CheckCollision();
 	}
 
 	private void Deplacement() {
@@ -42,6 +46,25 @@ public class Entity {
 
 		if (dir.mag() != 0) {
 			remanantDir.set(dir);
+		}
+	}
+
+	private void CheckCollision() {
+		ArrayList<Entity> allEntities = entityManager.getEntities();
+		for (int i = 0; i < allEntities.size(); i++) {
+			Entity entity = allEntities.get(i);
+
+			if (entity == this)
+				continue;
+
+			for (Hitbox hitboxOther : entity.hitboxes) {
+				for (Hitbox hitboxThis : this.hitboxes) {
+					if (hitboxThis.isCollisionWith(hitboxOther)) {
+						System.out.println("COLLISION " + this.pos + " / " + entity.pos);
+						hitboxThis.doAction(entity);
+					}
+				}
+			}
 		}
 	}
 
@@ -59,6 +82,10 @@ public class Entity {
 
 	public void setPos(PVector p) {
 		pos.set(p.x, p.y);
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	public JSONObject getJSON() {

@@ -23,6 +23,7 @@ public class EntityManager {
 	}
 
 	public void addEntity(Entity entity) {
+		entity.setEntityManager(this);
 		entities.add(entity);
 	}
 
@@ -37,15 +38,16 @@ public class EntityManager {
 		} catch (Exception exe) {
 			System.out.println("Echec de création par JSON : " + exe);
 		}
-		
+
 	}
 
 	public void removeEntity(Entity entity) {
+		entity.setEntityManager(null);
 		entities.remove(entity);
 	}
 
 	public void addPlayer(Player player, Client client) {
-		entities.add(player);
+		addEntity(player);
 		players.add(player);
 		clientToPlayers.put(client, player);
 		playersToClient.put(player, client);
@@ -59,6 +61,7 @@ public class EntityManager {
 
 	public void removePlayer(Player player) {
 		System.out.println("Removed player " + player.name);
+		player.setEntityManager(null);
 		entities.remove(player);
 		players.remove(player);
 		clientToPlayers.remove(playersToClient.get(player));
