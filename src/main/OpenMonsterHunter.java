@@ -32,7 +32,7 @@ public class OpenMonsterHunter extends PApplet {
 
 	public void setup() {
 		frameRate(800);
-		surface.setResizable(true);
+		//surface.setResizable(true);
 		surface.setTitle(res.Texts.getOneRandomSplashText());
 		
 		PrintStream outStream = null;
