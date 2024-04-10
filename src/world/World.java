@@ -34,7 +34,7 @@ public class World extends PApplet {
 	/**
 	 * Envoi des données d'une entité créée par le client vers le server
 	 */
-	final static String NEW_ENT_FROM_PLAYER = "draw her giving  mouahahaha";
+	final static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
 
 	/**
 	 * Envoi d'un chat ou d'une commande du client au server

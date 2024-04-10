@@ -17,6 +17,7 @@ public class Game {
 	public Player controlledPlayer;
 	public EntityManager entityManager;
 	public Entity focusedEntity;
+	private boolean is3D = true;
 
 	Game(PApplet p, world.ConnectionToWorld connexion) {
 		pap = p;
@@ -95,20 +96,14 @@ public class Game {
 	private void DisplayGame() {
 		// try {
 
+		SetCamera();
+
 		// Background
 		DisplayGrid();
 
-		// Entities
-		// TODO un hashmap class,function qui affiche en fonction de la classe
-
-		/*
-		 * pap.fill(255, 0, 0); for (Player p : entityManager.getPlayers()) {
-		 * pap.circle(p.pos.x, p.pos.y, 10); }
-		 */
-
 		for (Entity e : entityManager.getEntities()) {
 			RenderManager.renderManager.Render(e);
-			
+
 			Hitbox.PushStyle(pap);
 			for (Hitbox h : e.hitboxes) {
 				pap.push();
@@ -118,7 +113,7 @@ public class Game {
 			}
 			pap.pop();
 		}
-		
+
 		RenderManager.renderManager.Render(controlledPlayer);
 		Hitbox.PushStyle(pap);
 		for (Hitbox h : controlledPlayer.hitboxes) {
@@ -155,16 +150,28 @@ public class Game {
 		pap.pop();
 	}
 
+	private void SetCamera() {
+		PVector eyeCam = new PVector(pap.width / 2.0f + controlledPlayer.pos.x, pap.height + controlledPlayer.pos.y,
+				(pap.height / 2.0f) / PApplet.tan((PApplet.PI * 30.0f / 180.0f)));
+
+		PVector centerCam = new PVector(controlledPlayer.pos.x, controlledPlayer.pos.y, 0);
+
+		pap.camera(eyeCam.x, eyeCam.y, eyeCam.z, centerCam.x, centerCam.y, centerCam.z, 0, 0, -1);
+
+	}
+
 	public void TraiterData(JSONObject data) {
 
 		entityManager.addIfInexistant(data);
 
 		entityManager.updatePositions(data);
 
-		for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
-			JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
-
-		}
+		/*
+		 * for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
+		 * JSONObject playerJSON = data.getJSONArray("logic.Player").getJSONObject(i);
+		 * 
+		 * }
+		 */
 	}
 
 	public void setControllablePlayer(JSONObject player) {
