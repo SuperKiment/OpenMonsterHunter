@@ -3,6 +3,8 @@ package main;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
+import globals.Scale;
+import globals.Time;
 import main.GameManager.GameState;
 import processing.core.*;
 import processing.data.JSONObject;
@@ -32,9 +34,9 @@ public class OpenMonsterHunter extends PApplet {
 
 	public void setup() {
 		frameRate(800);
-		//surface.setResizable(true);
+		// surface.setResizable(true);
 		surface.setTitle(res.Texts.getOneRandomSplashText());
-		
+
 		PrintStream outStream = null;
 		PrintStream errStream = null;
 		try {
@@ -109,6 +111,10 @@ public class OpenMonsterHunter extends PApplet {
 
 	public void setControllablePlayer(JSONObject player) {
 		game.setControllablePlayer(player);
+	}
+
+	public void windowResized() {
+		Scale.UpdateGameScale(this);
 	}
 
 }

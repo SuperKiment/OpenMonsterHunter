@@ -112,8 +112,8 @@ public class World extends PApplet {
 
 		// UPDATE
 		for (Entity entity : entityManager.entities) {
-			if (entity.getClass().getName().equals(Player.class.getName()))
-				entity.Update();
+//			if (entity.getClass().getName().equals(Player.class.getName()))
+			entity.Update();
 		}
 
 	}

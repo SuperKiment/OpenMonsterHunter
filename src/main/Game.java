@@ -1,11 +1,9 @@
 package main;
 
-import java.util.function.Function;
-
+import globals.Scale;
 import logic.Entity;
 import logic.Hitbox;
 import logic.Player;
-import main.GameManager.GameState;
 import processing.core.*;
 import processing.data.JSONObject;
 import world.EntityManager;
@@ -17,7 +15,8 @@ public class Game {
 	public Player controlledPlayer;
 	public EntityManager entityManager;
 	public Entity focusedEntity;
-	private boolean is3D = true;
+	private boolean is3D = false;
+	public float distanceCamera = 3.0f;
 
 	Game(PApplet p, world.ConnectionToWorld connexion) {
 		pap = p;
@@ -96,7 +95,8 @@ public class Game {
 	private void DisplayGame() {
 		// try {
 
-		SetCamera();
+		this.SetCamera();
+		pap.scale(Scale.getGameScale());
 
 		// Background
 		DisplayGrid();
@@ -151,10 +151,24 @@ public class Game {
 	}
 
 	private void SetCamera() {
-		PVector eyeCam = new PVector(pap.width / 2.0f + controlledPlayer.pos.x, pap.height + controlledPlayer.pos.y,
-				(pap.height / 2.0f) / PApplet.tan((PApplet.PI * 30.0f / 180.0f)));
+		PVector eyeCam = new PVector();
+		PVector centerCam = new PVector();
 
-		PVector centerCam = new PVector(controlledPlayer.pos.x, controlledPlayer.pos.y, 0);
+		if (is3D) {
+
+			eyeCam.set((pap.width / distanceCamera + controlledPlayer.pos.x * Scale.getGameScale()),
+					(pap.height / distanceCamera + controlledPlayer.pos.y * Scale.getGameScale()),
+					(pap.height / distanceCamera) / PApplet.tan((PApplet.PI * 30.0f / 180.0f)));
+
+			centerCam.set(controlledPlayer.pos.x * Scale.getGameScale(), controlledPlayer.pos.y * Scale.getGameScale(),
+					0);
+		} else {
+			eyeCam.set((controlledPlayer.pos.x * Scale.getGameScale()),
+					(controlledPlayer.pos.y * Scale.getGameScale() + 1), (pap.height));
+
+			centerCam.set(controlledPlayer.pos.x * Scale.getGameScale(), controlledPlayer.pos.y * Scale.getGameScale(),
+					0);
+		}
 
 		pap.camera(eyeCam.x, eyeCam.y, eyeCam.z, centerCam.x, centerCam.y, centerCam.z, 0, 0, -1);
 

@@ -2,8 +2,8 @@ package logic;
 
 import java.util.ArrayList;
 
+import globals.Time;
 import main.OpenMonsterHunter;
-import main.Time;
 import processing.core.PVector;
 import processing.data.JSONObject;
 import world.EntityManager;
@@ -50,6 +50,7 @@ public class Entity {
 	}
 
 	private void CheckCollision() {
+
 		ArrayList<Entity> allEntities = entityManager.getEntities();
 		for (int i = 0; i < allEntities.size(); i++) {
 			Entity entity = allEntities.get(i);
@@ -59,9 +60,16 @@ public class Entity {
 
 			for (Hitbox hitboxOther : entity.hitboxes) {
 				for (Hitbox hitboxThis : this.hitboxes) {
-					if (hitboxThis.isCollisionWith(hitboxOther)) {
+
+//					On récup les positions calculées qu'une fois
+					utils.Pair<Boolean, PVector[]> pair = hitboxThis.isCollisionWith(hitboxOther);
+
+//					Puis on teste
+					if (pair.getFirst()) {
 						System.out.println("COLLISION " + this.pos + " / " + entity.pos);
-						hitboxThis.doAction(entity);
+
+//						Et on lui donne els positions calculées
+						hitboxThis.doAction(entity, hitboxOther, pair.getSecond());
 					}
 				}
 			}

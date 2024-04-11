@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import utils.Pair;
 
 public class Hitbox {
 	enum hitboxType {
@@ -21,6 +22,12 @@ public class Hitbox {
 	Entity parent;
 	Consumer<Entity> action = null;
 
+	/**
+	 * Base construct
+	 * 
+	 * @param e
+	 * @param pos
+	 */
 	private Hitbox(Entity e, PVector pos) {
 		this.parent = e;
 		this.pos = new PVector(pos.x, pos.y);
@@ -58,9 +65,26 @@ public class Hitbox {
 		this.action = consumer;
 	}
 
-	public void doAction(Entity entity) {
-		if (action == null) {
-			action.accept(entity);
+	public void doAction(Entity entity, Hitbox otherHitbox, PVector[] vects) {
+		PVector actualPos = vects[0];
+		PVector otherActualPos = vects[1];
+
+		if (actionType != hitboxActionType.PHYSICS) {
+			if (action == null) {
+				action.accept(entity);
+			}
+		} else {
+			if (this.type == hitboxType.CERCLE && otherHitbox.type == hitboxType.CERCLE) {
+				PVector dirOtherToMe = PVector.sub(actualPos, otherActualPos);
+				float enfoncement = this.range + otherHitbox.range - dirOtherToMe.mag() * 2;
+
+				System.out.println(
+						this.parent.getClass().getName() + " pousse " + otherHitbox.parent.getClass().getName());
+				PVector depl = dirOtherToMe.copy();
+				depl.setMag(enfoncement / 2);
+				this.parent.pos.add(depl);
+				otherHitbox.parent.pos.add(PVector.mult(depl, -1));
+			}
 		}
 	}
 
@@ -101,7 +125,7 @@ public class Hitbox {
 		return actualPos;
 	}
 
-	public boolean isCollisionWith(Hitbox other) {
+	public Pair<Boolean, PVector[]> isCollisionWith(Hitbox other) {
 		boolean collision = false;
 		PVector actualPos = this.getActualPos();
 		PVector otherActualPos = other.getActualPos();
@@ -120,6 +144,8 @@ public class Hitbox {
 			break;
 		}
 
-		return collision;
+		PVector[] vects = { actualPos, otherActualPos };
+
+		return new Pair<Boolean, PVector[]>(collision, vects);
 	}
 }

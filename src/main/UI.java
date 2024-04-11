@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
+import globals.Time;
 import main.GameManager.GameState;
 import processing.core.*;
 
