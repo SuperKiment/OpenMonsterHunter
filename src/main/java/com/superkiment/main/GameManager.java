@@ -1,31 +1,33 @@
 package com.superkiment.main;
 
 public class GameManager {
-	public enum GameState {
-		TITLE, GAME, CREDITS, OPTIONS, CHOOSE_SOLO, CHOOSE_MULTI
-	}
+    public GameState gameState = GameState.TITLE;
 
-	public static GameState[] allPagesExcept(GameState[] excepts) {
-		GameState[] res = new GameState[GameState.values().length - excepts.length];
+    GameManager() {
+    }
 
-		int compt = 0;
-		for (GameState g : GameState.values()) {
-			boolean ajout = true;
-			for (GameState except : excepts) {
-				if (except == g)
-					ajout = false;
-			}
+    public static GameState[] allPagesExcept(GameState[] excepts) {
+        GameState[] res = new GameState[GameState.values().length - excepts.length];
 
-			if (ajout)
-				res[compt++] = g;
-		}
+        int compt = 0;
+        for (GameState g : GameState.values()) {
+            boolean ajout = true;
+            for (GameState except : excepts) {
+                if (except == g) {
+                    ajout = false;
+                    break;
+                }
+            }
 
-		return res;
-	}
+            if (ajout)
+                res[compt++] = g;
+        }
 
-	public GameState gameState = GameState.TITLE;
+        return res;
+    }
 
-	GameManager() {
-	}
+    public enum GameState {
+        TITLE, GAME, CREDITS, OPTIONS, CHOOSE_SOLO, CHOOSE_MULTI
+    }
 
 }

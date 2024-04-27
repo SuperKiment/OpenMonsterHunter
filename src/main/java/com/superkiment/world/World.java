@@ -1,302 +1,303 @@
 package com.superkiment.world;
 
-import java.util.HashMap;
-
-import com.superkiment.logic.*;
-import processing.core.*;
+import com.superkiment.logic.Dog;
+import com.superkiment.logic.Entity;
+import com.superkiment.logic.Player;
+import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
-import processing.net.*;
+import processing.net.Client;
+import processing.net.Server;
+
+import java.util.HashMap;
 
 public class World extends PApplet {
 
-	/**
-	 * Délimiteur entre les blocs de data
-	 */
-	final static String DELIMITER_ENTETE = ":::::";
+    /**
+     * Délimiteur entre les blocs de data
+     */
+    final static String DELIMITER_ENTETE = ":::::";
 
-	/**
-	 * Premier envoi des données du client au server
-	 */
-	final static String BONJOUR_DU_CLIENT = "buongiorno toi hihi";
+    /**
+     * Premier envoi des données du client au server
+     */
+    final static String BONJOUR_DU_CLIENT = "buongiorno toi hihi";
 
-	/**
-	 * Premier envoi des données du server au client
-	 */
-	final static String BONJOUR_DU_SERVER = "yeepii cest moi le serv de la mort qui tue";
+    /**
+     * Premier envoi des données du server au client
+     */
+    final static String BONJOUR_DU_SERVER = "yeepii cest moi le serv de la mort qui tue";
 
-	/**
-	 * Envoi des données du player du client au server
-	 */
-	final static String UPDATE_PLAYER_DATA = "coucoujupdate lez gooooooo";
+    /**
+     * Envoi des données du player du client au server
+     */
+    final static String UPDATE_PLAYER_DATA = "coucoujupdate lez gooooooo";
 
-	/**
-	 * Envoi des données d'une entité créée par le client vers le server
-	 */
-	final static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
+    /**
+     * Envoi des données d'une entité créée par le client vers le server
+     */
+    final static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
 
-	/**
-	 * Envoi d'un chat ou d'une commande du client au server
-	 */
-	final static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";
+    /**
+     * Envoi d'un chat ou d'une commande du client au server
+     */
+    final static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";
 
-	/**
-	 * Envoi des données de toutes les entités à montrer au client du server
-	 */
-	final static String UPDATE_WORLD_STATE_ENTITIES = "thats tim thats tom thats cthulhu";
+    /**
+     * Envoi des données de toutes les entités à montrer au client du server
+     */
+    final static String UPDATE_WORLD_STATE_ENTITIES = "thats tim thats tom thats cthulhu";
 
-	/**
-	 * Envoi d'un nouvel input de console du server à tous les clients
-	 */
-	final static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
+    /**
+     * Envoi d'un nouvel input de console du server à tous les clients
+     */
+    final static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
+    public String name = "NoName";
+    private Server server;
+    private boolean render = false;
 
-	private Server server;
-	public String name = "NoName";
-	private boolean render = false;
+    private final CommandsManager commandsManager;
 
-	private CommandsManager commandsManager;
+    private final EntityManager entityManager;
 
-	private EntityManager entityManager;
+    public World() {
+        this("Server", true);
+    }
 
-	public static void main(String[] args) {
-		try {
-			PApplet.main("com.superkiment.world.World");
-		} catch (Exception e) {
-			System.out.print(e);
-		}
-	}
+    public World(String name, boolean render) {
+        super();
+        this.name = name;
+        this.render = render;
 
-	public World() {
-		this("Server", true);
-	}
+        commandsManager = new CommandsManager(this);
+        entityManager = new EntityManager();
+    }
 
-	public World(String name, boolean render) {
-		super();
-		this.name = name;
-		this.render = render;
+    public static void main(String[] args) {
+        try {
+            PApplet.main("com.superkiment.world.World");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+    }
 
-		commandsManager = new CommandsManager(this);
-		entityManager = new EntityManager();
-	}
+    /**
+     * Crée un JSONObject qui contient toutes les informations d'un envoi. Permet la
+     * standardisation
+     *
+     * @param type   : constante de World
+     * @param data   : les données
+     * @param sender : l'envoyeur des données
+     * @return JSONObject
+     */
+    public static JSONObject createRequest(String type, JSONObject data, String sender) {
+        JSONObject json = new JSONObject();
 
-	public void settings() {
-		size(300, 800);
-		noSmooth();
+        json.put("type", type);
+        json.put("data", data);
+        json.put("sender", sender);
 
-	}
+        return json;
 
-	public void setup() {
-		server = new Server(this, 5204);
-		frameRate(1000);
-	}
+    }
 
-	public void draw() {
+    public void settings() {
+        size(300, 800);
+        noSmooth();
 
-		// RENDER
-		if (render)
-			Render();
+    }
 
-		// CLIENTS RECUP
-		entityManager.RemoveDisconnectedPlayers();
+    public void setup() {
+        server = new Server(this, 5204);
+        frameRate(1000);
+    }
 
-		TraiterClients();
+    public void draw() {
 
-		// CLIENTS ENVOI
-		for (Client c : server.clients) {
-			if (c != null && entityManager.clientToPlayers.containsKey(c)) {
-				c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server").toString() + DELIMITER_ENTETE);
+        // RENDER
+        if (render)
+            Render();
 
-			}
-		}
+        // CLIENTS RECUP
+        entityManager.RemoveDisconnectedPlayers();
 
-		// UPDATE
-		for (Entity entity : entityManager.entities) {
+        TraiterClients();
+
+        // CLIENTS ENVOI
+        for (Client c : server.clients) {
+            if (c != null && entityManager.clientToPlayers.containsKey(c)) {
+                c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server") + DELIMITER_ENTETE);
+
+            }
+        }
+
+        // UPDATE
+        for (Entity entity : entityManager.entities) {
 //			if (entity.getClass().getName().equals(Player.class.getName()))
-			entity.Update();
-		}
+            entity.Update();
+        }
 
-	}
+    }
 
-	private void Render() {
-		background(0);
-		fill(255);
-		textSize(15);
-		text("FrameRate : " + frameRate, 50, 30);
-		text("Nombre de clients : " + server.clientCount, 50, 50);
-		text("Nom : " + name, 50, 70);
-		text("Nombre d'entités : " + entityManager.getEntities().size(), 50, 90);
+    private void Render() {
+        background(0);
+        fill(255);
+        textSize(15);
+        text("FrameRate : " + frameRate, 50, 30);
+        text("Nombre de clients : " + server.clientCount, 50, 50);
+        text("Nom : " + name, 50, 70);
+        text("Nombre d'entités : " + entityManager.getEntities().size(), 50, 90);
 
-		int compt = 0;
-		pushStyle();
-		for (Client c : server.clients) {
-			if (c != null) {
-				try {
-					translate(0, 200);
-					Player p = entityManager.clientToPlayers.get(c);
-					text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
-				} catch (Exception e) {
+        int compt = 0;
+        pushStyle();
+        for (Client c : server.clients) {
+            if (c != null) {
+                try {
+                    translate(0, 200);
+                    Player p = entityManager.clientToPlayers.get(c);
+                    text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
+                } catch (Exception e) {
 
-				}
-			}
-		}
-		popStyle();
-	}
+                }
+            }
+        }
+        popStyle();
+    }
 
-	/**
-	 * Etape 1 du traitement des données des clients. Passe par tous les clients et
-	 * exécute TraiterRequete
-	 */
-	private void TraiterClients() {
-		// Get the next available client
-		Client client = server.available();
+    /**
+     * Etape 1 du traitement des données des clients. Passe par tous les clients et
+     * exécute TraiterRequete
+     */
+    private void TraiterClients() {
+        // Get the next available client
+        Client client = server.available();
 
-		if (client != null) {
-			String clientData = client.readString();
+        if (client != null) {
+            String clientData = client.readString();
 
-			for (String data : clientData.split(DELIMITER_ENTETE)) {
-				if (!data.equals(""))
-					TraiterRequete(data, client);
-			}
+            for (String data : clientData.split(DELIMITER_ENTETE)) {
+                if (!data.equals(""))
+                    TraiterRequete(data, client);
+            }
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Etape 2 du traitement des clients. Prend le string entier d'un client ainsi
-	 * que le client pour traiter la requête.
-	 * 
-	 * @param fullData
-	 * @param client
-	 */
-	private void TraiterRequete(String fullData, Client client) {
-		// println("fullData : " + fullData);
+    /**
+     * Etape 2 du traitement des clients. Prend le string entier d'un client ainsi
+     * que le client pour traiter la requête.
+     *
+     * @param fullData
+     * @param client
+     */
+    private void TraiterRequete(String fullData, Client client) {
+        // println("fullData : " + fullData);
 
-		JSONObject requete = JSONObject.parse(fullData);
+        JSONObject requete = JSONObject.parse(fullData);
 
-		// println("requete : " + requete);
-		switch (requete.getString("type")) {
-		case BONJOUR_DU_CLIENT:
-			System.out.println("Recu bonjour du client");
-			Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
-			client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
+        // println("requete : " + requete);
+        switch (requete.getString("type")) {
+            case BONJOUR_DU_CLIENT:
+                System.out.println("Recu bonjour du client");
+                Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
+                client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
 
-			break;
+                break;
 
-		case UPDATE_PLAYER_DATA:
-			entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
-			break;
+            case UPDATE_PLAYER_DATA:
+                entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
+                break;
 
-		case NEW_ENT_FROM_PLAYER:
-			println(NEW_ENT_FROM_PLAYER, requete.getJSONObject("data"));
-			entityManager.addEntity(requete.getJSONObject("data"));
-			break;
+            case NEW_ENT_FROM_PLAYER:
+                println(NEW_ENT_FROM_PLAYER, requete.getJSONObject("data"));
+                entityManager.addEntity(requete.getJSONObject("data"));
+                break;
 
-		case NEW_CONSOLE_INPUT:
-			println(NEW_CONSOLE_INPUT, requete.getJSONObject("data"));
-			String input = requete.getJSONObject("data").getString("text");
-			if (input.charAt(0) == '/') {
-				commandsManager.TraiterCommande(input);
-			} else {
-				EnvoiConsoleTousClients(input, client);
-			}
+            case NEW_CONSOLE_INPUT:
+                println(NEW_CONSOLE_INPUT, requete.getJSONObject("data"));
+                String input = requete.getJSONObject("data").getString("text");
+                if (input.charAt(0) == '/') {
+                    commandsManager.TraiterCommande(input);
+                } else {
+                    EnvoiConsoleTousClients(input, client);
+                }
 
-			break;
-		default:
-			println("Jsp comment traiter : " + fullData);
-			break;
-		}
+                break;
+            default:
+                println("Jsp comment traiter : " + fullData);
+                break;
+        }
 
-	}
+    }
 
-	public void keyPressed() {
-		if (key == 'h') {
-			for (Client client : server.clients) {
-				if (client != null)
-					server.disconnect(client);
-			}
-			surface.setVisible(false);
-			dispose();
-		}
+    public void keyPressed() {
+        if (key == 'h') {
+            for (Client client : server.clients) {
+                if (client != null)
+                    server.disconnect(client);
+            }
+            surface.setVisible(false);
+            dispose();
+        }
 
-		if (key == 'd') {
-			Dog d = new Dog();
-			d.pos.set(200, 200);
-			entityManager.addEntity(d);
-		}
-	}
+        if (key == 'd') {
+            Dog d = new Dog();
+            d.pos.set(200, 200);
+            entityManager.addEntity(d);
+        }
+    }
 
-	/**
-	 * 
-	 * @return Toutes les données du World en JSONObject
-	 */
-	private JSONObject getJSON() {
-		JSONObject json = new JSONObject();
+    /**
+     * @return Toutes les données du World en JSONObject
+     */
+    private JSONObject getJSON() {
+        JSONObject json = new JSONObject();
 
-		HashMap<String, JSONArray> entities = new HashMap<String, JSONArray>();
+        HashMap<String, JSONArray> entities = new HashMap<String, JSONArray>();
 
-		for (Entity e : entityManager.getEntities()) {
-			String className = e.getClass().getName();
+        for (Entity e : entityManager.getEntities()) {
+            String className = e.getClass().getName();
 
-			if (!entities.containsKey(className))
-				entities.put(className, new JSONArray());
+            if (!entities.containsKey(className))
+                entities.put(className, new JSONArray());
 
-			entities.get(className).append(e.getJSON());
-		}
+            entities.get(className).append(e.getJSON());
+        }
 
-		entities.forEach((key, value) -> {
-			json.put(key, entities.get(key));
-		});
+        entities.forEach((key, value) -> {
+            json.put(key, entities.get(key));
+        });
 
-		return json;
-	}
+        return json;
+    }
 
-	/**
-	 * Crée un JSONObject qui contient toutes les informations d'un envoi. Permet la
-	 * standardisation
-	 * 
-	 * @param type   : constante de World
-	 * @param data   : les données
-	 * @param sender : l'envoyeur des données
-	 * @return JSONObject
-	 */
-	public static JSONObject createRequest(String type, JSONObject data, String sender) {
-		JSONObject json = new JSONObject();
+    /**
+     * Ajouter une entité à partir d'un JSON
+     *
+     * @param json
+     */
+    public void addEntity(JSONObject json) {
+        entityManager.addEntity(json);
+    }
 
-		json.put("type", type);
-		json.put("data", data);
-		json.put("sender", sender);
+    /**
+     * Envoie un String sur les consoles de tous les clients à part l'envoyeur
+     *
+     * @param str
+     * @param sender
+     */
+    public void EnvoiConsoleTousClients(String str, Client sender) {
+        System.out.println("From Server : " + str);
 
-		return json;
+        for (Client c : server.clients) {
+            if (c != null && c != sender) {
+                println(c.ip());
+                JSONObject json = new JSONObject();
+                json.setString("text", str);
+                json.setString("sender", sender == null ? "Server" : entityManager.clientToPlayers.get(sender).name);
+                c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
+            }
+        }
 
-	}
-
-	/**
-	 * Ajouter une entité à partir d'un JSON
-	 * 
-	 * @param json
-	 */
-	public void addEntity(JSONObject json) {
-		entityManager.addEntity(json);
-	}
-
-	/**
-	 * Envoie un String sur les consoles de tous les clients à part l'envoyeur
-	 * 
-	 * @param str
-	 * @param sender
-	 */
-	public void EnvoiConsoleTousClients(String str, Client sender) {
-		System.out.println("From Server : " + str);
-
-		for (Client c : server.clients) {
-			if (c != null && c != sender) {
-				println(c.ip());
-				JSONObject json = new JSONObject();
-				json.setString("text", str);
-				json.setString("sender", sender == null ? "Server" : entityManager.clientToPlayers.get(sender).name);
-				c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server").toString() + DELIMITER_ENTETE);
-			}
-		}
-
-	}
+    }
 }

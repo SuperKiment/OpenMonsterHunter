@@ -1,11 +1,11 @@
 package com.superkiment.TestsRandoms;
 
 public class Getmethod {
-	public Getmethod() {
+    public Getmethod() {
 
-	}
-	
-	public void Action() {
-		
-	}
+    }
+
+    public void Action() {
+
+    }
 }
