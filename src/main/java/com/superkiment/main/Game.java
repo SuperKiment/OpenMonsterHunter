@@ -1,10 +1,10 @@
 package com.superkiment.main;
 
 import com.superkiment.globals.Scale;
-import com.superkiment.logic.Entity;
-import com.superkiment.logic.Hitbox;
-import com.superkiment.logic.Player;
-import com.superkiment.world.EntityManager;
+import com.superkiment.entities.Entity;
+import com.superkiment.entities.Hitbox;
+import com.superkiment.entities.Player;
+import com.superkiment.entities.EntityManager;
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.data.JSONObject;
@@ -43,7 +43,7 @@ public class Game {
 
                 // Tests d'entités
                 if (key == 'l') {
-                    com.superkiment.logic.Dog e = new com.superkiment.logic.Dog();
+                    com.superkiment.entities.Dog e = new com.superkiment.entities.Dog();
                     e.pos.set(200, 200);
                     // Envoyer données nouvelle entité
 

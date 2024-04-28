@@ -1,8 +1,8 @@
 package com.superkiment.main;
 
-import com.superkiment.logic.Dog;
-import com.superkiment.logic.Entity;
-import com.superkiment.logic.Player;
+import com.superkiment.entities.Dog;
+import com.superkiment.entities.Entity;
+import com.superkiment.entities.Player;
 
 import java.util.HashMap;
 

@@ -27,11 +27,13 @@ public class OpenMonsterHunter extends PApplet {
         }
     }
 
+    @Override
     public void settings() {
         size(800, 800, P3D);
         smooth();
     }
 
+    @Override
     public void setup() {
         frameRate(800);
         // surface.setResizable(true);
@@ -54,6 +56,7 @@ public class OpenMonsterHunter extends PApplet {
         println(playerName);
     }
 
+    @Override
     public void draw() {
 
         Time.Update(this);
@@ -77,10 +80,12 @@ public class OpenMonsterHunter extends PApplet {
 
     }
 
+    @Override
     public void mousePressed() {
         ui.Click(mouseX, mouseY);
     }
 
+    @Override
     public void keyPressed() {
         if (key != CODED)
             ui.Key(key);
@@ -91,6 +96,7 @@ public class OpenMonsterHunter extends PApplet {
         }
     }
 
+    @Override
     public void keyReleased() {
         if (game != null) {
             game.keyReleased(key);

@@ -1,8 +1,9 @@
 package com.superkiment.world;
 
-import com.superkiment.logic.Dog;
-import com.superkiment.logic.Entity;
-import com.superkiment.logic.Player;
+import com.superkiment.entities.Dog;
+import com.superkiment.entities.Entity;
+import com.superkiment.entities.EntityManager;
+import com.superkiment.entities.Player;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
@@ -125,14 +126,14 @@ public class World extends PApplet {
 
         // CLIENTS ENVOI
         for (Client c : server.clients) {
-            if (c != null && entityManager.clientToPlayers.containsKey(c)) {
+            if (c != null && entityManager.isClientAsPlayer(c)) {
                 c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server") + DELIMITER_ENTETE);
 
             }
         }
 
         // UPDATE
-        for (Entity entity : entityManager.entities) {
+        for (Entity entity : entityManager.getEntities()) {
 //			if (entity.getClass().getName().equals(Player.class.getName()))
             entity.Update();
         }
@@ -154,7 +155,7 @@ public class World extends PApplet {
             if (c != null) {
                 try {
                     translate(0, 200);
-                    Player p = entityManager.clientToPlayers.get(c);
+                    Player p = entityManager.getPlayer(c);
                     text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
                 } catch (Exception e) {
 
@@ -205,7 +206,7 @@ public class World extends PApplet {
                 break;
 
             case UPDATE_PLAYER_DATA:
-                entityManager.clientToPlayers.get(client).UpdateFromJSON(requete.getJSONObject("data"));
+                entityManager.getPlayer(client).UpdateFromJSON(requete.getJSONObject("data"));
                 break;
 
             case NEW_ENT_FROM_PLAYER:
@@ -294,7 +295,7 @@ public class World extends PApplet {
                 println(c.ip());
                 JSONObject json = new JSONObject();
                 json.setString("text", str);
-                json.setString("sender", sender == null ? "Server" : entityManager.clientToPlayers.get(sender).name);
+                json.setString("sender", sender == null ? "Server" : entityManager.getPlayer(sender).name);
                 c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
             }
         }

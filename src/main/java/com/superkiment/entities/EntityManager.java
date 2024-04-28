@@ -1,7 +1,5 @@
-package com.superkiment.world;
+package com.superkiment.entities;
 
-import com.superkiment.logic.Entity;
-import com.superkiment.logic.Player;
 import com.superkiment.main.OpenMonsterHunter;
 import processing.core.PVector;
 import processing.data.JSONArray;
@@ -24,6 +22,7 @@ public class EntityManager {
         playersToClient = new HashMap<Player, Client>();
     }
 
+    //ADD
     public void addEntity(Entity entity) {
         entity.setEntityManager(this);
         entities.add(entity);
@@ -43,11 +42,6 @@ public class EntityManager {
 
     }
 
-    public void removeEntity(Entity entity) {
-        entity.setEntityManager(null);
-        entities.remove(entity);
-    }
-
     public void addPlayer(Player player, Client client) {
         addEntity(player);
         players.add(player);
@@ -61,6 +55,15 @@ public class EntityManager {
         return p;
     }
 
+    public Player addControllablePlayer(JSONObject json) {
+        Player p = JSONToPlayer(json);
+        addEntity(p);
+        System.out.println("added controllable player");
+        return p;
+    }
+
+
+    //REMOVE
     public void removePlayer(Player player) {
         System.out.println("Removed player " + player.name);
         player.setEntityManager(null);
@@ -70,21 +73,13 @@ public class EntityManager {
         playersToClient.remove(player);
     }
 
-    public Player addControllablePlayer(JSONObject json) {
-        Player p = JSONToPlayer(json);
-        addEntity(p);
-        System.out.println("added controllable player");
-        return p;
+    public void removeEntity(Entity entity) {
+        entity.setEntityManager(null);
+        entities.remove(entity);
     }
 
-    public Player JSONToPlayer(JSONObject json) {
-        PVector pos = new PVector(50, 50);
 
-        Player p = new Player(json.getString("name"), pos);
-
-        return p;
-    }
-
+    //GET
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -93,10 +88,29 @@ public class EntityManager {
         return clientToPlayers.get(c);
     }
 
+    public Client getClient(Player p) {
+        return playersToClient.get(p);
+    }
+
     public ArrayList<Entity> getEntities() {
         return entities;
     }
 
+    //AUTRES
+    public Player JSONToPlayer(JSONObject json) {
+        PVector pos = new PVector(50, 50);
+
+        Player p = new Player(json.getString("name"), pos);
+
+        return p;
+    }
+
+    public boolean isClientAsPlayer(Client client) {
+        return clientToPlayers.containsKey(client);
+    }
+
+
+    //VOIDS
     public void RemoveDisconnectedPlayers() {
         for (Client client : playersToClient.values()) {
             if (client.ip() == null) {

@@ -1,4 +1,4 @@
-package com.superkiment.logic;
+package com.superkiment.entities;
 
 public class TemplateEntity extends Entity {
 

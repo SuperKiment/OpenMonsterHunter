@@ -1,4 +1,4 @@
-package com.superkiment.logic;
+package com.superkiment.entities;
 
 import processing.core.PVector;
 import processing.data.JSONObject;

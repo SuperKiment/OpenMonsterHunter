@@ -1,6 +1,6 @@
 package com.superkiment.world;
 
-import com.superkiment.logic.Entity;
+import com.superkiment.entities.Entity;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
