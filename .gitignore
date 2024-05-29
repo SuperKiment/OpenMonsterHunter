@@ -41,7 +41,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-error.log
-output.log
-output.log
-error.log
+errorConsole.log
+outputConsole.log
