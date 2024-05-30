@@ -275,7 +275,7 @@ public class World extends PApplet {
     /**
      * Ajouter une entité à partir d'un JSON
      *
-     * @param json
+     * @param json l'entité à créer
      */
     public void addEntity(JSONObject json) {
         entityManager.addEntity(json);
@@ -299,6 +299,5 @@ public class World extends PApplet {
                 c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
             }
         }
-
     }
 }

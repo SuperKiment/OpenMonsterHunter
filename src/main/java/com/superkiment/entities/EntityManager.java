@@ -122,6 +122,11 @@ public class EntityManager {
     //
     // Ajoute les entités ajoutées
     // Supprime les entités absentes
+
+    /**
+     * Ajoute les entités ajoutées, Supprime les entités absentes
+     * @param data data complète de
+     */
     public void addIfInexistant(JSONObject data) {
 
         //

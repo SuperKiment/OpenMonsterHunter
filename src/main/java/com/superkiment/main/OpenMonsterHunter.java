@@ -42,8 +42,8 @@ public class OpenMonsterHunter extends PApplet {
         PrintStream outStream = null;
         PrintStream errStream = null;
         try {
-            outStream = new PrintStream(new FileOutputStream("output.log"));
-            errStream = new PrintStream(new FileOutputStream("error.log"));
+            outStream = new PrintStream(new FileOutputStream("outputConsole.log"));
+            errStream = new PrintStream(new FileOutputStream("errorConsole.log"));
         } catch (Exception e) {
             println("sheeesh");
         }
