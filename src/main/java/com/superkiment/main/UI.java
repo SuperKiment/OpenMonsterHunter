@@ -21,7 +21,7 @@ public class UI {
 
         // Retour Title
         allBouttons.add(new Boutton(10, 10, 20, 20,
-                GameManager.allPagesExcept(new GameManager.GameState[]{GameManager.GameState.TITLE}), "<") {
+                GameManager.allPagesExcept(new GameManager.GameState[] { GameManager.GameState.TITLE }), "<") {
             public void Action() {
                 ChangePage(GameManager.GameState.TITLE);
             }
@@ -29,7 +29,7 @@ public class UI {
 
         // Credits
         allBouttons.add(new Boutton(p.width / 2 - 100, p.height * 3 / 4, 200, 40,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, "Credits") {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, "Credits") {
             public void Action() {
                 ChangePage(GameManager.GameState.CREDITS);
             }
@@ -37,7 +37,7 @@ public class UI {
 
         // Options
         allBouttons.add(new Boutton(p.width / 2 - 100, p.height * 3 / 4 - 80, 200, 40,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, "Options") {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, "Options") {
             public void Action() {
                 ChangePage(GameManager.GameState.OPTIONS);
             }
@@ -45,7 +45,7 @@ public class UI {
 
         // Jouer Solo
         allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 320, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, "Jouer Solo") {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, "Jouer Solo") {
             public void Action() {
                 ChangePage(GameManager.GameState.CHOOSE_SOLO);
             }
@@ -57,7 +57,7 @@ public class UI {
 
         // Jouer Multi
         allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, "Jouer Multi") {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, "Jouer Multi") {
             public void Action() {
                 ChangePage(GameManager.GameState.CHOOSE_MULTI);
             }
@@ -69,7 +69,7 @@ public class UI {
 
         // Deconnexion
         allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, "Deconnexion") {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, "Deconnexion") {
             public void Action() {
                 System.out.println("Deconnexion");
                 p.connectionToWorld.client.stop();
@@ -83,14 +83,14 @@ public class UI {
 
         // Entrer IP
         TextInput entrerIP = new TextInput(p.width / 2 - 200, p.height * 3 / 4 - 200, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.CHOOSE_MULTI});
+                new GameManager.GameState[] { GameManager.GameState.CHOOSE_MULTI });
         entrerIP.text = "127.0.0.1";
         allBouttons.add(entrerIP);
 
         // Entrer Jeu Multi
         allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.CHOOSE_MULTI}, "Go !",
-                new TextInput[]{(TextInput) allBouttons.get(allBouttons.size() - 1)}) {
+                new GameManager.GameState[] { GameManager.GameState.CHOOSE_MULTI }, "Go !",
+                new TextInput[] { (TextInput) allBouttons.get(allBouttons.size() - 1) }) {
             public void Action() {
                 System.out.println(inputs[0].text);
                 p.ConnectToWorld(inputs[0].text);
@@ -100,7 +100,7 @@ public class UI {
 
         // Entrer Jeu Solo
         allBouttons.add(new Boutton(p.width / 2 - 200, p.height * 3 / 4, 400, 80,
-                new GameManager.GameState[]{GameManager.GameState.CHOOSE_SOLO}, "Go !") {
+                new GameManager.GameState[] { GameManager.GameState.CHOOSE_SOLO }, "Go !") {
             public void Action() {
 
                 p.CreateWorld("Monde1");
@@ -110,7 +110,7 @@ public class UI {
 
         // Jouer Multi
         allBouttons.add(new TextInput(p.width / 2 - 200, p.height / 4, 200, 40,
-                new GameManager.GameState[]{GameManager.GameState.TITLE}, p.playerName) {
+                new GameManager.GameState[] { GameManager.GameState.TITLE }, p.playerName) {
             public void ActionOnKeyboard() {
                 p.playerName = text;
             }
@@ -168,7 +168,7 @@ public class UI {
         p.textAlign(OpenMonsterHunter.RIGHT);
         p.text(Time.moyenneTime + "ms : Delta Time", p.width, 50);
         p.text(OpenMonsterHunter.drawTime + "ms : Draw Time", p.width, 65);
-        p.text(omh.frameRate + " : frameRate", p.width, 80);
+        p.text((int) omh.frameRate + " : frameRate", p.width, 80);
         p.popStyle();
         p.popMatrix();
     }

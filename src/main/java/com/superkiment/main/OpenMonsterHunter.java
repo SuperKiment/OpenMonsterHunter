@@ -104,7 +104,7 @@ public class OpenMonsterHunter extends PApplet {
     }
 
     public void CreateWorld(String name) {
-        PApplet.runSketch(new String[]{"MondeServerLocal"}, new com.superkiment.world.World(name, true));
+        PApplet.runSketch(new String[] { "MondeServerLocal" }, new com.superkiment.world.World(name, true));
         delay(500);
         game = new Game(this, null);
         connectionToWorld = new ConnectionToWorld(this, "127.0.0.1", game);
