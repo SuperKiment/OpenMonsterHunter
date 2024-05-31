@@ -167,7 +167,8 @@ public class UI {
         p.textSize(12);
         p.textAlign(OpenMonsterHunter.RIGHT);
         p.text(Time.moyenneTime + "ms : Delta Time", p.width, 50);
-        p.text(OpenMonsterHunter.drawTime + "ms : Draw Time", p.width, 65);
+        p.text(Time.moyenneDrawTime + "ms, " + (int)(Time.moyenneDrawTime * 100 / Time.moyenneTime) + "% : Draw Time",
+                p.width, 65);
         p.text((int) omh.frameRate + " : frameRate", p.width, 80);
         p.popStyle();
         p.popMatrix();

@@ -14,7 +14,6 @@ public class OpenMonsterHunter extends PApplet {
 
     public static GameManager gameManager;
     public static Game game;
-    public static float drawTime = 0;
     public String playerName = "Player" + (int) random(10000);
     ConnectionToWorld connectionToWorld;
     UI ui;
@@ -35,7 +34,7 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void setup() {
-        frameRate(800);
+        frameRate(1000);
         // surface.setResizable(true);
         surface.setTitle(com.superkiment.res.Texts.getOneRandomSplashText());
 
@@ -67,16 +66,15 @@ public class OpenMonsterHunter extends PApplet {
         }
 
         if (gameManager.gameState == GameState.GAME) {
+            Time.Stop(this);
             game.Render();
+            Time.UpdateDraw(this);
             game.Update();
         } else {
             background(0);
         }
 
         ui.Render(this);
-        if (Time.lastTime > 0) {
-            drawTime = millis() - Time.lastTime;
-        }
 
     }
 

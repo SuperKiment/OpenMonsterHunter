@@ -63,7 +63,7 @@ public class Entity {
 
 //					Puis on teste
                     if (pair.getFirst()) {
-                        System.out.println("COLLISION " + this.pos + " / " + entity.pos);
+                        // System.out.println("COLLISION " + this.pos + " / " + entity.pos);
 
 //						Et on lui donne els positions calculées
                         hitboxThis.doAction(entity, hitboxOther, pair.getSecond());

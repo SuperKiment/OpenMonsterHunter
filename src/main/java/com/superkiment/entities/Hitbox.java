@@ -84,8 +84,8 @@ public class Hitbox {
                 PVector dirOtherToMe = PVector.sub(actualPos, otherActualPos);
                 float enfoncement = this.range + otherHitbox.range - dirOtherToMe.mag() * 2;
 
-                System.out.println(
-                        this.parent.getClass().getName() + " pousse " + otherHitbox.parent.getClass().getName());
+                // System.out.println(this.parent.getClass().getName() + " pousse " +
+                // otherHitbox.parent.getClass().getName());
                 PVector depl = dirOtherToMe.copy();
                 depl.setMag(enfoncement / 2);
                 this.parent.pos.add(depl);
@@ -137,7 +137,7 @@ public class Hitbox {
                 break;
         }
 
-        PVector[] vects = {actualPos, otherActualPos};
+        PVector[] vects = { actualPos, otherActualPos };
 
         return new Pair<Boolean, PVector[]>(collision, vects);
     }

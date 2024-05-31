@@ -30,18 +30,18 @@ public class ConnectionToWorld {
 
         game.connexion = this;
 
-        System.out.println("reponse :");
-        System.out.println(reponse);
-        System.out.println(reponse.getString("type"));
+        // System.out.println("reponse :");
+        // System.out.println(reponse);
+        // System.out.println(reponse.getString("type"));
 
         while (reponse.getString("type") == null) {
 
             dataString = client.readString();
             reponse = JSONObject.parse(dataString);
 
-            System.out.println("reponse :");
-            System.out.println(reponse);
-            System.out.println(reponse.getString("type"));
+            // System.out.println("reponse :");
+            // System.out.println(reponse);
+            // System.out.println(reponse.getString("type"));
         }
         try {
             if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
@@ -66,7 +66,7 @@ public class ConnectionToWorld {
                     TraiterDonnees(data.getJSONObject("data"));
                     break;
                 case World.CONSOLE_INPUT_FOR_EVERYONE:
-                    System.out.println(data);
+                    // System.out.println(data);
                     JSONObject input = data.getJSONObject("data");
                     Console.console.write(input.getString("sender") + " : " + input.getString("text"), true);
                     break;
@@ -119,13 +119,15 @@ public class ConnectionToWorld {
                     System.out.println("Pas réussi à parse !");
                 }
 
-                if (data != null) {
-                    omh.pushStyle();
-                    omh.fill(255);
-                    omh.textSize(10);
-                    omh.text(data.toString(), 50, 150);
-                    omh.popStyle();
-                }
+                /*
+                 * if (data != null) {
+                 * omh.pushStyle();
+                 * omh.fill(255);
+                 * omh.textSize(10);
+                 * omh.text(data.toString(), 50, 150);
+                 * omh.popStyle();
+                 * }
+                 */
 
                 objects.add(data);
             }
