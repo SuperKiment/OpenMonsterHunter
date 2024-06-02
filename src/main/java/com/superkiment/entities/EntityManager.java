@@ -10,9 +10,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EntityManager {
+    /**
+     * List of stored and updated entities
+     */
     ArrayList<Entity> entities;
+
+    /**
+     * List of players stored in 'entities'
+     */
     ArrayList<Player> players;
+
+    /**
+     * Hash to get a Player from a Client
+     */
     HashMap<Client, Player> clientToPlayers;
+
+    /**
+     * Hash to get a Client from a Player
+     */
     HashMap<Player, Client> playersToClient;
 
     public EntityManager() {
@@ -22,12 +37,22 @@ public class EntityManager {
         playersToClient = new HashMap<Player, Client>();
     }
 
-    //ADD
+    // ADD
+    /**
+     * Add an entity to the manager from an instanciated entity.
+     * 
+     * @param entity
+     */
     public void addEntity(Entity entity) {
         entity.setEntityManager(this);
         entities.add(entity);
     }
 
+    /**
+     * Add an entity to the manager from a JSON.
+     * 
+     * @param entity's JSON
+     */
     public void addEntity(JSONObject json) {
 
         try {
@@ -42,6 +67,12 @@ public class EntityManager {
 
     }
 
+    /**
+     * Add a player linked to a client
+     * 
+     * @param player
+     * @param client
+     */
     public void addPlayer(Player player, Client client) {
         addEntity(player);
         players.add(player);
@@ -49,12 +80,25 @@ public class EntityManager {
         playersToClient.put(player, client);
     }
 
+    /**
+     * Add a player linked to a client from JSON data
+     * 
+     * @param data   the player data as JSON
+     * @param client
+     * @return the player as Player
+     */
     public Player addPlayer(JSONObject data, Client client) {
         Player p = JSONToPlayer(data);
         addPlayer(p, client);
         return p;
     }
 
+    /**
+     * Adds the controllable player to the world not as a player but as entity
+     * 
+     * @param json the player data as JSON
+     * @return the player as Player
+     */
     public Player addControllablePlayer(JSONObject json) {
         Player p = JSONToPlayer(json);
         addEntity(p);
@@ -62,8 +106,12 @@ public class EntityManager {
         return p;
     }
 
-
-    //REMOVE
+    // REMOVE
+    /**
+     * Remove a player and a client from the world
+     * 
+     * @param player
+     */
     public void removePlayer(Player player) {
         System.out.println("Removed player " + player.name);
         player.setEntityManager(null);
@@ -73,13 +121,17 @@ public class EntityManager {
         playersToClient.remove(player);
     }
 
+    /**
+     * Remove an entity from the world
+     * 
+     * @param entity
+     */
     public void removeEntity(Entity entity) {
         entity.setEntityManager(null);
         entities.remove(entity);
     }
 
-
-    //GET
+    // GET
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -96,7 +148,7 @@ public class EntityManager {
         return entities;
     }
 
-    //AUTRES
+    // AUTRES
     public Player JSONToPlayer(JSONObject json) {
         PVector pos = new PVector(50, 50);
 
@@ -105,12 +157,19 @@ public class EntityManager {
         return p;
     }
 
+    /**
+     * 
+     * @param client
+     * @return true if the client is connected to a player, false otherwise
+     */
     public boolean isClientAsPlayer(Client client) {
         return clientToPlayers.containsKey(client);
     }
 
-
-    //VOIDS
+    // VOIDS
+    /**
+     * Removes the players from the world where the clients are no longer connected.
+     */
     public void RemoveDisconnectedPlayers() {
         for (Client client : playersToClient.values()) {
             if (client.ip() == null) {
@@ -125,6 +184,7 @@ public class EntityManager {
 
     /**
      * Ajoute les entités ajoutées, Supprime les entités absentes
+     * 
      * @param data data complète de
      */
     public void addIfInexistant(JSONObject data) {
@@ -201,6 +261,11 @@ public class EntityManager {
 
     //
     // Update les positions de toutes les entités en fonction des données passées
+    /**
+     * Updates positions from the data passed as JSON
+     * 
+     * @param data
+     */
     public void updatePositions(JSONObject data) {
 
         for (Object keyObj : data.keys().toArray()) {

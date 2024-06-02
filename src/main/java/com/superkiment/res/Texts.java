@@ -3,7 +3,10 @@ package com.superkiment.res;
 import java.util.Random;
 
 public class Texts {
-    public static String[] splashTexts = {"Chasseurs de monstres, à vos armes !",
+    /**
+     * Random texts to be displayed in top window
+     */
+    public static String[] splashTexts = { "Chasseurs de monstres, à vos armes !",
             "En équipe ou en solitaire, la chasse ne fait que commencer.", "Construisez, survivez, prospérez.",
             "Des aventures à vivre, des monstres à vaincre.",
             "Des maisons modestes aux forteresses, votre destin est entre vos mains.",
@@ -23,8 +26,13 @@ public class Texts {
             "Des créatures célestes descendent sur vous.", "Rassemblez vos forces, préparez-vous à la bataille.",
             "Des ennemis redoutables, des alliés inattendus.", "La nuit des morts-vivants est arrivée.",
             "Des artefacts perdus, des pouvoirs oubliés.",
-            "Dans l'ombre des monstres, la lumière de l'aventure brille toujours."};
+            "Dans l'ombre des monstres, la lumière de l'aventure brille toujours." };
 
+    /**
+     * Get one of the splash texts to display it in the top window
+     * 
+     * @return the splash text
+     */
     public static String getOneRandomSplashText() {
         Random randomNumbers = new Random();
         return splashTexts[randomNumbers.nextInt(splashTexts.length)];
