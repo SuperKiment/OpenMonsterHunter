@@ -10,12 +10,35 @@ import processing.data.JSONObject;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Main class to launch the application. Is the PApplet everything the client
+ * sees is drawn on.
+ */
 public class OpenMonsterHunter extends PApplet {
 
+    /**
+     * Stores the current state of the application
+     */
     public static GameManager gameManager;
+
+    /**
+     * The game created and played when the connection with a world is established
+     */
     public static Game game;
+
+    /**
+     * The player's username, passed to the world and seen by others.
+     */
     public String playerName = "Player" + (int) random(10000);
+
+    /**
+     * The connection to the world, used to communicate with the server (world).
+     */
     ConnectionToWorld connectionToWorld;
+
+    /**
+     * Handles the UI : Buttons, Text inputs, etc.
+     */
     UI ui;
 
     public static void main(String[] args) {
@@ -101,18 +124,33 @@ public class OpenMonsterHunter extends PApplet {
         }
     }
 
+    /**
+     * Creates a local world by launching a PApplet from the
+     * com.superkiment.world.World class.
+     * 
+     * @param name the name of the window
+     */
     public void CreateWorld(String name) {
         PApplet.runSketch(new String[] { "MondeServerLocal" }, new com.superkiment.world.World(name, true));
         delay(500);
-        game = new Game(this, null);
-        connectionToWorld = new ConnectionToWorld(this, "127.0.0.1", game);
+        ConnectToWorld("127.0.0.1");
     }
 
+    /**
+     * Connect the connectionToWorld to a world with a certain IP address.
+     * 
+     * @param ip the ip as '000.000.000.000' TODO : test with a superkiment.fr
+     */
     public void ConnectToWorld(String ip) {
         game = new Game(this, null);
         connectionToWorld = new ConnectionToWorld(this, ip, game);
     }
 
+    /**
+     * Sets the game's controllable player
+     * 
+     * @param player
+     */
     public void setControllablePlayer(JSONObject player) {
         game.setControllablePlayer(player);
     }

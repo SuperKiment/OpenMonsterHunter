@@ -7,18 +7,42 @@ import processing.core.PVector;
 import java.util.function.Consumer;
 
 public class Hitbox {
+    /**
+     * The hitbox type, which shape it has (Rectangle, Circle, Triangle)
+     */
     hitboxType type = null;
+
+    /**
+     * The hitbox role in the entity : Trigger, Physics.
+     */
     hitboxActionType actionType = hitboxActionType.PHYSICS;
+
+    /**
+     * The position of the hitbox relative to the entity's world position
+     */
     PVector pos;
+
+    /**
+     * Value to define the hitbox's shape
+     */
     float range = 10, largeur = 10, hauteur = 10;
+
+    /**
+     * The hitbox's parent entity
+     */
     Entity parent;
+
+    /**
+     * The action to execute when the hitbox hits an entity, used only when the
+     * hitbox is a trigger.
+     */
     Consumer<Entity> action = null;
 
     /**
      * Base construct
      *
-     * @param e
-     * @param pos
+     * @param e   the parent entity
+     * @param pos the position relative to the entity
      */
     private Hitbox(Entity e, PVector pos) {
         this.parent = e;
@@ -28,9 +52,9 @@ public class Hitbox {
     /**
      * Construct hitbox as CERCLE
      *
-     * @param e
-     * @param pos
-     * @param range
+     * @param e     the parent entity
+     * @param pos   the position relative to the entity
+     * @param range the range of the circle
      */
     public Hitbox(Entity e, PVector pos, float range) {
         this(e, pos);
@@ -41,10 +65,10 @@ public class Hitbox {
     /**
      * Construct hitbox as RECTANGLE
      *
-     * @param e
-     * @param pos
-     * @param larg
-     * @param haut
+     * @param e    the parent entity
+     * @param pos  the position relative to the entity
+     * @param larg the width
+     * @param haut the height
      */
     public Hitbox(Entity e, PVector pos, float larg, float haut) {
         this(e, pos);
@@ -56,7 +80,7 @@ public class Hitbox {
     /**
      * Static PApplet push() method for all hitboxes. DO NOT FORGET pop() !!
      *
-     * @param p
+     * @param p the PApplet used to draw
      */
     public static void PushStyle(PApplet p) {
         p.pushStyle();
@@ -71,12 +95,20 @@ public class Hitbox {
         this.action = consumer;
     }
 
+    /**
+     * Do the hitbox's action
+     * 
+     * @param entity      the entity touched
+     * @param otherHitbox the other hitbox
+     * @param vects       an array of PVectors : [0 : this hitbox's world position ;
+     *                    1 : other hitbox's world position]
+     */
     public void doAction(Entity entity, Hitbox otherHitbox, PVector[] vects) {
         PVector actualPos = vects[0];
         PVector otherActualPos = vects[1];
 
         if (actionType != hitboxActionType.PHYSICS) {
-            if (action == null) {
+            if (action != null) {
                 action.accept(entity);
             }
         } else {
@@ -94,6 +126,11 @@ public class Hitbox {
         }
     }
 
+    /**
+     * Render the hitbox on the PApplet
+     * 
+     * @param p the PApplet to be drawn on
+     */
     public void Render(PApplet p) {
         switch (type) {
             case RECTANGLE:
@@ -108,6 +145,11 @@ public class Hitbox {
         }
     }
 
+    /**
+     * Get the world position of the hitbox from the parent position and angle
+     * 
+     * @return the world position of the hitbox
+     */
     public PVector getActualPos() {
         PVector actualPos = new PVector(parent.pos.x, parent.pos.y);
         PVector posRotated = new PVector(this.pos.x, this.pos.y);
@@ -118,6 +160,16 @@ public class Hitbox {
         return actualPos;
     }
 
+    /**
+     * 
+     * @param other the other hitbox
+     * @return a Pair (Boolean - PVector[]) of :
+     *         <ul>
+     *         <li>a boolean : true if the hitboxes collide</li>
+     *         <li>an array of PVectors : an array of PVectors : [0 : this hitbox's
+     *         world position ; 1 : other hitbox's world position]</li>
+     *         </ul>
+     */
     public Pair<Boolean, PVector[]> isCollisionWith(Hitbox other) {
         boolean collision = false;
         PVector actualPos = this.getActualPos();
@@ -142,10 +194,16 @@ public class Hitbox {
         return new Pair<Boolean, PVector[]>(collision, vects);
     }
 
+    /**
+     * A hitbox's shape (Rectangle, Circle, etc.)
+     */
     enum hitboxType {
         RECTANGLE, CERCLE, TRIANGLE
     }
 
+    /**
+     * A hitbox's action (Physics, Trigger, etc.)
+     */
     enum hitboxActionType {
         PHYSICS, TRIGGER
     }

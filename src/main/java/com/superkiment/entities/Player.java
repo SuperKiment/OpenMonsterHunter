@@ -5,8 +5,16 @@ import processing.data.JSONObject;
 
 public class Player extends Entity {
 
+    /**
+     * The Player name, given on the first connexion
+     */
     public String name = "NoName";
 
+    /**
+     * 
+     * @param name the player's name
+     * @param p    the world position
+     */
     public Player(String name, PVector p) {
         super();
         pos = new PVector(p.x, p.y);
@@ -43,6 +51,11 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Send a command to the Player to move or other. Do not forget keyReleased
+     * 
+     * @param key the pressed key
+     */
     public void keyPressed(char key) {
         if (key == 'd')
             dir.x = 1;
@@ -56,6 +69,11 @@ public class Player extends Entity {
         dir.setMag(1);
     }
 
+    /**
+     * Send a command to the Player to stop moving or other.
+     * 
+     * @param key the pressed key
+     */
     public void keyReleased(char key) {
         if (key == 'd')
             dir.x = 0;

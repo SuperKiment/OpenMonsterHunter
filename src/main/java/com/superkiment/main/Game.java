@@ -1,6 +1,7 @@
 package com.superkiment.main;
 
 import com.superkiment.globals.Scale;
+import com.superkiment.world.ConnectionToWorld;
 import com.superkiment.entities.Entity;
 import com.superkiment.entities.Hitbox;
 import com.superkiment.entities.Player;
@@ -9,23 +10,57 @@ import processing.core.PApplet;
 import processing.core.PVector;
 import processing.data.JSONObject;
 
+/**
+ * Main class for the running game
+ */
 public class Game {
 
-    public com.superkiment.world.ConnectionToWorld connexion;
-    public Player controlledPlayer;
-    public EntityManager entityManager;
-    public Entity focusedEntity;
-    public float distanceCamera = 3.0f;
-    private final PApplet pap;
-    private final boolean is3D = false;
+    /**
+     * Connection to the world server
+     */
+    public ConnectionToWorld connexion;
 
-    Game(PApplet p, com.superkiment.world.ConnectionToWorld connexion) {
+    /**
+     * The Player controlled by the player
+     */
+    public Player controlledPlayer;
+
+    /**
+     * The library of entities to be updated and interact with one another
+     */
+    public EntityManager entityManager;
+
+    /**
+     * The entity on which the camera is focused
+     */
+    public Entity focusedEntity;
+
+    /**
+     * The distance of the camera from the focused entity
+     */
+    public float distanceCamera = 3.0f;
+
+    /**
+     * The PApplet to be drawn on
+     */
+    private final PApplet pap;
+
+    /**
+     * True to make the scene 3D
+     */
+    private boolean is3D = false;
+
+    Game(PApplet p, ConnectionToWorld connexion) {
         pap = p;
         this.connexion = connexion;
         entityManager = new EntityManager();
         RenderManager.renderManager = new RenderManager(p);
     }
 
+    /**
+     * Main method to update the connection to the world and the controlled player's
+     * actions.
+     */
     public void Update() {
         if (connexion != null && connexion.isConnected()) {
             connexion.Update();
@@ -69,6 +104,9 @@ public class Game {
         }
     }
 
+    /**
+     * Checks connection and displays information. Translates the scene on place.
+     */
     public void Render() {
         if (connexion != null && connexion.isConnected()) {
             pap.background(0, 50, 10);
@@ -99,6 +137,9 @@ public class Game {
         }
     }
 
+    /**
+     * Renders the scene
+     */
     private void DisplayGame() {
         // try {
 
@@ -138,6 +179,9 @@ public class Game {
         pap.popStyle();
     }
 
+    /**
+     * Displays a grid in the background
+     */
     private void DisplayGrid() {
         pap.pushStyle();
         pap.pushMatrix();
@@ -165,6 +209,9 @@ public class Game {
         pap.popStyle();
     }
 
+    /**
+     * Sets the camera on place (3D/2D)
+     */
     private void SetCamera() {
         PVector eyeCam = new PVector();
         PVector centerCam = new PVector();
@@ -189,6 +236,16 @@ public class Game {
 
     }
 
+    /**
+     * Gets JSON data of all entities and :
+     * <ul>
+     * <li>Adds new entities</li>
+     * <li>Removes inexistant entities</li>
+     * <li>Updates positions</li>
+     * </ul>
+     * 
+     * @param data as JSON
+     */
     public void TraiterData(JSONObject data) {
 
         entityManager.addIfInexistant(data);
@@ -203,12 +260,22 @@ public class Game {
          */
     }
 
+    /**
+     * Gets a JSON object, creates a players and sets it as controllable player
+     * 
+     * @param player as JSON
+     */
     public void setControllablePlayer(JSONObject player) {
         controlledPlayer = entityManager.addControllablePlayer(player);
         setFocusedEntity(controlledPlayer);
         System.out.println("controlled player : " + controlledPlayer.name);
     }
 
+    /**
+     * Sets the entity the camera has to focus on
+     * 
+     * @param e the entity
+     */
     public void setFocusedEntity(Entity e) {
         focusedEntity = e;
         System.out.println("Focused switched to : " + e.ID + " / " + e.getClass().getName());

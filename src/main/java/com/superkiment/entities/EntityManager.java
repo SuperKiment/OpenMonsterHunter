@@ -149,6 +149,13 @@ public class EntityManager {
     }
 
     // AUTRES
+    /**
+     * Transforms a JSON representation into a Player object
+     * 
+     * @param json
+     * 
+     * @return a Player object
+     */
     public Player JSONToPlayer(JSONObject json) {
         PVector pos = new PVector(50, 50);
 
@@ -183,9 +190,11 @@ public class EntityManager {
     // Supprime les entités absentes
 
     /**
-     * Ajoute les entités ajoutées, Supprime les entités absentes
+     * Ajoute les entités ajoutées, supprime les entités absentes.
+     * TODO : optimize and minify
      * 
      * @param data data complète de
+     * 
      */
     public void addIfInexistant(JSONObject data) {
 

@@ -69,7 +69,7 @@ public class Entity {
      */
     private void Deplacement() {
         PVector dirTemp = dir.copy();
-        dirTemp.setMag(speed * Time.deltaTime);
+        dirTemp.setMag(speed * Time.moyenneTime);
         pos.add(dirTemp);
 
         if (dir.mag() != 0) {
