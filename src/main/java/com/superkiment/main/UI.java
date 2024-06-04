@@ -7,9 +7,24 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 
+/**
+ * A class that has all the buttons and textinputs for the user to interact and
+ * send information
+ */
 public class UI {
+    /**
+     * A list of all the buttons in the UI
+     */
     public ArrayList<Boutton> allBouttons;
+
+    /**
+     * The PApplet the user is interacting with
+     */
     public OpenMonsterHunter omh;
+
+    /**
+     * Has the state of the application
+     */
     private final GameManager gameManager;
 
     UI(GameManager gameManager, OpenMonsterHunter p) {
@@ -121,6 +136,11 @@ public class UI {
         Console.console.setActif(false);
     }
 
+    /**
+     * Renders all buttons and inputs on the right screen
+     * 
+     * @param p the PApplet to be drawn on
+     */
     public void Render(PApplet p) {
         p.cursor(0);
         p.pushStyle();
@@ -167,13 +187,18 @@ public class UI {
         p.textSize(12);
         p.textAlign(OpenMonsterHunter.RIGHT);
         p.text(Time.moyenneTime + "ms : Delta Time", p.width, 50);
-        p.text(Time.moyenneDrawTime + "ms, " + (int)(Time.moyenneDrawTime * 100 / Time.moyenneTime) + "% : Draw Time",
+        p.text(Time.moyenneDrawTime + "ms, " + (int) (Time.moyenneDrawTime * 100 / Time.moyenneTime) + "% : Draw Time",
                 p.width, 65);
         p.text((int) omh.frameRate + " : frameRate", p.width, 80);
         p.popStyle();
         p.popMatrix();
     }
 
+    /**
+     * Changes the state of the application and updates the buttons
+     * 
+     * @param state the GameState replacing the current one
+     */
     public void ChangePage(GameManager.GameState state) {
         gameManager.gameState = state;
         UpdateBouttons();

@@ -1,5 +1,10 @@
 package com.superkiment.utils;
 
+/**
+ * A pair to return two values of different types in one return. getFirst()
+ * returns the value stored in the first class, and getSecond() returns the
+ * value stored in the second class.
+ */
 public class Pair<T1, T2> {
     private T1 t1;
     private T2 t2;
