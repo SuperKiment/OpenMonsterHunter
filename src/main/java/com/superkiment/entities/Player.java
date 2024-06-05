@@ -1,5 +1,7 @@
 package com.superkiment.entities;
 
+import com.superkiment.entities.logic.Entity;
+
 import processing.core.PVector;
 import processing.data.JSONObject;
 

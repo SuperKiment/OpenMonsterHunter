@@ -1,6 +1,8 @@
-package com.superkiment.entities;
+package com.superkiment.entities.logic;
 
 import com.superkiment.globals.Time;
+import com.superkiment.main.Console;
+
 import processing.core.PVector;
 import processing.data.JSONObject;
 
@@ -36,6 +38,10 @@ public class Entity {
      * The manager where this entity is stored.
      */
     private EntityManager entityManager;
+
+    /**
+     * 
+     */
 
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
@@ -105,6 +111,21 @@ public class Entity {
                 }
             }
         }
+    }
+
+    /**
+     * Try interacting with an entity, if possible, do the interaction
+     * 
+     * @param entity the entity to interact with
+     */
+    public void interactWith(Entity entity) {
+        if (!(entity instanceof Interactable)) {
+            Console.console.write("Pas interactable", true);
+            return;
+        }
+
+        Interactable interactable = (Interactable) entity;
+        interactable.getInteractionManager().doAction(this);
     }
 
     /**

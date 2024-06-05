@@ -1,5 +1,6 @@
-package com.superkiment.entities;
+package com.superkiment.entities.logic;
 
+import com.superkiment.entities.Player;
 import com.superkiment.main.OpenMonsterHunter;
 import processing.core.PVector;
 import processing.data.JSONArray;

@@ -2,10 +2,11 @@ package com.superkiment.main;
 
 import com.superkiment.globals.Scale;
 import com.superkiment.world.ConnectionToWorld;
-import com.superkiment.entities.Entity;
-import com.superkiment.entities.Hitbox;
 import com.superkiment.entities.Player;
-import com.superkiment.entities.EntityManager;
+import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.EntityManager;
+import com.superkiment.entities.logic.Hitbox;
+
 import processing.core.PApplet;
 import processing.core.PVector;
 import processing.data.JSONObject;
@@ -70,30 +71,39 @@ public class Game {
     }
 
     void keyPressed(char key) {
-        if (GameManager.GameState.GAME == OpenMonsterHunter.gameManager.gameState) {
-            if (!Console.console.actif) {
-                if ((key == 'd' || key == 'q' || key == 's' || key == 'z') && !Console.console.actif) {
-                    controlledPlayer.keyPressed(key);
-                }
+        // Partir si on est pas en jeu
+        if (GameManager.GameState.GAME != OpenMonsterHunter.gameManager.gameState)
+            return;
 
-                // Tests d'entités
-                if (key == 'l') {
-                    com.superkiment.entities.Dog e = new com.superkiment.entities.Dog();
-                    e.pos.set(200, 200);
-                    // Envoyer données nouvelle entité
-
-                    connexion.EnvoiDonneesNouvelleEntite(e.getJSON());
-                }
-
-                if (key == '\n') {
-                    Console.console.Toggle();
-                }
-            } else {
-
-                if (key == '\n') {
-                    Console.console.Enter();
-                }
+        // Récup tout input si la console est active
+        if (Console.console.actif) {
+            if (key == '\n') {
+                Console.console.Enter();
             }
+            return;
+        }
+
+        // Déplacement du joueur
+        if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+            controlledPlayer.keyPressed(key);
+        }
+
+        if (key == 'f') {
+            controlledPlayer.interactWith(focusedEntity);
+        }
+
+        // Tests d'entités
+        if (key == 'l') {
+            com.superkiment.entities.Dog e = new com.superkiment.entities.Dog();
+            e.pos.set(200, 200);
+            // Envoyer données nouvelle entité
+
+            connexion.EnvoiDonneesNouvelleEntite(e.getJSON());
+        }
+
+        // Activer la console
+        if (key == '\n') {
+            Console.console.Toggle();
         }
 
     }

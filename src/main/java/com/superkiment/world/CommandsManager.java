@@ -1,9 +1,9 @@
 package com.superkiment.world;
 
-import com.superkiment.entities.Entity;
-
 import java.util.HashMap;
 import java.util.function.Consumer;
+
+import com.superkiment.entities.logic.Entity;
 
 /**
  * Gets commands, processes them and makes action in the world

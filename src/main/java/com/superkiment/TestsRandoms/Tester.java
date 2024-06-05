@@ -16,6 +16,8 @@ public class Tester {
 
         commands.get("a").accept("coucou");
 
+        lezgo();
+
         /*
          * HashMap<Class, Getmethod> hash = new HashMap<Class, Getmethod>();
          * hash.put(logic.Entity.class, new Getmethod() { public void Action() {
@@ -27,7 +29,13 @@ public class Tester {
          */
     }
 
-    public void lezgo() {
+    public static void lezgo() {
+        Abc abc = new Abc("a");
+
+        if (abc instanceof InterfaceTest) {
+            System.out.println("instanceof InterfaceTest");
+            abc.test();
+        }
 
     }
 

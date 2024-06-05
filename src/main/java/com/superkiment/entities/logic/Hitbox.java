@@ -1,4 +1,4 @@
-package com.superkiment.entities;
+package com.superkiment.entities.logic;
 
 import com.superkiment.utils.Pair;
 import processing.core.PApplet;

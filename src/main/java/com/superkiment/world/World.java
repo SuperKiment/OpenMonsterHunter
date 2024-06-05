@@ -1,9 +1,10 @@
 package com.superkiment.world;
 
 import com.superkiment.entities.Dog;
-import com.superkiment.entities.Entity;
-import com.superkiment.entities.EntityManager;
 import com.superkiment.entities.Player;
+import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.EntityManager;
+
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
