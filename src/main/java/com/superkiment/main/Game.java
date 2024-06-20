@@ -89,7 +89,7 @@ public class Game {
         }
 
         if (key == 'f') {
-            controlledPlayer.interactWith(focusedEntity);
+            controlledPlayer.getInteractionManager().Interact();
         }
 
         // Tests d'entités

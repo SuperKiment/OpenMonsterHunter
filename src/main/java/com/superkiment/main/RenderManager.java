@@ -3,7 +3,7 @@ package com.superkiment.main;
 import com.superkiment.entities.Dog;
 import com.superkiment.entities.Player;
 import com.superkiment.entities.logic.Entity;
-
+import processing.core.PVector;
 import java.util.HashMap;
 
 /**
@@ -49,10 +49,18 @@ public class RenderManager {
         // Player
         classToActions.put(Player.class, new RenderAction(this.pap) {
             public void Action(Entity e) {
+                Player p = (Player) e;
+                
+                if (p == OpenMonsterHunter.game.controlledPlayer) {
+                    PVector posInteractable = p.getInteractionManager().entityInteractable.getPos();
+                    pap.line(p.pos.x, p.pos.y, posInteractable.x, posInteractable.y);
+                }
+
                 pap.pushStyle();
                 pap.pushMatrix();
-                pap.translate(e.pos.x, e.pos.y);
-                pap.rotate(e.remanantDir.heading());
+
+                pap.translate(p.pos.x, p.pos.y);
+                pap.rotate(p.remanantDir.heading());
                 pap.ellipse(0, 0, 20, 20);
                 pap.ellipse(0, 10, 10, 10);
                 pap.ellipse(0, -10, 10, 10);

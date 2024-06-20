@@ -1,11 +1,13 @@
 package com.superkiment.entities;
 
 import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.Interactable;
+import com.superkiment.entities.logic.InteractionManager;
 
 import processing.core.PVector;
 import processing.data.JSONObject;
 
-public class Player extends Entity {
+public class Player extends Entity implements Interactable {
 
     /**
      * The Player name, given on the first connexion
@@ -29,6 +31,26 @@ public class Player extends Entity {
         super.Update();
 
         pos.add(PVector.mult(dir, speed));
+
+        // Get the closest entitiy TODO: OPTIMIZE WTF
+        Entity closestEntity = null;
+        float distance = 999999;
+        // System.out.println("dist");
+        for (Entity e : this.entityManager.getEntities()) {
+            if (e == this)
+                continue;
+
+            float dist = PVector.sub(pos, e.pos).mag();
+            if (dist < distance) {
+                closestEntity = e;
+                distance = dist;
+            }
+        }
+
+        if (closestEntity != null) {
+            // System.out.println(closestEntity.getClassName());
+            interactionManager.trySetInteractable(closestEntity);
+        }
     }
 
     @Override
@@ -87,5 +109,15 @@ public class Player extends Entity {
             dir.y = 0;
 
         dir.setMag(1);
+    }
+
+    @Override
+    public InteractionManager getInteractionManager() {
+        return this.interactionManager;
+    }
+
+    @Override
+    public PVector getPos() {
+        return this.pos;
     }
 }

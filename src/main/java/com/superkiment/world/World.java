@@ -54,6 +54,12 @@ public class World extends PApplet {
      * Envoi d'un nouvel input de console du server à tous les clients
      */
     final static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
+
+    /**
+     * Envoi d'un nouvel input de console du server à tous les clients
+     */
+    final static String PLAYER_INTERACTION = "heyyy i just wanna interact ykykykyk";
+
     public String name = "NoName";
     private Server server;
     private boolean render = false;
@@ -224,6 +230,8 @@ public class World extends PApplet {
                     EnvoiConsoleTousClients(input, client);
                 }
 
+                break;
+                case PLAYER_INTERACTION:
                 break;
             default:
                 println("Jsp comment traiter : " + fullData);

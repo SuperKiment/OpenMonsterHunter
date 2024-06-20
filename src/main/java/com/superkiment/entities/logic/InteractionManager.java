@@ -10,7 +10,7 @@ import com.superkiment.main.Console;
  */
 public class InteractionManager {
     private Entity parent;
-    private Interactable entityInteractable = null;
+    public Interactable entityInteractable = null;
 
     /**
      * True if the Interactable entity is active for an interaction. Example : a
@@ -24,10 +24,14 @@ public class InteractionManager {
      */
     private Consumer<Entity> actionInteraction = null;
 
+    public void setActionInteraction(Consumer<Entity> action) {
+        actionInteraction = action;
+    }
+
     public InteractionManager(Entity parent) {
         this.parent = parent;
         this.actionInteraction = (args) -> {
-            Console.console.write("interaction not set yet.", true);
+            Console.console.write("Interaction not set yet : " + parent.getClassName(), true);
         };
     }
 
@@ -53,13 +57,17 @@ public class InteractionManager {
         if (!isInteractable(entityInteractable))
             return;
 
-        entityInteractable.getInteractionManager().doAction(parent);
+        try {
+            entityInteractable.getInteractionManager().doAction(parent);
+        } catch (Exception e) {
+            System.out.println("Erreur Interaction");
+        }
     }
 
     /**
      * Makes the interaction inside of the Consumer actionInteraction happen
      */
-    public void doAction(Entity entity) {
+    private void doAction(Entity entity) {
         if (actionInteraction != null)
             actionInteraction.accept(entity);
     }

@@ -60,18 +60,20 @@ public class OpenMonsterHunter extends PApplet {
         frameRate(1000);
         // surface.setResizable(true);
         surface.setTitle(com.superkiment.res.Texts.getOneRandomSplashText());
-
-        PrintStream outStream = null;
-        PrintStream errStream = null;
-        try {
-            outStream = new PrintStream(new FileOutputStream("outputConsole.log"));
-            errStream = new PrintStream(new FileOutputStream("errorConsole.log"));
-        } catch (Exception e) {
-            println("sheeesh");
-        }
-        println("lez gooo");
-        System.setOut(outStream);
-        System.setErr(errStream);
+        /*
+         * 
+         * PrintStream outStream = null;
+         * PrintStream errStream = null;
+         * try {
+         * outStream = new PrintStream(new FileOutputStream("outputConsole.log"));
+         * errStream = new PrintStream(new FileOutputStream("errorConsole.log"));
+         * } catch (Exception e) {
+         * println("sheeesh");
+         * }
+         * println("lez gooo");
+         * System.setOut(outStream);
+         * System.setErr(errStream);
+         */
 
         gameManager = new GameManager();
         ui = new UI(gameManager, this);

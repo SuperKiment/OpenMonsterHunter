@@ -37,7 +37,13 @@ public class Entity {
     /**
      * The manager where this entity is stored.
      */
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
+
+    /**
+     * The manager managing the entity's interactions. Used with the interface
+     * InteractionManager
+     */
+    protected InteractionManager interactionManager;
 
     /**
      * 
@@ -60,6 +66,7 @@ public class Entity {
         hitboxes = new ArrayList<Hitbox>();
         hitboxes.add(new Hitbox(this, new PVector(0, 0), 20));
 
+        interactionManager = new InteractionManager(this);
     }
 
     /**
@@ -114,21 +121,6 @@ public class Entity {
     }
 
     /**
-     * Try interacting with an entity, if possible, do the interaction
-     * 
-     * @param entity the entity to interact with
-     */
-    public void interactWith(Entity entity) {
-        if (!(entity instanceof Interactable)) {
-            Console.console.write("Pas interactable", true);
-            return;
-        }
-
-        Interactable interactable = (Interactable) entity;
-        interactable.getInteractionManager().doAction(this);
-    }
-
-    /**
      * Get the entity's json information
      * 
      * @return the entity's json
@@ -147,6 +139,12 @@ public class Entity {
 
         obj.setString("ID", ID);
         return obj;
+    }
+
+    public String getClassName() {
+        System.out.println("Nom : " + this.getClass().getName().split("entities.")[1]);
+        String[] tabl = this.getClass().getName().split("entities.");
+        return tabl[1];
     }
 
     /**
