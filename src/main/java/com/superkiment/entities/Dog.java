@@ -32,4 +32,9 @@ public class Dog extends Entity implements Interactable {
         return this.pos;
     }
 
+    @Override
+    public Entity getEntity() {
+        return this;
+    }
+
 }

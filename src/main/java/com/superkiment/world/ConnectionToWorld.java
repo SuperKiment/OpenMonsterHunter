@@ -1,5 +1,6 @@
 package com.superkiment.world;
 
+import com.superkiment.entities.logic.Interactable;
 import com.superkiment.main.Console;
 import com.superkiment.main.Game;
 import com.superkiment.main.OpenMonsterHunter;
@@ -99,6 +100,17 @@ public class ConnectionToWorld {
 
         client.write(
                 World.createRequest(World.NEW_CONSOLE_INPUT, json, omh.playerName) + World.DELIMITER_ENTETE);
+    }
+
+    public void EnvoiInteraction(Interactable interactedWith) {
+        if (interactedWith == null)
+            return;
+
+        JSONObject json = new JSONObject();
+
+        json.setJSONObject("entityInteracted", interactedWith.getEntity().getJSON());
+
+        client.write(World.createRequest(World.PLAYER_INTERACTION, json, omh.playerName) + World.DELIMITER_ENTETE);
     }
 
     private JSONObject[] RecuperationDonnees() {

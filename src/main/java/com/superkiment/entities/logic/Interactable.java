@@ -20,4 +20,6 @@ public interface Interactable {
      * @return a PVector representing the world position of the entity
      */
     public PVector getPos();
+
+    public Entity getEntity();
 }

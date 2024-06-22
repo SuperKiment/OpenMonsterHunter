@@ -120,4 +120,9 @@ public class Player extends Entity implements Interactable {
     public PVector getPos() {
         return this.pos;
     }
+
+    @Override
+    public Entity getEntity() {
+        return this;
+    }
 }

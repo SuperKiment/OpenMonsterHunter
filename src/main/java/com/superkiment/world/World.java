@@ -141,7 +141,7 @@ public class World extends PApplet {
 
         // UPDATE
         for (Entity entity : entityManager.getEntities()) {
-//			if (entity.getClass().getName().equals(Player.class.getName()))
+            // if (entity.getClass().getName().equals(Player.class.getName()))
             entity.Update();
         }
 
@@ -231,7 +231,9 @@ public class World extends PApplet {
                 }
 
                 break;
-                case PLAYER_INTERACTION:
+            case PLAYER_INTERACTION:
+                System.out.println("Interaction");
+                System.out.println(requete);
                 break;
             default:
                 println("Jsp comment traiter : " + fullData);
