@@ -105,6 +105,7 @@ public class Console {
 
         int compteur = inputs.size();
 
+        //TODO: console display is based on framerate, make it based on seconds.
         for (Pair<String, Integer> pair : inputs) {
             int value = pair.getSecond();
             pair.setSecond(value - 1);

@@ -51,7 +51,7 @@ public class RenderManager {
             public void Action(Entity e) {
                 Player p = (Player) e;
                 
-                if (p == OpenMonsterHunter.game.controlledPlayer) {
+                if (p == OpenMonsterHunter.game.controlledPlayer && p.getInteractionManager().entityInteractable != null) {
                     PVector posInteractable = p.getInteractionManager().entityInteractable.getPos();
                     pap.line(p.pos.x, p.pos.y, posInteractable.x, posInteractable.y);
                 }

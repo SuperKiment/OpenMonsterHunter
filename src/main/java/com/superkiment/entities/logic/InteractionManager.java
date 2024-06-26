@@ -78,7 +78,7 @@ public class InteractionManager {
      * @return true if the interaction is doable
      */
     public boolean isInteractable(Interactable interactable) {
-        if (parent.pos == interactable.getPos())
+        if (interactable == null || parent.pos == interactable.getPos())
             return false;
 
         return true;
