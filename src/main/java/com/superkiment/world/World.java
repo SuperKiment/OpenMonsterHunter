@@ -117,7 +117,7 @@ public class World extends PApplet {
 
     public void setup() {
         server = new Server(this, 5204);
-        frameRate(100);
+        frameRate(1000);
     }
 
     public void draw() {

@@ -31,17 +31,11 @@ public class EntityManager {
      */
     HashMap<Player, Client> playersToClient;
 
-    /**
-     * Hash to get an entity from an ID
-     */
-    HashMap<String, Entity> idToEntity;
-
     public EntityManager() {
         entities = new ArrayList<Entity>();
         players = new ArrayList<Player>();
         clientToPlayers = new HashMap<Client, Player>();
         playersToClient = new HashMap<Player, Client>();
-        idToEntity = new HashMap<String, Entity>();
     }
 
     // ADD
@@ -53,8 +47,6 @@ public class EntityManager {
     public void addEntity(Entity entity) {
         entity.setEntityManager(this);
         entities.add(entity);
-        idToEntity.put(entity.ID, entity);
-        System.out.println("Added entity " + entity.ID);
     }
 
     /**
@@ -138,7 +130,6 @@ public class EntityManager {
     public void removeEntity(Entity entity) {
         entity.setEntityManager(null);
         entities.remove(entity);
-        // idToEntity.remove(entity.ID);
     }
 
     // GET
@@ -156,14 +147,6 @@ public class EntityManager {
 
     public ArrayList<Entity> getEntities() {
         return entities;
-    }
-
-    public Entity getEntity(String id) {
-        Entity found = idToEntity.get(id);
-
-        System.out.println(found.ID);
-
-        return found;
     }
 
     // AUTRES
@@ -226,53 +209,50 @@ public class EntityManager {
         //
         //
         for (Object keyObj : data.keys().toArray()) {
-            String objClassName = (String) keyObj;
-            JSONArray array = data.getJSONArray(objClassName);
+            String key = (String) keyObj;
+            JSONArray array = data.getJSONArray(key);
 
             try {
 
-                Class arrayClass = Class.forName(objClassName);
+                Class arrayClass = Class.forName(key);
 
                 //
                 // Pour chaque entité
                 for (int i = 0; i < array.size(); i++) {
-                    Entity newEntity = null;
+                    Entity obj = null;
                     JSONObject json = array.getJSONObject(i);
 
                     //
                     // Construire un player ou une entité
-                    if (objClassName.equals(Player.class.getName())) {
-                        newEntity = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
+                    if (key.equals(Player.class.getName())) {
+                        obj = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
                                 .newInstance(json.getString("name"), new PVector(100, 100));
                     } else {
-                        newEntity = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+                        obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
                     }
-                    newEntity.ID = json.getString("ID");
+                    obj.ID = json.getString("ID");
 
                     //
                     // Vérifier l'existance
-                    boolean exists = objClassName.equals(Player.class.getName())
-                            && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
+                    boolean exists = key.equals(Player.class.getName())
+                            && ((Player) obj).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
 
                     // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
-                    // Si l'entité existe, l'enlever de la liste des entités à supprimer
                     if (!exists) {
-                        Entity matchingEntity = idToEntity.get(newEntity.ID);
-                        System.out.println(
-                                "newEntity id : '" + newEntity.ID + "' , matching id : '" + matchingEntity + "'");
-                        if (matchingEntity != null) {
-                            exists = true;
-                            entitiesToRemove.remove(matchingEntity);
-                            break;
+                        for (Entity entity : entities) {
+                            if (entity.ID.equals(obj.ID)) {
+                                exists = true;
+                                entitiesToRemove.remove(entity);
+                                break;
+                            }
                         }
-
                     }
 
                     //
                     // S'il existe pas, ajouter
                     if (!exists) {
-                        addEntity(newEntity);
-                        System.out.println("Ajouté " + newEntity.getClass().getName());
+                        addEntity(obj);
+                        System.out.println("Ajouté " + obj.getClass().getName());
                     }
                 }
             } catch (Exception e) {

@@ -27,13 +27,6 @@ public class Tester {
          *
          * hash.get(e.getClass()).Action(); hash.get(d.getClass()).Action();
          */
-
-        HashMap<String, Integer> test = new HashMap<String, Integer>();
-
-        test.put("cringe", 5);
-
-        System.out.println(test.get("cringe"));
-        System.out.println(test.get("cringde"));
     }
 
     public static void lezgo() {

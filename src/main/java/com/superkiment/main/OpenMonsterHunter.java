@@ -57,7 +57,7 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void setup() {
-        frameRate(100);
+        frameRate(1000);
         // surface.setResizable(true);
         surface.setTitle(com.superkiment.res.Texts.getOneRandomSplashText());
         /*
