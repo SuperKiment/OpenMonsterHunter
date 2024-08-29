@@ -208,39 +208,39 @@ public class EntityManager {
 
         //
         //
-        for (Object keyObj : data.keys().toArray()) {
-            String key = (String) keyObj;
-            JSONArray array = data.getJSONArray(key);
+        for (Object classNameObj : data.keys().toArray()) {
+            String className = (String) classNameObj;
+            System.out.println("coucou " + classNameObj);
+            JSONArray array = data.getJSONArray(className);
 
             try {
 
-                Class arrayClass = Class.forName(key);
+                Class arrayClass = Class.forName(className);
 
                 //
                 // Pour chaque entité
                 for (int i = 0; i < array.size(); i++) {
-                    Entity obj = null;
-                    JSONObject json = array.getJSONObject(i);
+                    Entity newEntity = null;
+                    JSONObject jsonFromArray = array.getJSONObject(i);
 
                     //
                     // Construire un player ou une entité
-                    if (key.equals(Player.class.getName())) {
-                        obj = (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
-                                .newInstance(json.getString("name"), new PVector(100, 100));
+                    if (className.equals(Player.class.getName())) {
+                        newEntity = InstanciatePlayer(arrayClass, jsonFromArray);
                     } else {
-                        obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
+                        newEntity = (Entity) arrayClass.getDeclaredConstructor().newInstance();
                     }
-                    obj.ID = json.getString("ID");
+                    newEntity.ID = jsonFromArray.getString("ID");
 
                     //
                     // Vérifier l'existance
-                    boolean exists = key.equals(Player.class.getName())
-                            && ((Player) obj).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
+                    boolean exists = className.equals(Player.class.getName())
+                            && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
 
                     // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
                     if (!exists) {
                         for (Entity entity : entities) {
-                            if (entity.ID.equals(obj.ID)) {
+                            if (entity.ID.equals(newEntity.ID)) {
                                 exists = true;
                                 entitiesToRemove.remove(entity);
                                 break;
@@ -251,8 +251,8 @@ public class EntityManager {
                     //
                     // S'il existe pas, ajouter
                     if (!exists) {
-                        addEntity(obj);
-                        System.out.println("Ajouté " + obj.getClass().getName());
+                        addEntity(newEntity);
+                        System.out.println("Ajouté " + newEntity.getClass().getName());
                     }
                 }
             } catch (Exception e) {
@@ -294,6 +294,15 @@ public class EntityManager {
                     }
                 }
             }
+        }
+    }
+
+    private Player InstanciatePlayer(Class arrayClass, JSONObject jsonFromArray) {
+        try {
+            return (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
+                    .newInstance(jsonFromArray.getString("name"), new PVector(100, 100));
+        } catch (Exception e) {
+            return null;
         }
     }
 }
