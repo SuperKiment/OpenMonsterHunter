@@ -197,7 +197,7 @@ public class EntityManager {
      * @param data data complète de
      * 
      */
-    public void addIfInexistant(JSONObject data) {
+    public void addOrRemoveEntityFromJSONData(JSONObject data) {
 
         //
         // Copy les elements de la liste
@@ -207,63 +207,16 @@ public class EntityManager {
         }
 
         //
-        //
+        // For all classes in the JSON object
         for (Object classNameObj : data.keys().toArray()) {
             String className = (String) classNameObj;
-            System.out.println("coucou " + classNameObj);
-            JSONArray array = data.getJSONArray(className);
 
-            try {
-
-                Class arrayClass = Class.forName(className);
-
-                //
-                // Pour chaque entité
-                for (int i = 0; i < array.size(); i++) {
-                    Entity newEntity = null;
-                    JSONObject jsonFromArray = array.getJSONObject(i);
-
-                    //
-                    // Construire un player ou une entité
-                    if (className.equals(Player.class.getName())) {
-                        newEntity = InstanciatePlayer(arrayClass, jsonFromArray);
-                    } else {
-                        newEntity = (Entity) arrayClass.getDeclaredConstructor().newInstance();
-                    }
-                    newEntity.ID = jsonFromArray.getString("ID");
-
-                    //
-                    // Vérifier l'existance
-                    boolean exists = className.equals(Player.class.getName())
-                            && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
-
-                    // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
-                    if (!exists) {
-                        for (Entity entity : entities) {
-                            if (entity.ID.equals(newEntity.ID)) {
-                                exists = true;
-                                entitiesToRemove.remove(entity);
-                                break;
-                            }
-                        }
-                    }
-
-                    //
-                    // S'il existe pas, ajouter
-                    if (!exists) {
-                        addEntity(newEntity);
-                        System.out.println("Ajouté " + newEntity.getClass().getName());
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Pas trouvé : " + e);
-            }
+            processJSONEntitiesArray(className, data.getJSONArray(className), entitiesToRemove);
         }
 
         //
         // Enlever les entites disparues
         // TODO Ptet trouver une autre méthode
-
         for (Entity e : entitiesToRemove) {
             entities.remove(e);
         }
@@ -297,10 +250,77 @@ public class EntityManager {
         }
     }
 
-    private Player InstanciatePlayer(Class arrayClass, JSONObject jsonFromArray) {
+    private void processJSONEntitiesArray(String className, JSONArray array, ArrayList<Entity> entitiesToRemove) {
+
+        Class arrayClass = null;
+
+        try {
+            arrayClass = Class.forName(className);
+        } catch (Exception e) {
+            return;
+        }
+
+        //
+        // Pour chaque entité
+        for (int i = 0; i < array.size(); i++) {
+
+            Entity newEntity = createEntityFromJSON(className, arrayClass, array.getJSONObject(i));
+
+            //
+            // Vérifier l'existance de l'entité par 2 barrières :
+            boolean exists = false;
+
+            exists = className.equals(Player.class.getName())
+                    && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
+
+            // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
+            if (!exists) {
+                for (Entity entity : entities) {
+                    if (entity.ID.equals(newEntity.ID)) {
+                        exists = true;
+                        entitiesToRemove.remove(entity);
+                        break;
+                    }
+                }
+            }
+
+            //
+            // S'il existe pas, ajouter l'entité
+            if (!exists) {
+                addEntity(newEntity);
+                System.out.println("Ajouté " + newEntity.getClass().getName());
+            }
+        }
+
+    }
+
+    private Entity createEntityFromJSON(String className, Class arrayClass, JSONObject jsonFromArray) {
+        Entity newEntity = null;
+
+        //
+        // Construire un player ou une entité
+        if (className.equals(Player.class.getName())) {
+            newEntity = instanciatePlayer(arrayClass, jsonFromArray);
+        } else {
+            newEntity = instanciateEntity(arrayClass);
+        }
+        newEntity.ID = jsonFromArray.getString("ID");
+
+        return newEntity;
+    }
+
+    private Player instanciatePlayer(Class arrayClass, JSONObject jsonFromArray) {
         try {
             return (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
                     .newInstance(jsonFromArray.getString("name"), new PVector(100, 100));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private Entity instanciateEntity(Class arrayClass) {
+        try {
+            return (Entity) arrayClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             return null;
         }

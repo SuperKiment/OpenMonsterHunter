@@ -258,7 +258,7 @@ public class Game {
      */
     public void TraiterData(JSONObject data) {
 
-        entityManager.addIfInexistant(data);
+        entityManager.addOrRemoveEntityFromJSONData(data);
 
         entityManager.updatePositions(data);
 
