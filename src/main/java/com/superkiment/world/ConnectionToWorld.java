@@ -62,6 +62,14 @@ public class ConnectionToWorld {
         JSONObject[] datas = RecuperationDonnees();
 
         for (JSONObject data : datas) {
+            if (data == null) {
+                System.out.println();
+                System.out.println("Data from ConnectionToWorld is null !");
+                System.out.println();
+
+                continue;
+            }
+
             switch (data.getString("type")) {
                 case World.UPDATE_WORLD_STATE_ENTITIES:
                     TraiterDonnees(data.getJSONObject("data"));
@@ -128,7 +136,10 @@ public class ConnectionToWorld {
                 try {
                     data = JSONObject.parse(part);
                 } catch (Exception e) {
-                    System.out.println("Pas réussi à parse !");
+                    System.out.println();
+                    System.out.println("Pas réussi à parse ! " + e.getMessage());
+                    System.out.println(part);
+                    System.out.println();
                 }
 
                 /*
