@@ -34,7 +34,7 @@ public class OpenMonsterHunter extends PApplet {
     /**
      * The connection to the world, used to communicate with the server (world).
      */
-    ConnectionToWorld connectionToWorld;
+    public ConnectionToWorld connectionToWorld;
 
     /**
      * Handles the UI : Buttons, Text inputs, etc.
@@ -75,6 +75,10 @@ public class OpenMonsterHunter extends PApplet {
          * System.setErr(errStream);
          */
 
+        setupVariables();
+    }
+
+    public void setupVariables() {
         gameManager = new GameManager();
         ui = new UI(gameManager, this);
         println(playerName);
@@ -110,6 +114,15 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void keyPressed() {
+        pressKey(key);
+    }
+
+    /**
+     * Intermediate funtion to test key pressing
+     * 
+     * @param key
+     */
+    public void pressKey(char key) {
         if (key != CODED)
             ui.Key(key);
 
@@ -121,6 +134,15 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void keyReleased() {
+        releaseKey(key);
+    }
+
+    /**
+     * Intermediate funtion to test key releasing
+     * 
+     * @param key
+     */
+    public void releaseKey(char key) {
         if (game != null) {
             game.keyReleased(key);
         }
@@ -132,8 +154,8 @@ public class OpenMonsterHunter extends PApplet {
      * 
      * @param name the name of the window
      */
-    public void CreateWorld(String name) {
-        PApplet.runSketch(new String[] { "MondeServerLocal" }, new com.superkiment.world.World(name, true));
+    public void CreateWorld(String name, boolean render) {
+        PApplet.runSketch(new String[] { "MondeServerLocal" }, new com.superkiment.world.World(name, render));
         delay(500);
         ConnectToWorld("127.0.0.1");
     }

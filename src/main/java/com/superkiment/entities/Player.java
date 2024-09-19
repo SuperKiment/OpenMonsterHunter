@@ -81,8 +81,8 @@ public class Player extends Entity implements Interactable {
      * @param key the pressed key
      */
     public void keyPressed(char key) {
-        if (key == 'd')
-            dir.x = 1;
+        if (key == 'd'){
+            dir.x = 1;System.out.println("dddd");}
         if (key == 'q')
             dir.x = -1;
         if (key == 's')

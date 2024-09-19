@@ -14,9 +14,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation group: "org.processing", name: "core", version: "3.3.7"
-    //implementation group: 'org.processing', name: 'jogl', version: '1.2.1'
     implementation group: 'org.processing', name: 'net', version: '3.3.7'
-    //implementation group: 'org.processing', name: 'gluegen-rt', version: '1.2.1'
 
 }
 
@@ -26,18 +24,9 @@ application {
 
 test {
     useJUnitPlatform()
-}
 
-task runClient(type: JavaExec) {
-    group = 'application'
-    description = 'Launches the client'
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'com.superkiment.main.OpenMonsterHunter'
-}
-
-task runServer(type: JavaExec) {
-    group = 'application'
-    description = 'Launches the server'
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'com.superkiment.world.World'
+    // Affiche la sortie standard pendant l'exécution des tests, même s'ils réussissent
+    testLogging {
+        showStandardStreams = true
+    }
 }

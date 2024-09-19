@@ -118,7 +118,7 @@ public class UI {
                 new GameManager.GameState[] { GameManager.GameState.CHOOSE_SOLO }, "Go !") {
             public void Action() {
 
-                p.CreateWorld("Monde1");
+                p.CreateWorld("Monde1", true);
                 ChangePage(GameManager.GameState.GAME);
             }
         });

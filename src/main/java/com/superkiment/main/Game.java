@@ -70,7 +70,8 @@ public class Game {
         controlledPlayer.Update();
     }
 
-    void keyPressed(char key) {
+    public void keyPressed(char key) {
+
         // Partir si on est pas en jeu
         if (GameManager.GameState.GAME != OpenMonsterHunter.gameManager.gameState)
             return;
@@ -85,6 +86,8 @@ public class Game {
 
         // Déplacement du joueur
         if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+        System.out.println("pressed " + (key == 'd'));
+
             controlledPlayer.keyPressed(key);
         }
 
@@ -108,9 +111,10 @@ public class Game {
 
     }
 
-    void keyReleased(char key) {
+    public void keyReleased(char key) {
         if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
             controlledPlayer.keyReleased(key);
+            System.out.println("release dddd");
         }
     }
 

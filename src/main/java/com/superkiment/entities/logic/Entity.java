@@ -51,12 +51,15 @@ public class Entity {
 
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
+        try {
+            for (int i = 0; i < 20; i++) {
+                int rand = (int) Math.floor(Math.random() * characters.length());
+                char ch = characters.charAt(rand);
 
-        for (int i = 0; i < 20; i++) {
-            int rand = (int) Math.floor(Math.random() * characters.length());
-            char ch = characters.charAt(rand);
-
-            ID += ch;
+                ID += ch;
+            }
+        } catch (Exception e) {
+            ID = "failed to generate";
         }
 
         pos = new PVector();
