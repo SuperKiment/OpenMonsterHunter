@@ -27,3 +27,17 @@ application {
 test {
     useJUnitPlatform()
 }
+
+task runClient(type: JavaExec) {
+    group = 'application'
+    description = 'Launches the client'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.superkiment.main.OpenMonsterHunter'
+}
+
+task runServer(type: JavaExec) {
+    group = 'application'
+    description = 'Launches the server'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'com.superkiment.world.World'
+}
