@@ -7,8 +7,8 @@ import com.superkiment.world.ConnectionToWorld;
 import processing.core.PApplet;
 import processing.data.JSONObject;
 
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+// import java.io.FileOutputStream;
+// import java.io.PrintStream;
 
 /**
  * Main class to launch the application. Is the PApplet everything the client

@@ -58,7 +58,7 @@ public class EntityManager {
 
         try {
             Entity e = null;
-            Class arrayClass = Class.forName(json.getString("className"));
+            Class<?> arrayClass = Class.forName(json.getString("className"));
             e = (Entity) arrayClass.getDeclaredConstructor().newInstance();
             e.UpdateFromJSON(json);
             addEntity(e);
@@ -252,7 +252,7 @@ public class EntityManager {
 
     private void processJSONEntitiesArray(String className, JSONArray array, ArrayList<Entity> entitiesToRemove) {
 
-        Class arrayClass = null;
+        Class<?>arrayClass = null;
 
         try {
             arrayClass = Class.forName(className);
@@ -294,7 +294,7 @@ public class EntityManager {
 
     }
 
-    private Entity createEntityFromJSON(String className, Class arrayClass, JSONObject jsonFromArray) {
+    private Entity createEntityFromJSON(String className, Class<?>arrayClass, JSONObject jsonFromArray) {
         Entity newEntity = null;
 
         //
@@ -309,7 +309,7 @@ public class EntityManager {
         return newEntity;
     }
 
-    private Player instanciatePlayer(Class arrayClass, JSONObject jsonFromArray) {
+    private Player instanciatePlayer(Class<?>arrayClass, JSONObject jsonFromArray) {
         try {
             return (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
                     .newInstance(jsonFromArray.getString("name"), new PVector(100, 100));
@@ -318,7 +318,7 @@ public class EntityManager {
         }
     }
 
-    private Entity instanciateEntity(Class arrayClass) {
+    private Entity instanciateEntity(Class<?>arrayClass) {
         try {
             return (Entity) arrayClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {

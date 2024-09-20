@@ -31,7 +31,7 @@ public class CommandsManager {
             System.out.println(args.length);
             if (args.length == 4) {
                 try {
-                    Class arrayClass = Class.forName(args[3]);
+                    Class<?>arrayClass = Class.forName(args[3]);
                     Entity obj = (Entity) arrayClass.getDeclaredConstructor().newInstance();
 
                     obj.pos.set(Float.parseFloat(args[1]), Float.parseFloat(args[2]));

@@ -1,7 +1,6 @@
 package com.superkiment.entities.logic;
 
 import com.superkiment.globals.Time;
-import com.superkiment.main.Console;
 
 import processing.core.PVector;
 import processing.data.JSONObject;

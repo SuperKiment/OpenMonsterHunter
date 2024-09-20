@@ -43,7 +43,7 @@ public class Tester {
         Abc abc = new Abc("a");
 
         try {
-            Class test = Class.forName("TestsRandoms.Abc");
+            Class<?>test = Class.forName("TestsRandoms.Abc");
             System.out.println("Trouvé classe " + test.getName());
 
             Object o = test.getDeclaredConstructor(String.class).newInstance("fez");

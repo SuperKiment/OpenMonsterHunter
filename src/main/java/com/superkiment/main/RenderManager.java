@@ -19,7 +19,7 @@ public class RenderManager {
     /**
      * Links a class to a render action to the PApplet
      */
-    private final HashMap<Class, RenderAction> classToActions;
+    private final HashMap<Class<?>, RenderAction> classToActions;
 
     /**
      * The PApplet to be drawn on.
@@ -27,7 +27,7 @@ public class RenderManager {
     private final processing.core.PApplet pap;
 
     public RenderManager(processing.core.PApplet p) {
-        classToActions = new HashMap<Class, RenderAction>();
+        classToActions = new HashMap<Class<?>, RenderAction>();
         this.pap = p;
 
         // TODO Faire les renders
@@ -50,8 +50,9 @@ public class RenderManager {
         classToActions.put(Player.class, new RenderAction(this.pap) {
             public void Action(Entity e) {
                 Player p = (Player) e;
-                
-                if (p == OpenMonsterHunter.game.controlledPlayer && p.getInteractionManager().entityInteractable != null) {
+
+                if (p == OpenMonsterHunter.game.controlledPlayer
+                        && p.getInteractionManager().entityInteractable != null) {
                     PVector posInteractable = p.getInteractionManager().entityInteractable.getPos();
                     pap.line(p.pos.x, p.pos.y, posInteractable.x, posInteractable.y);
                 }
