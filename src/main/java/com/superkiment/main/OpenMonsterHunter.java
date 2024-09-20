@@ -44,7 +44,7 @@ public class OpenMonsterHunter extends PApplet {
     /**
      * Boolean to define whether the game is in test mode or not, default is false.
      */
-    public boolean testMode = false;
+    private boolean testMode = false;
 
     public static void main(String[] args) {
         try {
@@ -54,19 +54,15 @@ public class OpenMonsterHunter extends PApplet {
         }
     }
 
-    public OpenMonsterHunter(boolean testMode) {
-        this.testMode = testMode;
-    }
-
     @Override
     public void settings() {
-        size(800, 800, P3D);
+        size(800, 800);
         smooth();
     }
 
     @Override
     public void setup() {
-        frameRate(1000);
+        frameRate(500);
         // surface.setResizable(true);
         surface.setTitle(com.superkiment.res.Texts.getOneRandomSplashText());
         /*
@@ -193,6 +189,10 @@ public class OpenMonsterHunter extends PApplet {
 
     public void windowResized() {
         Scale.UpdateGameScale(this);
+    }
+
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
     }
 
 }

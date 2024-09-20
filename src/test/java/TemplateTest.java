@@ -22,14 +22,15 @@ public class TemplateTest {
         System.out.println();
         System.out.println("BeforeAll tests");
         // testWorld = new World("Test World", false);
-        omh = new OpenMonsterHunter(true);
+        omh = new OpenMonsterHunter();
         omh.setupVariables();
 
         omh.CreateWorld("testWorld", true);
 
         player = OpenMonsterHunter.game.controlledPlayer;
         game = OpenMonsterHunter.game;
-        omh.gameManager.setGameState(GameState.GAME);
+        OpenMonsterHunter.gameManager.setGameState(GameState.GAME);
+        omh.setTestMode(true);
     }
 
     @Test
@@ -44,12 +45,8 @@ public class TemplateTest {
         PVector oldPosition = player.getPos().copy();
 
         omh.pressKey('d');
-        omh.delay(100);
-        omh.draw();
-        omh.draw();
-        omh.draw();
-        omh.draw();
-        omh.delay(100);
+        for (int i = 0; i < 10; i++)
+            omh.draw();
         omh.releaseKey('d');
 
         PVector newPosition = player.getPos().copy();
