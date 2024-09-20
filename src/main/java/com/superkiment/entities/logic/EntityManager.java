@@ -11,15 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EntityManager {
-    /**
-     * List of stored and updated entities
-     */
-    private ArrayList<Entity> entities;
-
-    /**
-     * List of players stored in 'entities'
-     */
-    private ArrayList<Player> players;
 
     /**
      * Hash to get a Player from a Client
@@ -31,14 +22,12 @@ public class EntityManager {
      */
     private HashMap<Player, Client> playersToClient;
 
-    public HashMap<String, Entity> idToEntity = new HashMap<String, Entity>();
+    public EntityStockage entityStockage;
 
     public EntityManager() {
-        entities = new ArrayList<Entity>();
-        players = new ArrayList<Player>();
         clientToPlayers = new HashMap<Client, Player>();
         playersToClient = new HashMap<Player, Client>();
-        idToEntity = new HashMap<String, Entity>();
+        entityStockage = new EntityStockage(this);
     }
 
     // ADD
@@ -48,9 +37,7 @@ public class EntityManager {
      * @param entity
      */
     public void addEntity(Entity entity) {
-        entity.setEntityManager(this);
-        entities.add(entity);
-        idToEntity.put(entity.ID, entity);
+        entityStockage.add(entity);
     }
 
     /**
@@ -78,8 +65,7 @@ public class EntityManager {
      * @param client
      */
     public void addPlayer(Player player, Client client) {
-        addEntity(player);
-        players.add(player);
+        entityStockage.add(player);
         clientToPlayers.put(client, player);
         playersToClient.put(player, client);
     }
@@ -119,7 +105,7 @@ public class EntityManager {
     public void removePlayer(Player player) {
         System.out.println("Removed player " + player.name);
         removeEntity(player);
-        players.remove(player);
+        entityStockage.remove(player);
         clientToPlayers.remove(playersToClient.get(player));
         playersToClient.remove(player);
     }
@@ -130,14 +116,12 @@ public class EntityManager {
      * @param entity
      */
     public void removeEntity(Entity entity) {
-        entity.setEntityManager(null);
-        entities.remove(entity);
-        idToEntity.remove(entity.ID);
+        entityStockage.remove(entity);
     }
 
     // GET
     public ArrayList<Player> getPlayers() {
-        return players;
+        return entityStockage.getPlayers();
     }
 
     public Player getPlayer(Client c) {
@@ -149,7 +133,7 @@ public class EntityManager {
     }
 
     public ArrayList<Entity> getEntities() {
-        return entities;
+        return entityStockage.getEntities();
     }
 
     // AUTRES
@@ -204,7 +188,7 @@ public class EntityManager {
         //
         // Copy les elements de la liste
         ArrayList<Entity> entitiesToRemove = new ArrayList<Entity>();
-        for (Entity e : entities) {
+        for (Entity e : entityStockage.getEntities()) {
             entitiesToRemove.add(e);
         }
 
@@ -220,7 +204,7 @@ public class EntityManager {
         // Enlever les entites disparues
         // TODO Ptet trouver une autre méthode
         for (Entity e : entitiesToRemove) {
-            entities.remove(e);
+            entityStockage.remove(e);
         }
     }
 
@@ -237,11 +221,10 @@ public class EntityManager {
             String key = (String) keyObj;
             JSONArray array = data.getJSONArray(key);
 
-
             for (int i = 0; i < array.size(); i++) {
                 JSONObject obj = array.getJSONObject(i);
 
-                Entity entity = getEntityFromID(obj.getString("ID"));
+                Entity entity = entityStockage.getEntityFromID(obj.getString("ID"));
                 if (entity != null) {
                     entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
                 }
@@ -279,7 +262,7 @@ public class EntityManager {
                     && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
 
             if (!exists) {
-                Entity entity = getEntityFromID(newEntity.ID);
+                Entity entity = entityStockage.getEntityFromID(newEntity.ID);
                 if (entity != null) {
                     exists = true;
                     entitiesToRemove.remove(entity);
@@ -327,9 +310,5 @@ public class EntityManager {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    private Entity getEntityFromID(String id) {
-        return idToEntity.get(id);
     }
 }
