@@ -27,6 +27,13 @@ public class Tester {
          *
          * hash.get(e.getClass()).Action(); hash.get(d.getClass()).Action();
          */
+
+        HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+        hashMap.put("a", 1);
+
+        String a = "a";
+
+        System.out.println(hashMap.get(a));
     }
 
     public static void lezgo() {
@@ -43,7 +50,7 @@ public class Tester {
         Abc abc = new Abc("a");
 
         try {
-            Class<?>test = Class.forName("TestsRandoms.Abc");
+            Class<?> test = Class.forName("TestsRandoms.Abc");
             System.out.println("Trouvé classe " + test.getName());
 
             Object o = test.getDeclaredConstructor(String.class).newInstance("fez");

@@ -14,28 +14,31 @@ public class EntityManager {
     /**
      * List of stored and updated entities
      */
-    ArrayList<Entity> entities;
+    private ArrayList<Entity> entities;
 
     /**
      * List of players stored in 'entities'
      */
-    ArrayList<Player> players;
+    private ArrayList<Player> players;
 
     /**
      * Hash to get a Player from a Client
      */
-    HashMap<Client, Player> clientToPlayers;
+    private HashMap<Client, Player> clientToPlayers;
 
     /**
      * Hash to get a Client from a Player
      */
-    HashMap<Player, Client> playersToClient;
+    private HashMap<Player, Client> playersToClient;
+
+    public HashMap<String, Entity> idToEntity = new HashMap<String, Entity>();
 
     public EntityManager() {
         entities = new ArrayList<Entity>();
         players = new ArrayList<Player>();
         clientToPlayers = new HashMap<Client, Player>();
         playersToClient = new HashMap<Player, Client>();
+        idToEntity = new HashMap<String, Entity>();
     }
 
     // ADD
@@ -47,6 +50,7 @@ public class EntityManager {
     public void addEntity(Entity entity) {
         entity.setEntityManager(this);
         entities.add(entity);
+        idToEntity.put(entity.ID, entity);
     }
 
     /**
@@ -114,8 +118,7 @@ public class EntityManager {
      */
     public void removePlayer(Player player) {
         System.out.println("Removed player " + player.name);
-        player.setEntityManager(null);
-        entities.remove(player);
+        removeEntity(player);
         players.remove(player);
         clientToPlayers.remove(playersToClient.get(player));
         playersToClient.remove(player);
@@ -129,6 +132,7 @@ public class EntityManager {
     public void removeEntity(Entity entity) {
         entity.setEntityManager(null);
         entities.remove(entity);
+        idToEntity.remove(entity.ID);
     }
 
     // GET
@@ -191,7 +195,6 @@ public class EntityManager {
 
     /**
      * Ajoute les entités ajoutées, supprime les entités absentes.
-     * TODO : optimize and minify
      * 
      * @param data data complète de
      * 
@@ -234,17 +237,20 @@ public class EntityManager {
             String key = (String) keyObj;
             JSONArray array = data.getJSONArray(key);
 
-            // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
 
             for (int i = 0; i < array.size(); i++) {
                 JSONObject obj = array.getJSONObject(i);
 
-                for (Entity entity : entities) {
-                    if (entity.ID.equals(obj.getString("ID"))) {
-                        entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
-
-                    }
+                Entity entity = getEntityFromID(obj.getString("ID"));
+                if (entity != null) {
+                    entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
                 }
+
+                // for (Entity entity : entities) {
+                // if (entity.ID.equals(obj.getString("ID"))) {
+
+                // }
+                // }
             }
         }
     }
@@ -272,7 +278,6 @@ public class EntityManager {
             exists = className.equals(Player.class.getName())
                     && ((Player) newEntity).name.equals(OpenMonsterHunter.game.controlledPlayer.name);
 
-            // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
             if (!exists) {
                 Entity entity = getEntityFromID(newEntity.ID);
                 if (entity != null) {
@@ -325,11 +330,6 @@ public class EntityManager {
     }
 
     private Entity getEntityFromID(String id) {
-        for (Entity entity : entities) {
-            if (entity.ID.equals(id))
-                return entity;
-        }
-
-        return null;
+        return idToEntity.get(id);
     }
 }
