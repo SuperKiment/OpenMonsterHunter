@@ -65,7 +65,6 @@ public class EntityManager {
         } catch (Exception exe) {
             System.out.println("Echec de création par JSON : " + exe);
         }
-
     }
 
     /**
@@ -252,7 +251,7 @@ public class EntityManager {
 
     private void processJSONEntitiesArray(String className, JSONArray array, ArrayList<Entity> entitiesToRemove) {
 
-        Class<?>arrayClass = null;
+        Class<?> arrayClass = null;
 
         try {
             arrayClass = Class.forName(className);
@@ -275,13 +274,12 @@ public class EntityManager {
 
             // TODO optimiser ça : (en faisant un tableau de IDs par exemple)
             if (!exists) {
-                for (Entity entity : entities) {
-                    if (entity.ID.equals(newEntity.ID)) {
-                        exists = true;
-                        entitiesToRemove.remove(entity);
-                        break;
-                    }
+                Entity entity = getEntityFromID(newEntity.ID);
+                if (entity != null) {
+                    exists = true;
+                    entitiesToRemove.remove(entity);
                 }
+
             }
 
             //
@@ -294,7 +292,7 @@ public class EntityManager {
 
     }
 
-    private Entity createEntityFromJSON(String className, Class<?>arrayClass, JSONObject jsonFromArray) {
+    private Entity createEntityFromJSON(String className, Class<?> arrayClass, JSONObject jsonFromArray) {
         Entity newEntity = null;
 
         //
@@ -309,7 +307,7 @@ public class EntityManager {
         return newEntity;
     }
 
-    private Player instanciatePlayer(Class<?>arrayClass, JSONObject jsonFromArray) {
+    private Player instanciatePlayer(Class<?> arrayClass, JSONObject jsonFromArray) {
         try {
             return (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
                     .newInstance(jsonFromArray.getString("name"), new PVector(100, 100));
@@ -318,11 +316,20 @@ public class EntityManager {
         }
     }
 
-    private Entity instanciateEntity(Class<?>arrayClass) {
+    private Entity instanciateEntity(Class<?> arrayClass) {
         try {
             return (Entity) arrayClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private Entity getEntityFromID(String id) {
+        for (Entity entity : entities) {
+            if (entity.ID.equals(id))
+                return entity;
+        }
+
+        return null;
     }
 }
