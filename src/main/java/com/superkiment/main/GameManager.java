@@ -47,4 +47,8 @@ public class GameManager {
         TITLE, GAME, CREDITS, OPTIONS, CHOOSE_SOLO, CHOOSE_MULTI
     }
 
+    public void setGameState(GameState state) {
+        this.gameState = state;
+    }
+
 }

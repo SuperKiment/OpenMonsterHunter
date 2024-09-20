@@ -86,8 +86,6 @@ public class Game {
 
         // Déplacement du joueur
         if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
-        System.out.println("pressed " + (key == 'd'));
-
             controlledPlayer.keyPressed(key);
         }
 
@@ -114,7 +112,6 @@ public class Game {
     public void keyReleased(char key) {
         if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
             controlledPlayer.keyReleased(key);
-            System.out.println("release dddd");
         }
     }
 

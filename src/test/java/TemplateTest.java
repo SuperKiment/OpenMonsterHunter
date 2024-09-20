@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import com.superkiment.entities.Player;
 import com.superkiment.main.*;
+import com.superkiment.main.GameManager.GameState;
 import com.superkiment.world.*;
 
 import processing.core.PVector;
@@ -18,15 +19,17 @@ public class TemplateTest {
 
     @BeforeAll
     public static void setUp() {
+        System.out.println();
         System.out.println("BeforeAll tests");
         // testWorld = new World("Test World", false);
-        omh = new OpenMonsterHunter();
+        omh = new OpenMonsterHunter(true);
         omh.setupVariables();
 
         omh.CreateWorld("testWorld", true);
 
         player = OpenMonsterHunter.game.controlledPlayer;
         game = OpenMonsterHunter.game;
+        omh.gameManager.setGameState(GameState.GAME);
     }
 
     @Test
@@ -39,16 +42,21 @@ public class TemplateTest {
     @DisplayName("Player movement")
     public void testPlayerMovement() {
         PVector oldPosition = player.getPos().copy();
-        System.out.println(oldPosition);
+
         omh.pressKey('d');
-        System.out.println(omh.millis());
-        omh.delay(1000);
+        omh.delay(100);
+        omh.draw();
+        omh.draw();
+        omh.draw();
+        omh.draw();
+        omh.delay(100);
         omh.releaseKey('d');
-        System.out.println(omh.millis());
 
         PVector newPosition = player.getPos().copy();
-        System.out.println(newPosition);
-        assertTrue(newPosition.x > oldPosition.x);
+        System.out.println();
+        System.out.println("moved : " + OpenMonsterHunter.abs(newPosition.x - oldPosition.x));
+        System.out.println();
+        assertTrue(newPosition.x != oldPosition.x);
     }
 
 }

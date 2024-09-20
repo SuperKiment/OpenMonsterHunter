@@ -41,12 +41,21 @@ public class OpenMonsterHunter extends PApplet {
      */
     UI ui;
 
+    /**
+     * Boolean to define whether the game is in test mode or not, default is false.
+     */
+    public boolean testMode = false;
+
     public static void main(String[] args) {
         try {
             PApplet.main("com.superkiment.main.OpenMonsterHunter");
         } catch (Exception e) {
             System.out.print(e);
         }
+    }
+
+    public OpenMonsterHunter(boolean testMode) {
+        this.testMode = testMode;
     }
 
     @Override
@@ -96,14 +105,17 @@ public class OpenMonsterHunter extends PApplet {
 
         if (gameManager.gameState == GameState.GAME) {
             Time.Stop(this);
-            game.Render();
+            if (!this.testMode)
+                game.Render();
             Time.UpdateDraw(this);
             game.Update();
         } else {
-            background(0);
+            if (!this.testMode)
+                background(0);
         }
 
-        ui.Render(this);
+        if (!this.testMode)
+            ui.Render(this);
 
     }
 
