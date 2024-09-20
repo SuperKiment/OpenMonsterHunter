@@ -46,6 +46,16 @@ jobs:
     #
     # - name: Build with Gradle 8.9
     #   run: gradle build
+    
+    # Ajouter Xvfb pour l'exécution d'une application graphique (Processing)
+    - name: Install Xvfb
+      run: sudo apt-get update && sudo apt-get install -y xvfb
+
+    - name: Start Xvfb
+      run: Xvfb :99 -screen 0 1024x768x24 &
+
+    - name: Set DISPLAY environment variable
+      run: echo "DISPLAY=:99" >> $GITHUB_ENV
 
   dependency-submission:
 
