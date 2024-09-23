@@ -3,6 +3,8 @@ package com.superkiment.TestsRandoms;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
+
 public class Tester {
 
     public static void main(String[] args) {
