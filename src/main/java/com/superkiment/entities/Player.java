@@ -49,7 +49,7 @@ public class Player extends Entity implements Interactable {
 
         if (closestEntity != null) {
             // System.out.println(closestEntity.getClassName());
-            interactionManager.trySetInteractable(closestEntity);
+            this.getInteractionManager().trySetInteractable(closestEntity);
         }
     }
 
@@ -91,6 +91,10 @@ public class Player extends Entity implements Interactable {
             dir.y = -1;
 
         dir.setMag(1);
+
+        if (key == 'f') {
+            this.getInteractionManager().Interact();
+        }
     }
 
     /**

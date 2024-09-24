@@ -3,6 +3,7 @@ package com.superkiment.entities.logic;
 import java.util.function.Consumer;
 
 import com.superkiment.main.Console;
+import com.superkiment.main.OpenMonsterHunter;
 
 /**
  * The manager that is responsible for making the parent interact with other
@@ -58,9 +59,21 @@ public class InteractionManager {
             return;
 
         try {
-            entityInteractable.getInteractionManager().doAction(parent);
+            // entityInteractable.getInteractionManager().doAction(parent);
+            OpenMonsterHunter.game.connexion.EnvoiInteraction(entityInteractable, parent);
         } catch (Exception e) {
             System.out.println("Erreur Interaction");
+        }
+    }
+
+    public void InteractWith(Interactable potential) {
+        if (potential != null && isInteractable(potential)) {
+            try {
+                System.out.println("Interacting with " + potential.getClass().getName());
+                potential.getInteractionManager().doAction(parent);
+            } catch (Exception e) {
+                Console.console.write("Erreur Interaction", false);
+            }
         }
     }
 

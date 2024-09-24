@@ -85,12 +85,8 @@ public class Game {
         }
 
         // Déplacement du joueur
-        if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+        if (key == 'd' || key == 'q' || key == 's' || key == 'z' || key == 'f') {
             controlledPlayer.keyPressed(key);
-        }
-
-        if (key == 'f') {
-            controlledPlayer.getInteractionManager().Interact();
         }
 
         // Tests d'entités
