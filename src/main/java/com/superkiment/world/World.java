@@ -208,9 +208,13 @@ public class World extends PApplet {
         switch (requete.getString("type")) {
             case BONJOUR_DU_CLIENT:
                 System.out.println("Recu bonjour du client");
-                Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
-                client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
-
+                JSONObject dataPlayer = requete.getJSONObject("data");
+                Player p = entityManager.addPlayer(dataPlayer, client);
+                System.out.println("id player : " + p.ID);
+                JSONObject playerDataSend = p.getJSON();
+                playerDataSend.put("ID", p.ID);
+                System.out.println(playerDataSend);
+                client.write(createRequest(BONJOUR_DU_SERVER, playerDataSend, "server").toString());
                 break;
 
             case UPDATE_PLAYER_DATA:
@@ -236,7 +240,7 @@ public class World extends PApplet {
                 System.out.println("Interaction");
                 // System.out.println(requete);
                 JSONObject data = requete.getJSONObject("data");
-                
+
                 Interactable entityInteracted = (Interactable) this.entityManager.entityStorage
                         .getEntityFromID(data.getString("entityInteractedID"));
 

@@ -275,7 +275,7 @@ public class Game {
     public void setControllablePlayer(JSONObject player) {
         controlledPlayer = entityManager.addControllablePlayer(player);
         setFocusedEntity(controlledPlayer);
-        System.out.println("controlled player : " + controlledPlayer.name);
+        // System.out.println("controlled player : " + controlledPlayer.name + " " + controlledPlayer.ID);
     }
 
     /**

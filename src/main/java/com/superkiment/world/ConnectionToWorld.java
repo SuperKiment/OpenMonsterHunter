@@ -21,10 +21,11 @@ public class ConnectionToWorld {
 
         JSONObject dataPlayer = new JSONObject();
         dataPlayer.put("name", omh.playerName);
+        System.out.println(OpenMonsterHunter.game.controlledPlayer);
         JSONObject bonjourJSON = World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, omh.playerName);
 
         client.write(bonjourJSON + World.DELIMITER_ENTETE);
-        System.out.println("Mon player :");
+        // System.out.println("Mon player :");
         omh.delay(200);
 
         String dataString = client.readString();
@@ -47,6 +48,8 @@ public class ConnectionToWorld {
         }
         try {
             if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
+                System.out.println("Arrive du server :");
+                System.out.println(reponse.getJSONObject("data"));
                 omh.setControllablePlayer(reponse.getJSONObject("data"));
             }
         } catch (Exception e) {

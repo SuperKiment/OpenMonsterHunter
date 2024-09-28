@@ -95,7 +95,7 @@ public class EntityManager {
     public Player addControllablePlayer(JSONObject json) {
         Player p = JSONToPlayer(json);
         entityStorage.addEntity(p);
-        System.out.println("added controllable player");
+        // System.out.println("added controllable player " + p.ID);
         return p;
     }
 
@@ -151,6 +151,8 @@ public class EntityManager {
         PVector pos = new PVector(50, 50);
 
         Player p = new Player(json.getString("name"), pos);
+        System.out.println(json);
+        p.ID = json.getString("ID");
 
         return p;
     }
