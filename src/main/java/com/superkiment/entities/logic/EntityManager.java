@@ -153,7 +153,7 @@ public class EntityManager {
 
         Player p = new Player(json.getString("name"), pos);
         System.out.println(json);
-        p.ID = json.getString("ID");
+        p.ID = json.getString("name");
 
         return p;
     }

@@ -72,7 +72,8 @@ public class InteractionManager {
                 System.out.println("Interacting with " + potential.getClass().getName());
                 potential.getInteractionManager().doAction(parent);
             } catch (Exception e) {
-                Console.console.write("Erreur Interaction", false);
+                System.err.println(e);
+                // Console.console.write("Erreur Interaction", false);
             }
         }
     }
