@@ -210,10 +210,9 @@ public class World extends PApplet {
                 System.out.println("Recu bonjour du client");
                 JSONObject dataPlayer = requete.getJSONObject("data");
                 Player p = entityManager.addPlayer(dataPlayer, client);
+                p.ID = dataPlayer.getString("name");
                 System.out.println("id player : " + p.ID);
                 JSONObject playerDataSend = p.getJSON();
-                playerDataSend.put("ID", p.ID);
-                System.out.println(playerDataSend);
                 client.write(createRequest(BONJOUR_DU_SERVER, playerDataSend, "server").toString());
                 break;
 
@@ -240,6 +239,10 @@ public class World extends PApplet {
                 System.out.println("Interaction");
                 // System.out.println(requete);
                 JSONObject data = requete.getJSONObject("data");
+
+                System.out.println("Interaction : " + data);
+
+                entityManager.entityStorage.PrintAllEntities();
 
                 Interactable entityInteracted = (Interactable) this.entityManager.entityStorage
                         .getEntityFromID(data.getString("entityInteractedID"));

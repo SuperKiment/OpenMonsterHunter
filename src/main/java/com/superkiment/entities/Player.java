@@ -70,6 +70,7 @@ public class Player extends Entity implements Interactable {
             dir.x = json.getFloat("dir.x");
             dir.y = json.getFloat("dir.y");
             speed = json.getFloat("speed");
+            ID = json.getString("ID");
         } catch (Exception e) {
             System.out.println(e);
         }

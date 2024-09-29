@@ -65,4 +65,12 @@ public class EntityStorage {
         this.players.remove(p);
     }
 
+    public void PrintAllEntities() {
+        System.out.println("-----------All entities :");
+        for (Entity entity : entities) {
+            System.out.println(entity.ID + " : " + entity.getClass().getName() + " " + entity.pos);
+        }
+        System.out.println("-----------");
+    }
+
 }

@@ -95,6 +95,7 @@ public class EntityManager {
     public Player addControllablePlayer(JSONObject json) {
         Player p = JSONToPlayer(json);
         entityStorage.addEntity(p);
+        System.out.println("added controllable player : " + p.getJSON());
         // System.out.println("added controllable player " + p.ID);
         return p;
     }
