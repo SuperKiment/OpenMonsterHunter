@@ -3,9 +3,7 @@ package com.superkiment.entities;
 import com.superkiment.entities.logic.Entity;
 import com.superkiment.entities.logic.Interactable;
 import com.superkiment.entities.logic.InteractionManager;
-import com.superkiment.main.Console;
-
-import processing.core.PVector;;
+import processing.core.PVector;
 
 public class Dog extends Entity implements Interactable {
 
@@ -13,7 +11,6 @@ public class Dog extends Entity implements Interactable {
         super();
         this.interactionManager.setActionInteraction((interacting) -> {
             System.out.println("DOGG");
-            Console.console.write("Dog saying : I'm a dog !!", false);
         });
 
     }

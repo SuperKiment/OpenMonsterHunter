@@ -44,10 +44,6 @@ public class Entity {
      */
     protected InteractionManager interactionManager;
 
-    /**
-     * 
-     */
-
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
         try {
