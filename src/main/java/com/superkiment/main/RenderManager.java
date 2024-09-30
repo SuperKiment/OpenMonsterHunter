@@ -26,9 +26,9 @@ public class RenderManager {
     /**
      * The PApplet to be drawn on.
      */
-    private final processing.core.PApplet pap;
+    private final PApplet pap;
 
-    public RenderManager(processing.core.PApplet p) {
+    public RenderManager(PApplet p) {
         classToActions = new HashMap<Class<?>, RenderAction>();
         this.pap = p;
 
@@ -122,9 +122,9 @@ public class RenderManager {
      * </p>
      */
     private class RenderAction {
-        processing.core.PApplet pap;
+        PApplet pap;
 
-        public RenderAction(processing.core.PApplet p) {
+        public RenderAction(PApplet p) {
             pap = p;
         }
 
