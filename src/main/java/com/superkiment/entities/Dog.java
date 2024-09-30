@@ -11,6 +11,7 @@ public class Dog extends Entity implements Interactable {
         super();
         this.interactionManager.setActionInteraction((interacting) -> {
             System.out.println("DOGG");
+            this.sayingBox.setSayingText("i am doggggg");
         });
 
     }

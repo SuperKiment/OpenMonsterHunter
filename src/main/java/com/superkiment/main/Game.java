@@ -257,7 +257,7 @@ public class Game {
 
         entityManager.addOrRemoveEntityFromJSONData(data);
 
-        entityManager.updatePositions(data);
+        entityManager.updateEntityInfos(data);
 
         /*
          * for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {

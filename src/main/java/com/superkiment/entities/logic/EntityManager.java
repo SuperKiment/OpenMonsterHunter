@@ -221,7 +221,7 @@ public class EntityManager {
      * 
      * @param data
      */
-    public void updatePositions(JSONObject data) {
+    public void updateEntityInfos(JSONObject data) {
 
         for (Object keyObj : data.keys().toArray()) {
             String key = (String) keyObj;
@@ -232,6 +232,7 @@ public class EntityManager {
 
                 Entity entity = entityStorage.getEntityFromID(obj.getString("ID"));
                 if (entity != null) {
+                    entity.sayingBox.setSayingText(obj.getString("textSaying"));
                     entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
                 }
 

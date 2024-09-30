@@ -56,7 +56,7 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void settings() {
-        size(800, 800);
+        size(800, 800, P3D);
         smooth();
     }
 

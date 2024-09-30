@@ -44,6 +44,8 @@ public class Entity {
      */
     protected InteractionManager interactionManager;
 
+    public SayingBox sayingBox;
+
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
         try {
@@ -65,6 +67,7 @@ public class Entity {
         hitboxes.add(new Hitbox(this, new PVector(0, 0), 20));
 
         interactionManager = new InteractionManager(this);
+        sayingBox = new SayingBox(this);
     }
 
     /**
@@ -132,6 +135,8 @@ public class Entity {
         obj.setFloat("dir.y", remanantDir.y);
 
         obj.setString("className", this.getClass().getName());
+
+        obj.setString("textSaying", sayingBox.getSayingText());
 
         obj.setFloat("speed", speed);
 
