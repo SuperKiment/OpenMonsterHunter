@@ -95,7 +95,8 @@ public class EntityManager {
     public Player addControllablePlayer(JSONObject json) {
         Player p = JSONToPlayer(json);
         entityStorage.addEntity(p);
-        System.out.println("added controllable player");
+        System.out.println("added controllable player : " + p.getJSON());
+        // System.out.println("added controllable player " + p.ID);
         return p;
     }
 
@@ -151,6 +152,8 @@ public class EntityManager {
         PVector pos = new PVector(50, 50);
 
         Player p = new Player(json.getString("name"), pos);
+        System.out.println(json);
+        p.ID = json.getString("name");
 
         return p;
     }
@@ -218,7 +221,7 @@ public class EntityManager {
      * 
      * @param data
      */
-    public void updatePositions(JSONObject data) {
+    public void updateEntityInfos(JSONObject data) {
 
         for (Object keyObj : data.keys().toArray()) {
             String key = (String) keyObj;
@@ -229,6 +232,7 @@ public class EntityManager {
 
                 Entity entity = entityStorage.getEntityFromID(obj.getString("ID"));
                 if (entity != null) {
+                    entity.sayingBox.setSayingText(obj.getString("textSaying"));
                     entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
                 }
 

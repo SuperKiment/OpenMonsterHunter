@@ -4,6 +4,7 @@ import com.superkiment.entities.Dog;
 import com.superkiment.entities.Player;
 import com.superkiment.entities.logic.Entity;
 import com.superkiment.entities.logic.EntityManager;
+import com.superkiment.entities.logic.Interactable;
 
 import processing.core.PApplet;
 import processing.data.JSONArray;
@@ -58,7 +59,7 @@ public class World extends PApplet {
     /**
      * Envoi d'un nouvel input de console du server à tous les clients
      */
-    final static String PLAYER_INTERACTION = "heyyy i just wanna interact ykykykyk";
+    final static String INTERACTION_ENTITIES = "heyyy i just wanna interact ykykykyk";
 
     public String name = "NoName";
     private Server server;
@@ -207,9 +208,12 @@ public class World extends PApplet {
         switch (requete.getString("type")) {
             case BONJOUR_DU_CLIENT:
                 System.out.println("Recu bonjour du client");
-                Player p = entityManager.addPlayer(requete.getJSONObject("data"), client);
-                client.write(createRequest(BONJOUR_DU_SERVER, p.getJSON(), "server").toString());
-
+                JSONObject dataPlayer = requete.getJSONObject("data");
+                Player p = entityManager.addPlayer(dataPlayer, client);
+                p.ID = dataPlayer.getString("name");
+                System.out.println("id player : " + p.ID);
+                JSONObject playerDataSend = p.getJSON();
+                client.write(createRequest(BONJOUR_DU_SERVER, playerDataSend, "server").toString());
                 break;
 
             case UPDATE_PLAYER_DATA:
@@ -231,9 +235,28 @@ public class World extends PApplet {
                 }
 
                 break;
-            case PLAYER_INTERACTION:
+            case INTERACTION_ENTITIES:
                 System.out.println("Interaction");
-                System.out.println(requete);
+                // System.out.println(requete);
+                JSONObject data = requete.getJSONObject("data");
+
+                System.out.println("Interaction : " + data);
+
+                entityManager.entityStorage.PrintAllEntities();
+
+                Interactable entityInteracted = (Interactable) this.entityManager.entityStorage
+                        .getEntityFromID(data.getString("entityInteractedID"));
+
+                Interactable entityInteracting = (Interactable) this.entityManager.entityStorage
+                        .getEntityFromID(data.getString("entityInteractingID"));
+
+                System.out.println(entityInteracted);
+                System.out.println(entityInteracting);
+
+                if (entityInteracted != null && entityInteracting != null) {
+                    entityInteracting.getInteractionManager().InteractWith(entityInteracted);
+                }
+
                 break;
             default:
                 println("Jsp comment traiter : " + fullData);

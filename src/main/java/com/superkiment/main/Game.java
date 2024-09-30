@@ -85,12 +85,8 @@ public class Game {
         }
 
         // Déplacement du joueur
-        if (key == 'd' || key == 'q' || key == 's' || key == 'z') {
+        if (key == 'd' || key == 'q' || key == 's' || key == 'z' || key == 'f') {
             controlledPlayer.keyPressed(key);
-        }
-
-        if (key == 'f') {
-            controlledPlayer.getInteractionManager().Interact();
         }
 
         // Tests d'entités
@@ -261,7 +257,7 @@ public class Game {
 
         entityManager.addOrRemoveEntityFromJSONData(data);
 
-        entityManager.updatePositions(data);
+        entityManager.updateEntityInfos(data);
 
         /*
          * for (int i = 0; i < data.getJSONArray("logic.Player").size(); i++) {
@@ -279,7 +275,7 @@ public class Game {
     public void setControllablePlayer(JSONObject player) {
         controlledPlayer = entityManager.addControllablePlayer(player);
         setFocusedEntity(controlledPlayer);
-        System.out.println("controlled player : " + controlledPlayer.name);
+        // System.out.println("controlled player : " + controlledPlayer.name + " " + controlledPlayer.ID);
     }
 
     /**

@@ -3,6 +3,8 @@ package com.superkiment.main;
 import com.superkiment.entities.Dog;
 import com.superkiment.entities.Player;
 import com.superkiment.entities.logic.Entity;
+
+import processing.core.PApplet;
 import processing.core.PVector;
 import java.util.HashMap;
 
@@ -95,6 +97,8 @@ public class RenderManager {
             System.out.println(e);
             classToActions.get(Entity.class).Action(entity);
         }
+
+        entity.sayingBox.Render(pap);
     }
     // ========================================
 
