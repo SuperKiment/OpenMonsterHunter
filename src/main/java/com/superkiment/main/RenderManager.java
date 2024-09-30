@@ -77,7 +77,7 @@ public class RenderManager {
         classToActions.put(Dog.class, new RenderAction(this.pap) {
             public void Action(Entity e) {
                 pap.ellipse(e.pos.x, e.pos.y, 20, 20);
-                pap.ellipse(e.pos.x, e.pos.y, 5, 5);
+                pap.ellipse(e.pos.x+10, e.pos.y, 5, 5);
 
             }
         });

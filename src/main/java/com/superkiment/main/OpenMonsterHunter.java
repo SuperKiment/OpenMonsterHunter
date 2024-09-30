@@ -171,7 +171,7 @@ public class OpenMonsterHunter extends PApplet {
     /**
      * Connect the connectionToWorld to a world with a certain IP address.
      * 
-     * @param ip the ip as '000.000.000.000' TODO : test with a superkiment.fr
+     * @param ip the ip as '000.000.000.000'
      */
     public void ConnectToWorld(String ip) {
         game = new Game(this, null);

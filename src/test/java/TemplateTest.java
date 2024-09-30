@@ -2,13 +2,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import com.superkiment.entities.Player;
 import com.superkiment.main.*;
 import com.superkiment.main.GameManager.GameState;
-import com.superkiment.world.*;
 
 import processing.core.PVector;
 
