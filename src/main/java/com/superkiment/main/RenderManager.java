@@ -26,9 +26,9 @@ public class RenderManager {
     /**
      * The PApplet to be drawn on.
      */
-    private final processing.core.PApplet pap;
+    private final PApplet pap;
 
-    public RenderManager(processing.core.PApplet p) {
+    public RenderManager(PApplet p) {
         classToActions = new HashMap<Class<?>, RenderAction>();
         this.pap = p;
 
@@ -77,7 +77,7 @@ public class RenderManager {
         classToActions.put(Dog.class, new RenderAction(this.pap) {
             public void Action(Entity e) {
                 pap.ellipse(e.pos.x, e.pos.y, 20, 20);
-                pap.ellipse(e.pos.x, e.pos.y, 5, 5);
+                pap.ellipse(e.pos.x+10, e.pos.y, 5, 5);
 
             }
         });
@@ -122,9 +122,9 @@ public class RenderManager {
      * </p>
      */
     private class RenderAction {
-        processing.core.PApplet pap;
+        PApplet pap;
 
-        public RenderAction(processing.core.PApplet p) {
+        public RenderAction(PApplet p) {
             pap = p;
         }
 
