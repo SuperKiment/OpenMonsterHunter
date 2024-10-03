@@ -56,9 +56,12 @@ public class Tester {
 
         EntityJSONUpdater entityJSONUpdater = new EntityJSONUpdater(entity);
         JSONObject json = new JSONObject();
-        json.put("pos", new PVector(100, 150));
+        json.put("pos.x", 100);
+        json.put("pos.y", 150);
 
         entityJSONUpdater.UpdateFromJSON(json);
+
+        System.out.println("position : " + entity.pos);
     }
 
     public static void lezgo() {
