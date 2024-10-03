@@ -16,11 +16,19 @@ public class EntityJSONUpdater {
         consumers = new HashMap<String, Consumer<Object>>();
 
         consumers.put("pos.x", newData -> {
-            entity.pos.x = (int) newData;
+            entity.pos.x = ((int) newData);
         });
 
         consumers.put("pos.y", newData -> {
             entity.pos.y = (int) newData;
+        });
+
+        consumers.put("dir.x", newData -> {
+            entity.dir.x = (int) newData;
+        });
+
+        consumers.put("dir.y", newData -> {
+            entity.dir.y = (int) newData;
         });
     }
 

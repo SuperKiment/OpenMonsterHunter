@@ -56,8 +56,8 @@ public class Tester {
 
         EntityJSONUpdater entityJSONUpdater = new EntityJSONUpdater(entity);
         JSONObject json = new JSONObject();
-        json.put("pos.x", 100);
-        json.put("pos.y", 150);
+        json.put("pos.x", 100.5);
+        json.put("pos.y", 150.5);
 
         entityJSONUpdater.UpdateFromJSON(json);
 
