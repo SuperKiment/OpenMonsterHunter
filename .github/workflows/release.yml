@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+    release:
+        job_id: coucou-release
+        needs: build
+        runs-on: ubuntu-latest
+        if: github.event.pull_request.merged == true  # Crée la release seulement si la PR est mergée
+
+        steps:
+        # Checkout du code de la PR
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        # Crée une release sur GitHub
+        - name: Create GitHub Release
+          uses: actions/create-release@v1
+          with:
+            tag_name: ${{ github.sha }}  # Utilise le SHA du commit comme tag
+            release_name: "Release from PR ${{ github.event.pull_request.number }}"
+            body: "Automated release from pull request #${{ github.event.pull_request.number }}"
+            draft: false
+            prerelease: false
+            env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
