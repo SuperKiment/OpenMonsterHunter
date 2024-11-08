@@ -1,6 +1,7 @@
 package com.superkiment.entities;
 
 import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.JSONFieldName;
 import com.superkiment.entities.logic.Interactable;
 import com.superkiment.entities.logic.InteractionManager;
 
@@ -57,7 +58,7 @@ public class Player extends Entity implements Interactable {
     public JSONObject getJSON() {
         JSONObject json = super.getJSON();
 
-        json.put("name", name);
+        json.put(JSONFieldName.PLAYER_NAME.getValue(), name);
 
         return json;
     }

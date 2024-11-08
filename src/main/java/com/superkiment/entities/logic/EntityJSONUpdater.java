@@ -16,20 +16,28 @@ public class EntityJSONUpdater {
         this.entity = entity;
         consumers = new HashMap<String, Consumer<Object>>();
 
-        consumers.put("pos.x", newData -> {
+        consumers.put(JSONFieldName.POSITION_X.getValue(), newData -> {
             entity.pos.x = (float) ((double) newData);
         });
 
-        consumers.put("pos.y", newData -> {
+        consumers.put(JSONFieldName.POSITION_Y.getValue(), newData -> {
             entity.pos.y = (float) ((double) newData);
         });
 
-        consumers.put("dir.x", newData -> {
+        consumers.put(JSONFieldName.DIRECTION_X.getValue(), newData -> {
             entity.dir.x = (float) ((double) newData);
         });
 
-        consumers.put("dir.y", newData -> {
+        consumers.put(JSONFieldName.DIRECTION_Y.getValue(), newData -> {
             entity.dir.y = (float) ((double) newData);
+        });
+
+        consumers.put(JSONFieldName.TEXT_SAYING.getValue(), newData -> {
+            entity.sayingBox.setSayingText((String) newData);
+        });
+
+        consumers.put(JSONFieldName.SPEED.getValue(), newData -> {
+            entity.speed = (float) ((double) newData);
         });
     }
 
@@ -46,7 +54,7 @@ public class EntityJSONUpdater {
             } else {
                 System.err.println();
                 System.err.println("Key " + key + " for consumer from JSON data not found !");
-                System.err.println("Object : " + jsonData.toString());
+                System.err.println("Incoming data : " + jsonData.toString());
 
                 System.err.print("Consumers");
                 for (Map.Entry<String, Consumer<Object>> entry : consumers.entrySet()) {

@@ -1,6 +1,7 @@
 package com.superkiment.world;
 
 import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.JSONFieldName;
 import com.superkiment.entities.logic.Interactable;
 import com.superkiment.main.Console;
 import com.superkiment.main.Game;
@@ -20,7 +21,7 @@ public class ConnectionToWorld {
         client = new Client(omh, address, 5204);
 
         JSONObject dataPlayer = new JSONObject();
-        dataPlayer.put("name", omh.playerName);
+        dataPlayer.put(JSONFieldName.PLAYER_NAME.getValue(), omh.playerName);
         System.out.println(OpenMonsterHunter.game.controlledPlayer);
         JSONObject bonjourJSON = World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, omh.playerName);
 
