@@ -2,6 +2,7 @@ package com.superkiment.entities.logic;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import processing.data.JSONObject;
@@ -16,19 +17,19 @@ public class EntityJSONUpdater {
         consumers = new HashMap<String, Consumer<Object>>();
 
         consumers.put("pos.x", newData -> {
-            entity.pos.x = ((int) newData);
+            entity.pos.x = (float) ((double) newData);
         });
 
         consumers.put("pos.y", newData -> {
-            entity.pos.y = (int) newData;
+            entity.pos.y = (float) ((double) newData);
         });
 
         consumers.put("dir.x", newData -> {
-            entity.dir.x = (int) newData;
+            entity.dir.x = (float) ((double) newData);
         });
 
         consumers.put("dir.y", newData -> {
-            entity.dir.y = (int) newData;
+            entity.dir.y = (float) ((double) newData);
         });
     }
 
@@ -43,7 +44,18 @@ public class EntityJSONUpdater {
             if (comportementConsumer != null) {
                 comportementConsumer.accept(jsonData.get(key));
             } else {
+                System.err.println();
                 System.err.println("Key " + key + " for consumer from JSON data not found !");
+                System.err.println("Object : " + jsonData.toString());
+
+                System.err.print("Consumers");
+                for (Map.Entry<String, Consumer<Object>> entry : consumers.entrySet()) {
+                    System.err.print(" : " + entry.getKey());
+                }
+
+                System.err.println();
+                System.err.println();
+
             }
         }
     }
