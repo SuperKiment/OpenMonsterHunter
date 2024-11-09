@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import com.superkiment.entities.logic.Entity;
 import com.superkiment.entities.logic.EntityJSONUpdater;
+import com.superkiment.entities.logic.JSONFieldName;
 
 import processing.core.PVector;
 import processing.data.JSONObject;
@@ -56,12 +57,15 @@ public class Tester {
 
         EntityJSONUpdater entityJSONUpdater = new EntityJSONUpdater(entity);
         JSONObject json = new JSONObject();
-        json.put("pos.x", 100.5);
-        json.put("pos.y", 150.5);
+        json.put(JSONFieldName.POSITION_X.getValue(), 100);
+        json.put(JSONFieldName.POSITION_Y.getValue(), 150);
+        json.put("pos.z", 150.5);
+        json.put(JSONFieldName.SPEED.getValue(), 10.7);
+        json.put(JSONFieldName.TEXT_SAYING.getValue(), "bruh");
 
         entityJSONUpdater.UpdateFromJSON(json);
 
-        System.out.println("position : " + entity.pos);
+        System.out.println("update : " + entity.getJSON());
     }
 
     public static void lezgo() {
