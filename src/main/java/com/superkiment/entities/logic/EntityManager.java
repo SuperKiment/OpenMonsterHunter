@@ -51,7 +51,7 @@ public class EntityManager {
 
         try {
             Entity e = null;
-            Class<?> arrayClass = Class.forName(json.getString("className"));
+            Class<?> arrayClass = Class.forName(json.getString(JSONFieldName.CLASS_NAME.getValue()));
             e = (Entity) arrayClass.getDeclaredConstructor().newInstance();
             e.UpdateFromJSON(json);
             entityStorage.addEntity(e);
@@ -151,9 +151,9 @@ public class EntityManager {
     public Player JSONToPlayer(JSONObject json) {
         PVector pos = new PVector(50, 50);
 
-        Player p = new Player(json.getString("name"), pos);
+        Player p = new Player(json.getString(JSONFieldName.PLAYER_NAME.getValue()), pos);
         System.out.println(json);
-        p.ID = json.getString("name");
+        p.ID = json.getString(JSONFieldName.PLAYER_NAME.getValue());
 
         return p;
     }
@@ -230,10 +230,11 @@ public class EntityManager {
             for (int i = 0; i < array.size(); i++) {
                 JSONObject obj = array.getJSONObject(i);
 
-                Entity entity = entityStorage.getEntityFromID(obj.getString("ID"));
+                Entity entity = entityStorage.getEntityFromID(obj.getString(JSONFieldName.ID.getValue()));
                 if (entity != null) {
-                    entity.sayingBox.setSayingText(obj.getString("textSaying"));
-                    entity.pos.set(obj.getFloat("pos.x"), obj.getFloat("pos.y"));
+                    entity.sayingBox.setSayingText(obj.getString(JSONFieldName.TEXT_SAYING.getValue()));
+                    entity.pos.set(obj.getFloat(JSONFieldName.POSITION_X.getValue()),
+                            obj.getFloat(JSONFieldName.POSITION_Y.getValue()));
                 }
 
                 // for (Entity entity : entities) {
@@ -297,7 +298,7 @@ public class EntityManager {
         } else {
             newEntity = instanciateEntity(arrayClass);
         }
-        newEntity.ID = jsonFromArray.getString("ID");
+        newEntity.ID = jsonFromArray.getString(JSONFieldName.ID.getValue());
 
         return newEntity;
     }
@@ -305,7 +306,8 @@ public class EntityManager {
     private Player instanciatePlayer(Class<?> arrayClass, JSONObject jsonFromArray) {
         try {
             return (Player) arrayClass.getDeclaredConstructor(String.class, PVector.class)
-                    .newInstance(jsonFromArray.getString("name"), new PVector(100, 100));
+                    .newInstance(jsonFromArray.getString(JSONFieldName.PLAYER_NAME.getValue()),
+                            new PVector(100, 100));
         } catch (Exception e) {
             return null;
         }
