@@ -46,6 +46,8 @@ public class Entity {
 
     public SayingBox sayingBox;
 
+    protected EntityJSONUpdater entityJSONUpdater;
+
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
         try {
@@ -68,6 +70,7 @@ public class Entity {
 
         interactionManager = new InteractionManager(this);
         sayingBox = new SayingBox(this);
+        entityJSONUpdater = new EntityJSONUpdater(this);
     }
 
     /**
@@ -157,12 +160,14 @@ public class Entity {
      */
     public void UpdateFromJSON(JSONObject json) {
         try {
-            pos.x = json.getFloat(JSONFieldName.POSITION_X.getValue());
-            pos.y = json.getFloat(JSONFieldName.POSITION_Y.getValue());
-            remanantDir.x = json.getFloat(JSONFieldName.DIRECTION_X.getValue());
-            remanantDir.y = json.getFloat(JSONFieldName.DIRECTION_Y.getValue());
-            speed = json.getFloat(JSONFieldName.SPEED.getValue());
-            ID = json.getString(JSONFieldName.ID.getValue());
+            // pos.x = json.getFloat(JSONFieldName.POSITION_X.getValue());
+            // pos.y = json.getFloat(JSONFieldName.POSITION_Y.getValue());
+            // remanantDir.x = json.getFloat(JSONFieldName.DIRECTION_X.getValue());
+            // remanantDir.y = json.getFloat(JSONFieldName.DIRECTION_Y.getValue());
+            // speed = json.getFloat(JSONFieldName.SPEED.getValue());
+            // ID = json.getString(JSONFieldName.ID.getValue());
+
+            this.entityJSONUpdater.UpdateFromJSON(json);
 
         } catch (Exception e) {
             System.out.println(e);

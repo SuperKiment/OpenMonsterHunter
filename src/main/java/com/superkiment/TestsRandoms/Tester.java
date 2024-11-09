@@ -57,8 +57,8 @@ public class Tester {
 
         EntityJSONUpdater entityJSONUpdater = new EntityJSONUpdater(entity);
         JSONObject json = new JSONObject();
-        json.put(JSONFieldName.POSITION_X.getValue(), 100.5);
-        json.put(JSONFieldName.POSITION_Y.getValue(), 150.5);
+        json.put(JSONFieldName.POSITION_X.getValue(), 100);
+        json.put(JSONFieldName.POSITION_Y.getValue(), 150);
         json.put("pos.z", 150.5);
         json.put(JSONFieldName.SPEED.getValue(), 10.7);
         json.put(JSONFieldName.TEXT_SAYING.getValue(), "bruh");

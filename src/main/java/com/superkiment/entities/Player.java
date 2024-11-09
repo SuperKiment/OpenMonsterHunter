@@ -63,20 +63,6 @@ public class Player extends Entity implements Interactable {
         return json;
     }
 
-    @Override
-    public void UpdateFromJSON(JSONObject json) {
-        try {
-            pos.x = json.getFloat("pos.x");
-            pos.y = json.getFloat("pos.y");
-            dir.x = json.getFloat("dir.x");
-            dir.y = json.getFloat("dir.y");
-            speed = json.getFloat("speed");
-            ID = json.getString("ID");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
     /**
      * Send a command to the Player to move or other. Do not forget keyReleased
      * 

@@ -17,19 +17,23 @@ public class EntityJSONUpdater {
         consumers = new HashMap<String, Consumer<Object>>();
 
         consumers.put(JSONFieldName.POSITION_X.getValue(), newData -> {
-            entity.pos.x = (float) ((double) newData);
+            Number number = (Number) newData;
+            entity.pos.x = number.floatValue();
         });
 
         consumers.put(JSONFieldName.POSITION_Y.getValue(), newData -> {
-            entity.pos.y = (float) ((double) newData);
+            Number number = (Number) newData;
+            entity.pos.y = number.floatValue();
         });
 
         consumers.put(JSONFieldName.DIRECTION_X.getValue(), newData -> {
-            entity.dir.x = (float) ((double) newData);
+            Number number = (Number) newData;
+            entity.dir.x = number.floatValue();
         });
 
         consumers.put(JSONFieldName.DIRECTION_Y.getValue(), newData -> {
-            entity.dir.y = (float) ((double) newData);
+            Number number = (Number) newData;
+            entity.dir.y = number.floatValue();
         });
 
         consumers.put(JSONFieldName.TEXT_SAYING.getValue(), newData -> {
@@ -37,7 +41,8 @@ public class EntityJSONUpdater {
         });
 
         consumers.put(JSONFieldName.SPEED.getValue(), newData -> {
-            entity.speed = (float) ((double) newData);
+            Number number = (Number) newData;
+            entity.speed = number.floatValue();
         });
     }
 
