@@ -38,7 +38,7 @@ public class ConnectionToWorld {
         // System.out.println(reponse);
         // System.out.println(reponse.getString("type"));
 
-        while (reponse.getString("type") == null) {
+        while (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()) == null) {
 
             dataString = client.readString();
             reponse = JSONObject.parse(dataString);
@@ -48,10 +48,10 @@ public class ConnectionToWorld {
             // System.out.println(reponse.getString("type"));
         }
         try {
-            if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
+            if (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()).equals(World.BONJOUR_DU_SERVER)) {
                 System.out.println("Arrive du server :");
-                System.out.println(reponse.getJSONObject("data"));
-                omh.setControllablePlayer(reponse.getJSONObject("data"));
+                System.out.println(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
+                omh.setControllablePlayer(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -75,14 +75,14 @@ public class ConnectionToWorld {
                 continue;
             }
 
-            switch (data.getString("type")) {
+            switch (data.getString(JSONFieldName.REQUEST_TYPE.getValue())) {
                 case World.UPDATE_WORLD_STATE_ENTITIES:
-                    TraiterDonnees(data.getJSONObject("data"));
+                    TraiterDonnees(data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
                     break;
                 case World.CONSOLE_INPUT_FOR_EVERYONE:
                     // System.out.println(data);
-                    JSONObject input = data.getJSONObject("data");
-                    Console.console.write(input.getString("sender") + " : " + input.getString("text"), true);
+                    JSONObject input = data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
+                    Console.console.write(input.getString(JSONFieldName.REQUEST_SENDER.getValue()) + " : " + input.getString(JSONFieldName.CONSOLE_TEXT.getValue()), true);
                     break;
             }
         }
@@ -109,7 +109,7 @@ public class ConnectionToWorld {
             return;
 
         JSONObject json = new JSONObject();
-        json.setString("text", input);
+        json.setString(JSONFieldName.CONSOLE_TEXT.getValue(), input);
 
         client.write(
                 World.createRequest(World.NEW_CONSOLE_INPUT, json, omh.playerName) + World.DELIMITER_ENTETE);
@@ -121,8 +121,8 @@ public class ConnectionToWorld {
 
         JSONObject json = new JSONObject();
 
-        json.setString("entityInteractingID", interacting.ID);
-        json.setString("entityInteractedID", interactedWith.getEntity().ID);
+        json.setString(JSONFieldName.ENTITY_INTERACTING_ID.getValue(), interacting.ID);
+        json.setString(JSONFieldName.ENTITY_INTERACTED_ID.getValue(), interactedWith.getEntity().ID);
 
         client.write(World.createRequest(World.INTERACTION_ENTITIES, json, omh.playerName) + World.DELIMITER_ENTETE);
     }

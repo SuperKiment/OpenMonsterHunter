@@ -206,7 +206,7 @@ public class World extends PApplet {
         JSONObject requete = JSONObject.parse(fullData);
 
         // println("requete : " + requete);
-        switch (requete.getString("type")) {
+        switch (requete.getString(JSONFieldName.REQUEST_TYPE.getValue())) {
             case BONJOUR_DU_CLIENT:
                 System.out.println("Recu bonjour du client");
                 JSONObject dataPlayer = requete.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
@@ -241,7 +241,7 @@ public class World extends PApplet {
             case INTERACTION_ENTITIES:
                 System.out.println("Interaction");
                 // System.out.println(requete);
-                JSONObject data = requete.getJSONObject("data");
+                JSONObject data = requete.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
 
                 System.out.println("Interaction : " + data);
 
@@ -332,7 +332,7 @@ public class World extends PApplet {
                 println(c.ip());
                 JSONObject json = new JSONObject();
                 json.setString(JSONFieldName.CONSOLE_TEXT.getValue(), str);
-                json.setString("sender", sender == null ? "Server" : entityManager.getPlayer(sender).name);
+                json.setString(JSONFieldName.REQUEST_SENDER.getValue(), sender == null ? "Server" : entityManager.getPlayer(sender).name);
                 c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
             }
         }

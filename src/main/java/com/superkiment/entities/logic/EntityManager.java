@@ -51,7 +51,7 @@ public class EntityManager {
 
         try {
             Entity e = null;
-            Class<?> arrayClass = Class.forName(json.getString("className"));
+            Class<?> arrayClass = Class.forName(json.getString(JSONFieldName.CLASS_NAME.getValue()));
             e = (Entity) arrayClass.getDeclaredConstructor().newInstance();
             e.UpdateFromJSON(json);
             entityStorage.addEntity(e);
