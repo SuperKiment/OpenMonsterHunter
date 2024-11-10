@@ -44,6 +44,13 @@ public class EntityJSONUpdater {
             Number number = (Number) newData;
             entity.speed = number.floatValue();
         });
+
+        consumers.put("name", newData -> {
+        });
+        consumers.put("ID", newData -> {
+        });
+        consumers.put("className", newData -> {
+        });
     }
 
     public void UpdateFromJSON(JSONObject jsonData) {
