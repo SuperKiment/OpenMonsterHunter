@@ -299,7 +299,10 @@ public class World extends PApplet {
             if (!entities.containsKey(className))
                 entities.put(className, new JSONArray());
 
-            entities.get(className).append(e.getJSON());
+            JSONObject whatHasChangedJSON = e.getWhatHasChangedJSON();
+            whatHasChangedJSON.setString(JSONFieldName.ID.getValue(), e.ID);
+
+            entities.get(className).append(whatHasChangedJSON);
         }
 
         entities.forEach((key, value) -> {
