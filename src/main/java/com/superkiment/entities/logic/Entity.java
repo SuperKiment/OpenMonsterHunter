@@ -44,9 +44,16 @@ public class Entity {
      */
     protected InteractionManager interactionManager;
 
+    /**
+     * The text showing above the entity, what the entity is saying
+     */
     public SayingBox sayingBox;
 
-    protected EntityJSONUpdater entityJSONUpdater;
+    /**
+     * An EntityJSONUpdater instance used to update the entity's properties based on
+     * incoming JSON.
+     */
+    public EntityJSONUpdater entityJSONUpdater;
 
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
@@ -137,14 +144,16 @@ public class Entity {
         obj.setFloat(JSONFieldName.DIRECTION_X.getValue(), remanantDir.x);
         obj.setFloat(JSONFieldName.DIRECTION_Y.getValue(), remanantDir.y);
 
-        obj.setString(JSONFieldName.CLASS_NAME.getValue(), this.getClass().getName());
-
         obj.setString(JSONFieldName.TEXT_SAYING.getValue(), sayingBox.getSayingText());
-
         obj.setFloat(JSONFieldName.SPEED.getValue(), speed);
-
+        
         obj.setString(JSONFieldName.ID.getValue(), ID);
+        obj.setString(JSONFieldName.CLASS_NAME.getValue(), this.getClass().getName());
         return obj;
+    }
+
+    public JSONObject getWhatHasChangedJSON() {
+        return this.entityJSONUpdater.getWhatHasChangedJSON();
     }
 
     public String getClassName() {

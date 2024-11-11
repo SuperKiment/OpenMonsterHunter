@@ -55,7 +55,6 @@ public class Tester {
 
         Entity entity = new Entity();
 
-        EntityJSONUpdater entityJSONUpdater = new EntityJSONUpdater(entity);
         JSONObject json = new JSONObject();
         json.put(JSONFieldName.POSITION_X.getValue(), 100);
         json.put(JSONFieldName.POSITION_Y.getValue(), 150);
@@ -63,9 +62,15 @@ public class Tester {
         json.put(JSONFieldName.SPEED.getValue(), 10.7);
         json.put(JSONFieldName.TEXT_SAYING.getValue(), "bruh");
 
-        entityJSONUpdater.UpdateFromJSON(json);
+        entity.entityJSONUpdater.UpdateFromJSON(json);
 
         System.out.println("update : " + entity.getJSON());
+
+        entity.pos.x = 852;
+
+        entity.entityJSONUpdater.UpdateFromJSON(entity.getWhatHasChangedJSON());
+
+        System.out.println(entity.getJSON());
     }
 
     public static void lezgo() {

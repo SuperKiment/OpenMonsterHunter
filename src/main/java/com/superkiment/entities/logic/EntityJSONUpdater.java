@@ -8,12 +8,24 @@ import java.util.function.Consumer;
 import processing.data.JSONObject;
 
 public class EntityJSONUpdater {
-    Entity entity;
+    /**
+     * Updated entity
+     */
+    private Entity entity;
 
-    HashMap<String, Consumer<Object>> consumers;
+    /**
+     * Behaviours of the updater : link a String to a Consumer<Object>.
+     * The String is the entity's property name and the Consumer is what the updater
+     * has to do with the value.
+     */
+    private HashMap<String, Consumer<Object>> consumers;
+
+    private JSONObject lastJSONProjection;
 
     public EntityJSONUpdater(Entity entity) {
         this.entity = entity;
+        lastJSONProjection = entity.getJSON();
+
         consumers = new HashMap<String, Consumer<Object>>();
 
         consumers.put(JSONFieldName.POSITION_X.getValue(), newData -> {
@@ -53,12 +65,28 @@ public class EntityJSONUpdater {
         });
     }
 
+    /**
+     * Updates the entity based on incoming JSON. Example :
+     * <p>
+     * <code>
+     * <p>{
+     * <p>  "pos.x" : "50.5",
+     * <p>  "pos.y" : "57.5"
+     * <p>}
+     * </code>
+     * <p>
+     * Will update the entity's position.
+     * The other properties won't be touched unless they are specified as key in the
+     * JSON.
+     * 
+     * @param jsonData
+     */
     public void UpdateFromJSON(JSONObject jsonData) {
         Iterator<String> keys = jsonData.keys().iterator();
 
         while (keys.hasNext()) {
             String key = keys.next();
-            System.out.println(key);
+            System.out.println("Updating : " + key);
 
             Consumer<Object> comportementConsumer = consumers.get(key);
             if (comportementConsumer != null) {
@@ -78,5 +106,22 @@ public class EntityJSONUpdater {
 
             }
         }
+
+    }
+
+    public JSONObject getWhatHasChangedJSON() {
+        JSONObject whatHasChanged = new JSONObject();
+        JSONObject complete = entity.getJSON();
+
+        for (Object keyObj : complete.keys()) {
+            String key = (String) keyObj;
+
+            if (!lastJSONProjection.get(key).equals(complete.get(key))) {
+                whatHasChanged.put(key, complete.get(key));
+            }
+        }
+
+        lastJSONProjection = this.entity.getJSON();
+        return whatHasChanged;
     }
 }
