@@ -332,7 +332,8 @@ public class World extends PApplet {
                 println(c.ip());
                 JSONObject json = new JSONObject();
                 json.setString(JSONFieldName.CONSOLE_TEXT.getValue(), str);
-                json.setString(JSONFieldName.REQUEST_SENDER.getValue(), sender == null ? "Server" : entityManager.getPlayer(sender).name);
+                json.setString(JSONFieldName.REQUEST_SENDER.getValue(),
+                        sender == null ? "Server" : entityManager.getPlayer(sender).name);
                 c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
             }
         }

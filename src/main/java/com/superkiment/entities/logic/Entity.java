@@ -139,14 +139,14 @@ public class Entity {
     public JSONObject getJSON() {
         JSONObject obj = new JSONObject();
 
-        obj.setFloat(JSONFieldName.POSITION_X.getValue(), pos.x);
-        obj.setFloat(JSONFieldName.POSITION_Y.getValue(), pos.y);
-        obj.setFloat(JSONFieldName.DIRECTION_X.getValue(), remanantDir.x);
-        obj.setFloat(JSONFieldName.DIRECTION_Y.getValue(), remanantDir.y);
+        obj.setString(JSONFieldName.POSITION_X.getValue(), pos.x + "");
+        obj.setString(JSONFieldName.POSITION_Y.getValue(), pos.y + "");
+        obj.setString(JSONFieldName.DIRECTION_X.getValue(), remanantDir.x + "");
+        obj.setString(JSONFieldName.DIRECTION_Y.getValue(), remanantDir.y + "");
 
         obj.setString(JSONFieldName.TEXT_SAYING.getValue(), sayingBox.getSayingText());
-        obj.setFloat(JSONFieldName.SPEED.getValue(), speed);
-        
+        obj.setString(JSONFieldName.SPEED.getValue(), speed + "");
+
         obj.setString(JSONFieldName.ID.getValue(), ID);
         obj.setString(JSONFieldName.CLASS_NAME.getValue(), this.getClass().getName());
         return obj;

@@ -231,7 +231,11 @@ public class EntityManager {
                 JSONObject obj = array.getJSONObject(i);
 
                 Entity entity = entityStorage.getEntityFromID(obj.getString(JSONFieldName.ID.getValue()));
+
                 if (entity != null) {
+                    if (entity == OpenMonsterHunter.game.controlledPlayer)
+                        continue;
+                        
                     entity.sayingBox.setSayingText(obj.getString(JSONFieldName.TEXT_SAYING.getValue()));
                     entity.pos.set(obj.getFloat(JSONFieldName.POSITION_X.getValue()),
                             obj.getFloat(JSONFieldName.POSITION_Y.getValue()));

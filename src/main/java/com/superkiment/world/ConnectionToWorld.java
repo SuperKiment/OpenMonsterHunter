@@ -82,7 +82,8 @@ public class ConnectionToWorld {
                 case World.CONSOLE_INPUT_FOR_EVERYONE:
                     // System.out.println(data);
                     JSONObject input = data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
-                    Console.console.write(input.getString(JSONFieldName.REQUEST_SENDER.getValue()) + " : " + input.getString(JSONFieldName.CONSOLE_TEXT.getValue()), true);
+                    Console.console.write(input.getString(JSONFieldName.REQUEST_SENDER.getValue()) + " : "
+                            + input.getString(JSONFieldName.CONSOLE_TEXT.getValue()), true);
                     break;
             }
         }
@@ -94,7 +95,8 @@ public class ConnectionToWorld {
     private void EnvoiDonneesPlayer() {
         if (OpenMonsterHunter.game.controlledPlayer != null)
             client.write(
-                    World.createRequest(World.UPDATE_PLAYER_DATA, OpenMonsterHunter.game.controlledPlayer.getJSON(),
+                    World.createRequest(World.UPDATE_PLAYER_DATA,
+                            OpenMonsterHunter.game.controlledPlayer.getWhatHasChangedJSON(),
                             omh.playerName) + World.DELIMITER_ENTETE);
     }
 

@@ -11,7 +11,6 @@ import processing.core.PVector;
 import processing.data.JSONObject;
 
 @SuppressWarnings("unused")
-
 public class Tester {
 
     public static void main(String[] args) {
@@ -56,21 +55,21 @@ public class Tester {
         Entity entity = new Entity();
 
         JSONObject json = new JSONObject();
-        json.put(JSONFieldName.POSITION_X.getValue(), 100);
-        json.put(JSONFieldName.POSITION_Y.getValue(), 150);
-        json.put("pos.z", 150.5);
-        json.put(JSONFieldName.SPEED.getValue(), 10.7);
-        json.put(JSONFieldName.TEXT_SAYING.getValue(), "bruh");
-
-        entity.entityJSONUpdater.UpdateFromJSON(json);
-
-        System.out.println("update : " + entity.getJSON());
-
-        entity.pos.x = 852;
-
-        entity.entityJSONUpdater.UpdateFromJSON(entity.getWhatHasChangedJSON());
+        json.setString(JSONFieldName.POSITION_X.getValue(), 100.5f + "");
+        json.setString(JSONFieldName.POSITION_Y.getValue(), 150.5f + "");
+        json.setString("pos.z", 150.5 + "");
+        json.setString(JSONFieldName.SPEED.getValue(), 10.7 + "");
+        json.setString(JSONFieldName.TEXT_SAYING.getValue(), "bruh");
 
         System.out.println(entity.getJSON());
+
+        entity.entityJSONUpdater.UpdateFromJSON(json);
+        System.out.println(entity.getWhatHasChangedJSON());
+
+        System.out.println();
+        System.out.println();
+        System.out.println("Entity : " + entity.getJSON());
+
     }
 
     public static void lezgo() {

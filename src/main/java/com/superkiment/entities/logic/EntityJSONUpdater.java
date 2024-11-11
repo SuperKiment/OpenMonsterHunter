@@ -20,7 +20,7 @@ public class EntityJSONUpdater {
      */
     private HashMap<String, Consumer<Object>> consumers;
 
-    private JSONObject lastJSONProjection;
+    public JSONObject lastJSONProjection;
 
     public EntityJSONUpdater(Entity entity) {
         this.entity = entity;
@@ -29,23 +29,23 @@ public class EntityJSONUpdater {
         consumers = new HashMap<String, Consumer<Object>>();
 
         consumers.put(JSONFieldName.POSITION_X.getValue(), newData -> {
-            Number number = (Number) newData;
-            entity.pos.x = number.floatValue();
+            String number = (String) newData;
+            entity.pos.x = Math.round(Float.parseFloat(number));
         });
 
         consumers.put(JSONFieldName.POSITION_Y.getValue(), newData -> {
-            Number number = (Number) newData;
-            entity.pos.y = number.floatValue();
+            String number = (String) newData;
+            entity.pos.y = Math.round(Float.parseFloat(number));
         });
 
         consumers.put(JSONFieldName.DIRECTION_X.getValue(), newData -> {
-            Number number = (Number) newData;
-            entity.dir.x = number.floatValue();
+            String number = (String) newData;
+            entity.dir.x = Math.round(Float.parseFloat(number));
         });
 
         consumers.put(JSONFieldName.DIRECTION_Y.getValue(), newData -> {
-            Number number = (Number) newData;
-            entity.dir.y = number.floatValue();
+            String number = (String) newData;
+            entity.dir.y = Math.round(Float.parseFloat(number));
         });
 
         consumers.put(JSONFieldName.TEXT_SAYING.getValue(), newData -> {
@@ -53,8 +53,8 @@ public class EntityJSONUpdater {
         });
 
         consumers.put(JSONFieldName.SPEED.getValue(), newData -> {
-            Number number = (Number) newData;
-            entity.speed = number.floatValue();
+            String number = (String) newData;
+            entity.speed = Float.parseFloat(number);
         });
 
         consumers.put("name", newData -> {
@@ -86,7 +86,7 @@ public class EntityJSONUpdater {
 
         while (keys.hasNext()) {
             String key = keys.next();
-            System.out.println("Updating : " + key);
+            // System.out.println("Updating : " + key);
 
             Consumer<Object> comportementConsumer = consumers.get(key);
             if (comportementConsumer != null) {
@@ -113,11 +113,16 @@ public class EntityJSONUpdater {
         JSONObject whatHasChanged = new JSONObject();
         JSONObject complete = entity.getJSON();
 
+        // System.out.println();
         for (Object keyObj : complete.keys()) {
             String key = (String) keyObj;
 
-            if (!lastJSONProjection.get(key).equals(complete.get(key))) {
-                whatHasChanged.put(key, complete.get(key));
+            Object completeVal = complete.get(key);
+            Object lastJSONProjectionVal = lastJSONProjection.get(key);
+
+            if (!completeVal.equals(lastJSONProjectionVal)) {
+                whatHasChanged.put(key, completeVal);
+                // System.out.println("changed : " + key + "\t -> " + completeVal);
             }
         }
 
