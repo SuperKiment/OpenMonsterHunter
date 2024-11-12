@@ -302,6 +302,10 @@ public class World extends PApplet {
             JSONObject whatHasChangedJSON = e.getWhatHasChangedJSON();
             whatHasChangedJSON.setString(JSONFieldName.ID.getValue(), e.ID);
 
+            if (e.getClass().getName().equals(Player.class.getName())) {
+                whatHasChangedJSON.setString(JSONFieldName.PLAYER_NAME.getValue(), ((Player) e).name);
+            }
+
             entities.get(className).append(whatHasChangedJSON);
         }
 

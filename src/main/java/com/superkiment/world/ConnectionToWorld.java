@@ -77,7 +77,6 @@ public class ConnectionToWorld {
 
             switch (data.getString(JSONFieldName.REQUEST_TYPE.getValue())) {
                 case World.UPDATE_WORLD_STATE_ENTITIES:
-                System.out.println(data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
                     TraiterDonnees(data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
                     break;
                 case World.CONSOLE_INPUT_FOR_EVERYONE:
