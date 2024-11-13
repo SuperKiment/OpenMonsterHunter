@@ -43,6 +43,16 @@ public class World extends PApplet {
     final static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
 
     /**
+     * Envoi des données d'une entité existante sur le server mais pas sur le client
+     */
+    final static String NEW_ENT_FROM_SERVER = "here is johnnnnyyyyyyyyyyyy";
+
+    /**
+     * Retire une entité des EntityManagers (détruite ou hors vue)
+     */
+    final static String REMOVE_ENT_FROM_SERVER = "oh my god he died";
+
+    /**
      * Envoi d'un chat ou d'une commande du client au server
      */
     final static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";

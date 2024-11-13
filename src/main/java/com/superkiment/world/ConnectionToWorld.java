@@ -93,11 +93,15 @@ public class ConnectionToWorld {
     }
 
     private void EnvoiDonneesPlayer() {
-        if (OpenMonsterHunter.game.controlledPlayer != null)
+        if (OpenMonsterHunter.game.controlledPlayer != null) {
+            JSONObject json = OpenMonsterHunter.game.controlledPlayer.getWhatHasChangedJSON();
+            json.setString(JSONFieldName.DIRECTION_X.getValue(), OpenMonsterHunter.game.controlledPlayer.dir.x + "");
+            json.setString(JSONFieldName.DIRECTION_Y.getValue(), OpenMonsterHunter.game.controlledPlayer.dir.y + "");
             client.write(
                     World.createRequest(World.UPDATE_PLAYER_DATA,
-                            OpenMonsterHunter.game.controlledPlayer.getWhatHasChangedJSON(),
+                            json,
                             omh.playerName) + World.DELIMITER_ENTETE);
+        }
     }
 
     public void EnvoiDonneesNouvelleEntite(JSONObject json) {
