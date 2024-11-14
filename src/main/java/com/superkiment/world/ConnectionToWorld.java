@@ -7,18 +7,17 @@ import com.superkiment.main.Console;
 import com.superkiment.main.Game;
 import com.superkiment.main.OpenMonsterHunter;
 import processing.data.JSONObject;
-import processing.net.Client;
 
 import java.util.ArrayList;
 
 public class ConnectionToWorld {
-    public Client client;
+    public PlayerClient client;
     OpenMonsterHunter omh;
 
     public ConnectionToWorld(OpenMonsterHunter omh, String address, Game game) {
         this.omh = omh;
 
-        client = new Client(omh, address, 5204);
+        client = new PlayerClient(omh, address, 5204, OpenMonsterHunter.game.controlledPlayer);
 
         JSONObject dataPlayer = new JSONObject();
         dataPlayer.put(JSONFieldName.PLAYER_NAME.getValue(), omh.playerName);
