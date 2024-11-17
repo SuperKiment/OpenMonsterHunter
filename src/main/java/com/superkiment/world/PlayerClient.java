@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.net.Client;
 
 public class PlayerClient extends Client {
-    Player player;
+    private Player player = null;
 
     public PlayerClient(PApplet p, String ip, int port) {
         super(p, ip, port);
@@ -19,5 +19,9 @@ public class PlayerClient extends Client {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 }

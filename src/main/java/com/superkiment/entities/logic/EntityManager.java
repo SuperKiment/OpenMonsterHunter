@@ -2,33 +2,25 @@ package com.superkiment.entities.logic;
 
 import com.superkiment.entities.Player;
 import com.superkiment.main.OpenMonsterHunter;
+import com.superkiment.world.PlayerClient;
+
 import processing.core.PVector;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
-import processing.net.Client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EntityManager {
 
-    /**
-     * Hash to get a Player from a Client
-     */
-    private HashMap<Client, Player> clientToPlayers;
-
-    /**
-     * Hash to get a Client from a Player
-     */
-    private HashMap<Player, Client> playersToClient;
+    public ArrayList<PlayerClient> clients;
 
     public EntityStorage entityStorage;
 
     public EntityManager() {
         entityStorage = new EntityStorage(this);
 
-        clientToPlayers = new HashMap<Client, Player>();
-        playersToClient = new HashMap<Player, Client>();
+        clients = new ArrayList<PlayerClient>();
     }
 
     // ADD
@@ -66,12 +58,12 @@ public class EntityManager {
      * @param player
      * @param client
      */
-    public void addPlayer(Player player, Client client) {
-        entityStorage.addEntity(player);
-        entityStorage.addPlayer(player);
-        clientToPlayers.put(client, player);
-        playersToClient.put(player, client);
-    }
+    // public void addPlayer(Player player, Client client) {
+    // entityStorage.addEntity(player);
+    // entityStorage.addPlayer(player);
+    // clientToPlayers.put(client, player);
+    // playersToClient.put(player, client);
+    // }
 
     /**
      * Add a player linked to a client from JSON data
@@ -80,9 +72,14 @@ public class EntityManager {
      * @param client
      * @return the player as Player
      */
-    public Player addPlayer(JSONObject data, Client client) {
+    public Player addPlayer(JSONObject data, PlayerClient client) {
         Player p = JSONToPlayer(data);
-        addPlayer(p, client);
+
+        entityStorage.addEntity(p);
+        entityStorage.addPlayer(p);
+
+        client.setPlayer(p);
+        clients.add(client);
         return p;
     }
 
@@ -110,8 +107,12 @@ public class EntityManager {
         System.out.println("Removed player " + player.name);
         entityStorage.removeEntity(player);
         entityStorage.removePlayer(player);
-        clientToPlayers.remove(playersToClient.get(player));
-        playersToClient.remove(player);
+
+        for (PlayerClient playerClient : clients) {
+            if (playerClient.getPlayer() == player) {
+                clients.remove(playerClient);
+            }
+        }
     }
 
     /**
@@ -128,12 +129,18 @@ public class EntityManager {
         return entityStorage.players;
     }
 
-    public Player getPlayer(Client c) {
-        return clientToPlayers.get(c);
+    public Player getPlayer(PlayerClient c) {
+        return c.getPlayer();
     }
 
-    public Client getClient(Player p) {
-        return playersToClient.get(p);
+    public PlayerClient getClient(Player p) {
+        for (PlayerClient playerClient : clients) {
+            if (playerClient.getPlayer() == p) {
+                return playerClient;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<Entity> getEntities() {
@@ -163,8 +170,8 @@ public class EntityManager {
      * @param client
      * @return true if the client is connected to a player, false otherwise
      */
-    public boolean isClientAsPlayer(Client client) {
-        return clientToPlayers.containsKey(client);
+    public boolean isClientAsPlayer(PlayerClient client) {
+        return client.getPlayer() == null;
     }
 
     // VOIDS
@@ -172,9 +179,9 @@ public class EntityManager {
      * Removes the players from the world where the clients are no longer connected.
      */
     public void RemoveDisconnectedPlayers() {
-        for (Client client : playersToClient.values()) {
+        for (PlayerClient client : clients) {
             if (client.ip() == null) {
-                removePlayer(clientToPlayers.get(client));
+                removePlayer(client.getPlayer());
             }
         }
     }
@@ -235,7 +242,7 @@ public class EntityManager {
                 if (entity != null) {
                     if (entity == OpenMonsterHunter.game.controlledPlayer)
                         continue;
-                        
+
                     entity.sayingBox.setSayingText(obj.getString(JSONFieldName.TEXT_SAYING.getValue()));
                     entity.pos.set(obj.getFloat(JSONFieldName.POSITION_X.getValue()),
                             obj.getFloat(JSONFieldName.POSITION_Y.getValue()));

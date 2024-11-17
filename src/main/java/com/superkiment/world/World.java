@@ -10,7 +10,6 @@ import com.superkiment.entities.logic.Interactable;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
-import processing.net.Client;
 import processing.net.Server;
 
 import java.util.HashMap;
@@ -144,7 +143,7 @@ public class World extends PApplet {
         TraiterClients();
 
         // CLIENTS ENVOI
-        for (Client c : server.clients) {
+        for (PlayerClient c : server.clients) {
             if (c != null && entityManager.isClientAsPlayer(c)) {
                 c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server") + DELIMITER_ENTETE);
 
@@ -170,7 +169,7 @@ public class World extends PApplet {
 
         int compt = 0;
         pushStyle();
-        for (Client c : server.clients) {
+        for (PlayerClient c : server.clients) {
             if (c != null) {
                 try {
                     translate(0, 200);
@@ -190,7 +189,7 @@ public class World extends PApplet {
      */
     private void TraiterClients() {
         // Get the next available client
-        Client client = server.available();
+        PlayerClient client = server.available();
 
         if (client != null) {
             String clientData = client.readString();
@@ -210,7 +209,7 @@ public class World extends PApplet {
      * @param fullData
      * @param client
      */
-    private void TraiterRequete(String fullData, Client client) {
+    private void TraiterRequete(String fullData, PlayerClient client) {
         // println("fullData : " + fullData);
 
         JSONObject requete = JSONObject.parse(fullData);
@@ -280,7 +279,7 @@ public class World extends PApplet {
 
     public void keyPressed() {
         if (key == 'h') {
-            for (Client client : server.clients) {
+            for (PlayerClient client : server.clients) {
                 if (client != null)
                     server.disconnect(client);
             }
@@ -309,7 +308,7 @@ public class World extends PApplet {
             if (!entities.containsKey(className))
                 entities.put(className, new JSONArray());
 
-            JSONObject whatHasChangedJSON = e.getWhatHasChangedJSON();
+            JSONObject whatHasChangedJSON = e.getJSON();
             whatHasChangedJSON.setString(JSONFieldName.ID.getValue(), e.ID);
 
             if (e.getClass().getName().equals(Player.class.getName())) {
@@ -341,10 +340,10 @@ public class World extends PApplet {
      * @param str
      * @param sender
      */
-    public void EnvoiConsoleTousClients(String str, Client sender) {
+    public void EnvoiConsoleTousClients(String str, PlayerClient sender) {
         System.out.println("From Server : " + str);
 
-        for (Client c : server.clients) {
+        for (PlayerClient c : server.clients) {
             if (c != null && c != sender) {
                 println(c.ip());
                 JSONObject json = new JSONObject();
