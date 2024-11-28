@@ -5,9 +5,14 @@ import com.superkiment.main.RenderManager;
 import processing.core.PApplet;
 
 public class EntityCreator extends PApplet {
+
+    private CreatorMouseMode mouseMode = CreatorMouseMode.SEL_SHAPE;
+    private CreatorUI creatorUI;
+
     public EntityCreator() {
         super();
         RenderManager.renderManager = new RenderManager(this);
+        creatorUI = new CreatorUI(this);
     }
 
     public static void main(String[] args) {
@@ -29,5 +34,6 @@ public class EntityCreator extends PApplet {
 
     public void draw() {
         background(0);
+        creatorUI.Render();
     }
 }
