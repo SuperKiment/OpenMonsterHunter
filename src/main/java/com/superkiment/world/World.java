@@ -10,7 +10,7 @@ import com.superkiment.entities.logic.Interactable;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
-import processing.net.Client;
+// import processing.net.Client;
 import processing.net.Server;
 
 import java.util.HashMap;
@@ -144,9 +144,9 @@ public class World extends PApplet {
         TraiterClients();
 
         // CLIENTS ENVOI
-        for (Client c : server.clients) {
-            if (c != null && entityManager.isClientAsPlayer(c)) {
-                c.write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server") + DELIMITER_ENTETE);
+        for (PlayerClient c : entityManager.clients) {
+            if (c != null && c.getPlayer() != null) {
+                c.getClient().write(createRequest(UPDATE_WORLD_STATE_ENTITIES, getJSON(), "server") + DELIMITER_ENTETE);
 
             }
         }
@@ -170,12 +170,12 @@ public class World extends PApplet {
 
         int compt = 0;
         pushStyle();
-        for (Client c : server.clients) {
-            if (c != null) {
+        for (PlayerClient pc : entityManager.clients) {
+            if (pc != null) {
                 try {
                     translate(0, 200);
-                    Player p = entityManager.getPlayer(c);
-                    text(c.ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
+                    Player p = pc.getPlayer();
+                    text(pc.getClient().ip() + " : " + p.name + " / " + p.pos, 10, 20 * compt++);
                 } catch (Exception e) {
 
                 }
@@ -190,16 +190,24 @@ public class World extends PApplet {
      */
     private void TraiterClients() {
         // Get the next available client
-        Client client = server.available();
+        processing.net.Client client = server.available();
+        while (client != null) {
+            TraiterClientSeul(client);
 
-        if (client != null) {
-            String clientData = client.readString();
+            client = server.available();
+        }
+    }
 
-            for (String data : clientData.split(DELIMITER_ENTETE)) {
-                if (!data.equals(""))
-                    TraiterRequete(data, client);
+    private void TraiterClientSeul(processing.net.Client client) {
+        String clientData = client.readString();
+
+        for (String data : clientData.split(DELIMITER_ENTETE)) {
+            if (!data.equals("")) {
+                PlayerClient pc = entityManager.getPlayerClient(client);
+                if (pc != null) {
+                    TraiterRequete(data, pc);
+                }
             }
-
         }
     }
 
@@ -208,9 +216,9 @@ public class World extends PApplet {
      * que le client pour traiter la requête.
      *
      * @param fullData
-     * @param client
+     * @param playerClient
      */
-    private void TraiterRequete(String fullData, Client client) {
+    private void TraiterRequete(String fullData, PlayerClient playerClient) {
         // println("fullData : " + fullData);
 
         JSONObject requete = JSONObject.parse(fullData);
@@ -220,15 +228,15 @@ public class World extends PApplet {
             case BONJOUR_DU_CLIENT:
                 System.out.println("Recu bonjour du client");
                 JSONObject dataPlayer = requete.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
-                Player p = entityManager.addPlayer(dataPlayer, client);
+                Player p = entityManager.addPlayer(dataPlayer, playerClient);
                 p.ID = dataPlayer.getString(JSONFieldName.PLAYER_NAME.getValue());
                 System.out.println("id player : " + p.ID);
                 JSONObject playerDataSend = p.getJSON();
-                client.write(createRequest(BONJOUR_DU_SERVER, playerDataSend, "server").toString());
+                playerClient.getClient().write(createRequest(BONJOUR_DU_SERVER, playerDataSend, "server").toString());
                 break;
 
             case UPDATE_PLAYER_DATA:
-                entityManager.getPlayer(client)
+                playerClient.getPlayer()
                         .UpdateFromJSON(requete.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
                 break;
 
@@ -244,7 +252,7 @@ public class World extends PApplet {
                 if (input.charAt(0) == '/') {
                     commandsManager.TraiterCommande(input);
                 } else {
-                    EnvoiConsoleTousClients(input, client);
+                    EnvoiConsoleTousClients(input, playerClient);
                 }
 
                 break;
@@ -280,9 +288,9 @@ public class World extends PApplet {
 
     public void keyPressed() {
         if (key == 'h') {
-            for (Client client : server.clients) {
-                if (client != null)
-                    server.disconnect(client);
+            for (PlayerClient playerClient : entityManager.clients) {
+                if (playerClient != null)
+                    server.disconnect(playerClient.getClient());
             }
             surface.setVisible(false);
             dispose();
@@ -342,17 +350,18 @@ public class World extends PApplet {
      * @param str
      * @param sender
      */
-    public void EnvoiConsoleTousClients(String str, Client sender) {
+    public void EnvoiConsoleTousClients(String str, PlayerClient sender) {
         System.out.println("From Server : " + str);
 
-        for (Client c : server.clients) {
-            if (c != null && c != sender) {
-                println(c.ip());
+        for (PlayerClient playerClient : entityManager.clients) {
+            if (playerClient != null && playerClient != sender) {
+                // println(playerClient.getClient().ip());
                 JSONObject json = new JSONObject();
                 json.setString(JSONFieldName.CONSOLE_TEXT.getValue(), str);
                 json.setString(JSONFieldName.REQUEST_SENDER.getValue(),
-                        sender == null ? "Server" : entityManager.getPlayer(sender).name);
-                c.write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
+                        sender == null ? "Server" : sender.getPlayer().name);
+                playerClient.getClient()
+                        .write(createRequest(CONSOLE_INPUT_FOR_EVERYONE, json, "server") + DELIMITER_ENTETE);
             }
         }
     }

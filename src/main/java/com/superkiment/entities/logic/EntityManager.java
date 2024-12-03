@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class EntityManager {
 
-    ArrayList<PlayerClient> clients;
+    public ArrayList<PlayerClient> clients;
 
     public EntityStorage entityStorage;
 
@@ -53,27 +53,16 @@ public class EntityManager {
     }
 
     /**
-     * Add a player linked to a client
-     * 
-     * @param player
-     * @param client
-     */
-    // public void addPlayer(Player player, Client client) {
-    // entityStorage.addEntity(player);
-    // entityStorage.addPlayer(player);
-
-    // }
-
-    /**
      * Add a player linked to a client from JSON data
      * 
      * @param data   the player data as JSON
      * @param client
      * @return the player as Player
      */
-    public Player addPlayer(JSONObject data, Client client) {
+    public Player addPlayer(JSONObject data, PlayerClient client) {
         Player p = JSONToPlayer(data);
-        clients.add(new PlayerClient(client, p));
+        client.setPlayer(p);
+        clients.add(client);
         return p;
     }
 
@@ -141,6 +130,15 @@ public class EntityManager {
             }
         }
 
+        return null;
+    }
+
+    public PlayerClient getPlayerClient(Client c) {
+        for (PlayerClient pc : clients) {
+            if (pc.getClient() == c) {
+                return pc;
+            }
+        }
         return null;
     }
 

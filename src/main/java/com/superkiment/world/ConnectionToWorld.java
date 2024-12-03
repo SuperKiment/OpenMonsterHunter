@@ -22,6 +22,7 @@ public class ConnectionToWorld {
 
         JSONObject dataPlayer = new JSONObject();
         dataPlayer.put(JSONFieldName.PLAYER_NAME.getValue(), omh.playerName);
+        System.out.println("OpenMonsterHunter.game.controlledPlayer : " + omh.playerName);
         System.out.println(OpenMonsterHunter.game.controlledPlayer);
         JSONObject bonjourJSON = World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, omh.playerName);
 
