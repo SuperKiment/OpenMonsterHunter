@@ -1,26 +1,26 @@
 package com.superkiment.world;
 
 import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.JSONFieldName;
 import com.superkiment.entities.logic.Interactable;
 import com.superkiment.main.Console;
 import com.superkiment.main.Game;
 import com.superkiment.main.OpenMonsterHunter;
 import processing.data.JSONObject;
-import processing.net.Client;
 
 import java.util.ArrayList;
 
 public class ConnectionToWorld {
-    public Client client;
+    public PlayerClient client;
     OpenMonsterHunter omh;
 
     public ConnectionToWorld(OpenMonsterHunter omh, String address, Game game) {
         this.omh = omh;
 
-        client = new Client(omh, address, 5204);
+        client = new PlayerClient(omh, address, 5204, OpenMonsterHunter.game.controlledPlayer);
 
         JSONObject dataPlayer = new JSONObject();
-        dataPlayer.put("name", omh.playerName);
+        dataPlayer.put(JSONFieldName.PLAYER_NAME.getValue(), omh.playerName);
         System.out.println(OpenMonsterHunter.game.controlledPlayer);
         JSONObject bonjourJSON = World.createRequest(World.BONJOUR_DU_CLIENT, dataPlayer, omh.playerName);
 
@@ -37,7 +37,7 @@ public class ConnectionToWorld {
         // System.out.println(reponse);
         // System.out.println(reponse.getString("type"));
 
-        while (reponse.getString("type") == null) {
+        while (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()) == null) {
 
             dataString = client.readString();
             reponse = JSONObject.parse(dataString);
@@ -47,10 +47,10 @@ public class ConnectionToWorld {
             // System.out.println(reponse.getString("type"));
         }
         try {
-            if (reponse.getString("type").equals(World.BONJOUR_DU_SERVER)) {
+            if (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()).equals(World.BONJOUR_DU_SERVER)) {
                 System.out.println("Arrive du server :");
-                System.out.println(reponse.getJSONObject("data"));
-                omh.setControllablePlayer(reponse.getJSONObject("data"));
+                System.out.println(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
+                omh.setControllablePlayer(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -74,14 +74,15 @@ public class ConnectionToWorld {
                 continue;
             }
 
-            switch (data.getString("type")) {
+            switch (data.getString(JSONFieldName.REQUEST_TYPE.getValue())) {
                 case World.UPDATE_WORLD_STATE_ENTITIES:
-                    TraiterDonnees(data.getJSONObject("data"));
+                    TraiterDonnees(data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
                     break;
                 case World.CONSOLE_INPUT_FOR_EVERYONE:
                     // System.out.println(data);
-                    JSONObject input = data.getJSONObject("data");
-                    Console.console.write(input.getString("sender") + " : " + input.getString("text"), true);
+                    JSONObject input = data.getJSONObject(JSONFieldName.REQUEST_DATA.getValue());
+                    Console.console.write(input.getString(JSONFieldName.REQUEST_SENDER.getValue()) + " : "
+                            + input.getString(JSONFieldName.CONSOLE_TEXT.getValue()), true);
                     break;
             }
         }
@@ -91,10 +92,15 @@ public class ConnectionToWorld {
     }
 
     private void EnvoiDonneesPlayer() {
-        if (OpenMonsterHunter.game.controlledPlayer != null)
+        if (OpenMonsterHunter.game.controlledPlayer != null) {
+            JSONObject json = OpenMonsterHunter.game.controlledPlayer.getWhatHasChangedJSON();
+            json.setString(JSONFieldName.DIRECTION_X.getValue(), OpenMonsterHunter.game.controlledPlayer.dir.x + "");
+            json.setString(JSONFieldName.DIRECTION_Y.getValue(), OpenMonsterHunter.game.controlledPlayer.dir.y + "");
             client.write(
-                    World.createRequest(World.UPDATE_PLAYER_DATA, OpenMonsterHunter.game.controlledPlayer.getJSON(),
+                    World.createRequest(World.UPDATE_PLAYER_DATA,
+                            json,
                             omh.playerName) + World.DELIMITER_ENTETE);
+        }
     }
 
     public void EnvoiDonneesNouvelleEntite(JSONObject json) {
@@ -108,7 +114,7 @@ public class ConnectionToWorld {
             return;
 
         JSONObject json = new JSONObject();
-        json.setString("text", input);
+        json.setString(JSONFieldName.CONSOLE_TEXT.getValue(), input);
 
         client.write(
                 World.createRequest(World.NEW_CONSOLE_INPUT, json, omh.playerName) + World.DELIMITER_ENTETE);
@@ -120,8 +126,8 @@ public class ConnectionToWorld {
 
         JSONObject json = new JSONObject();
 
-        json.setString("entityInteractingID", interacting.ID);
-        json.setString("entityInteractedID", interactedWith.getEntity().ID);
+        json.setString(JSONFieldName.ENTITY_INTERACTING_ID.getValue(), interacting.ID);
+        json.setString(JSONFieldName.ENTITY_INTERACTED_ID.getValue(), interactedWith.getEntity().ID);
 
         client.write(World.createRequest(World.INTERACTION_ENTITIES, json, omh.playerName) + World.DELIMITER_ENTETE);
     }

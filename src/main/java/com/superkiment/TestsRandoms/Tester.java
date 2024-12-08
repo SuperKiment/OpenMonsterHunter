@@ -3,22 +3,30 @@ package com.superkiment.TestsRandoms;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-@SuppressWarnings("unused")
+import com.superkiment.entities.logic.Entity;
+import com.superkiment.entities.logic.EntityJSONUpdater;
+import com.superkiment.entities.logic.JSONFieldName;
 
+import processing.core.PVector;
+import processing.data.JSONObject;
+
+@SuppressWarnings("unused")
 public class Tester {
 
     public static void main(String[] args) {
         System.out.println("Début test");
-
-        HashMap<String, Consumer<String>> commands = new HashMap<String, Consumer<String>>();
-
-        commands.put("a", (str) -> {
-            System.out.println(str);
-        });
-
-        commands.get("a").accept("coucou");
-
-        lezgo();
+        /*
+         * 
+         * HashMap<String, Consumer<String>> commands = new HashMap<String,
+         * Consumer<String>>();
+         * 
+         * commands.put("a", (str) -> {
+         * System.out.println(str);
+         * });
+         * 
+         * commands.get("a").accept("coucou");
+         */
+        // lezgo();
 
         /*
          * HashMap<Class, Getmethod> hash = new HashMap<Class, Getmethod>();
@@ -28,14 +36,40 @@ public class Tester {
          * logic.Entity e = new logic.Entity(); logic.Dog d = new logic.Dog();
          *
          * hash.get(e.getClass()).Action(); hash.get(d.getClass()).Action();
+         *
+         * 
+         * HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
+         * hashMap.put("a", 1);
+         * 
+         * String a = "a";
+         * 
+         * System.out.println(hashMap.get(a));
+         * System.out.println();
+         * System.out.println();
+         * System.out.println();
+         * System.out.println();
+         * System.out.println();
+         * System.out.println();
          */
 
-        HashMap<String, Integer> hashMap = new HashMap<String, Integer>();
-        hashMap.put("a", 1);
+        Entity entity = new Entity();
 
-        String a = "a";
+        JSONObject json = new JSONObject();
+        json.setString(JSONFieldName.POSITION_X.getValue(), 100.5f + "");
+        json.setString(JSONFieldName.POSITION_Y.getValue(), 150.5f + "");
+        json.setString("pos.z", 150.5 + "");
+        json.setString(JSONFieldName.SPEED.getValue(), 10.7 + "");
+        json.setString(JSONFieldName.TEXT_SAYING.getValue(), "bruh");
 
-        System.out.println(hashMap.get(a));
+        System.out.println(entity.getJSON());
+
+        entity.entityJSONUpdater.UpdateFromJSON(json);
+        System.out.println(entity.getWhatHasChangedJSON());
+
+        System.out.println();
+        System.out.println();
+        System.out.println("Entity : " + entity.getJSON());
+
     }
 
     public static void lezgo() {

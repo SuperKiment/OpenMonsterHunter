@@ -44,7 +44,16 @@ public class Entity {
      */
     protected InteractionManager interactionManager;
 
+    /**
+     * The text showing above the entity, what the entity is saying
+     */
     public SayingBox sayingBox;
+
+    /**
+     * An EntityJSONUpdater instance used to update the entity's properties based on
+     * incoming JSON.
+     */
+    public EntityJSONUpdater entityJSONUpdater;
 
     public Entity() {
         String characters = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890&éèâêô@àù£";
@@ -68,6 +77,7 @@ public class Entity {
 
         interactionManager = new InteractionManager(this);
         sayingBox = new SayingBox(this);
+        entityJSONUpdater = new EntityJSONUpdater(this);
     }
 
     /**
@@ -129,19 +139,21 @@ public class Entity {
     public JSONObject getJSON() {
         JSONObject obj = new JSONObject();
 
-        obj.setFloat("pos.x", pos.x);
-        obj.setFloat("pos.y", pos.y);
-        obj.setFloat("dir.x", remanantDir.x);
-        obj.setFloat("dir.y", remanantDir.y);
+        obj.setString(JSONFieldName.POSITION_X.getValue(), pos.x + "");
+        obj.setString(JSONFieldName.POSITION_Y.getValue(), pos.y + "");
+        obj.setString(JSONFieldName.DIRECTION_X.getValue(), remanantDir.x + "");
+        obj.setString(JSONFieldName.DIRECTION_Y.getValue(), remanantDir.y + "");
 
-        obj.setString("className", this.getClass().getName());
+        obj.setString(JSONFieldName.TEXT_SAYING.getValue(), sayingBox.getSayingText());
+        obj.setString(JSONFieldName.SPEED.getValue(), speed + "");
 
-        obj.setString("textSaying", sayingBox.getSayingText());
-
-        obj.setFloat("speed", speed);
-
-        obj.setString("ID", ID);
+        obj.setString(JSONFieldName.ID.getValue(), ID);
+        obj.setString(JSONFieldName.CLASS_NAME.getValue(), this.getClass().getName());
         return obj;
+    }
+
+    public JSONObject getWhatHasChangedJSON() {
+        return this.entityJSONUpdater.getWhatHasChangedJSON();
     }
 
     public String getClassName() {
@@ -157,12 +169,14 @@ public class Entity {
      */
     public void UpdateFromJSON(JSONObject json) {
         try {
-            pos.x = json.getFloat("pos.x");
-            pos.y = json.getFloat("pos.y");
-            remanantDir.x = json.getFloat("dir.x");
-            remanantDir.y = json.getFloat("dir.y");
-            speed = json.getFloat("speed");
-            ID = json.getString("ID");
+            // pos.x = json.getFloat(JSONFieldName.POSITION_X.getValue());
+            // pos.y = json.getFloat(JSONFieldName.POSITION_Y.getValue());
+            // remanantDir.x = json.getFloat(JSONFieldName.DIRECTION_X.getValue());
+            // remanantDir.y = json.getFloat(JSONFieldName.DIRECTION_Y.getValue());
+            // speed = json.getFloat(JSONFieldName.SPEED.getValue());
+            // ID = json.getString(JSONFieldName.ID.getValue());
+
+            this.entityJSONUpdater.UpdateFromJSON(json);
 
         } catch (Exception e) {
             System.out.println(e);
