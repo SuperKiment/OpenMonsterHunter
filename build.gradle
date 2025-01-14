@@ -8,12 +8,15 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://jogamp.org/deployment/maven"
+    }
 }
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation group: "org.processing", name: "core", version: "3.3.7"
+    implementation group: 'org.processing', name: 'core', version: '4.3.1'
     implementation group: 'org.processing', name: 'net', version: '3.3.7'
 
 }
