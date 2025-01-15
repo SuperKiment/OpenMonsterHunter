@@ -21,7 +21,7 @@ public class TemplateTest {
         System.out.println("BeforeAll tests");
         // testWorld = new World("Test World", false);
         omh = new OpenMonsterHunter();
-        omh.setupVariables();
+        omh.setupModules();
 
         omh.CreateWorld("testWorld", true);
 

@@ -1,5 +1,6 @@
 package com.superkiment.main;
 
+import com.superkiment.debug.DebugHTML;
 import com.superkiment.globals.Scale;
 import com.superkiment.globals.Time;
 import com.superkiment.main.GameManager.GameState;
@@ -80,10 +81,13 @@ public class OpenMonsterHunter extends PApplet {
          * System.setErr(errStream);
          */
 
-        setupVariables();
+        DebugHTML.FileCheckAndCreate();
+        DebugHTML.modifyHtmlFile("coucoucoucou");
+
+        setupModules();
     }
 
-    public void setupVariables() {
+    public void setupModules() {
         gameManager = new GameManager();
         ui = new UI(gameManager, this);
         println(playerName);

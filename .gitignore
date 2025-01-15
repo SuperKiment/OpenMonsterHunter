@@ -45,3 +45,4 @@ errorConsole.log
 outputConsole.log
 
 hs_err_pid*
+logs/history.txt
