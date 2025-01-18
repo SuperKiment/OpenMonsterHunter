@@ -7,10 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 public class DebugHTML {
     static final String filePath = "./logs/history.txt";
 
@@ -33,26 +29,8 @@ public class DebugHTML {
 
     public static void modifyHtmlFile(String newContent) {
         try {
-            // Ouvrir le fichier HTML
-            File input = new File(filePath);
-            Document doc = Jsoup.parse(input, "UTF-8");
-
-            // Trouver le contenu balisé dans la classe "to-change"
-            Element element = doc.selectFirst(".to-change");
-            if (element != null) {
-                // Modifier le contenu
-                element.text(newContent);
-
-                // Écrire les modifications dans le fichier
-                try (FileWriter writer = new FileWriter(filePath)) {
-                    writer.write(doc.outerHtml());
-                }
-                System.out.println("Le contenu a été modifié avec succès.");
-            } else {
-                System.out.println("Aucun élément avec la classe 'to-change' n'a été trouvé.");
-            }
-        } catch (IOException e) {
-            System.err.println("Une erreur s'est produite : " + e.getMessage());
+            
+        } catch (Exception e) {
         }
     }
 }

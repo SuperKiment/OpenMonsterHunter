@@ -18,7 +18,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation group: 'org.processing', name: 'core', version: '4.3.1'
     implementation group: 'org.processing', name: 'net', version: '3.3.7'
-    implementation 'org.jsoup:jsoup:1.14.3'
 }
 
 application {
