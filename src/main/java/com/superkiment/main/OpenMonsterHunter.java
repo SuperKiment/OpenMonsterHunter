@@ -47,6 +47,8 @@ public class OpenMonsterHunter extends PApplet {
      */
     private boolean testMode = false;
 
+    private float debugTime = 0;
+
     public static void main(String[] args) {
         try {
             PApplet.main("com.superkiment.main.OpenMonsterHunter");
@@ -82,7 +84,6 @@ public class OpenMonsterHunter extends PApplet {
          */
 
         DebugHTML.FileCheckAndCreate();
-        DebugHTML.modifyHtmlFile("coucoucoucou");
 
         setupModules();
     }
@@ -95,6 +96,10 @@ public class OpenMonsterHunter extends PApplet {
 
     @Override
     public void draw() {
+        if (millis() - debugTime > 1000) {
+            DebugHTML.loop();
+            debugTime = millis();
+        }
 
         Time.Update(this);
 

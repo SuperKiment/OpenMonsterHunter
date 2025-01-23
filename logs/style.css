@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  background-color: black;
+  color: white;
+  padding: 3% 10%;
+}
+
+.net-element-left {
+  padding: 20px;
+  border: 2px solid white;
+  direction: rtl;
+  text-align: justify;
+  margin: 5px;
+}
+
+.net-element-right {
+  padding: 20px;
+  border: 2px solid white;
+  direction: ltr;
+  text-align: justify;
+  margin: 5px;
+}

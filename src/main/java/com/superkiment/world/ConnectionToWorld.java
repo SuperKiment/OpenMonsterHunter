@@ -1,5 +1,6 @@
 package com.superkiment.world;
 
+import com.superkiment.debug.DebugHTML;
 import com.superkiment.entities.logic.Entity;
 import com.superkiment.entities.logic.JSONFieldName;
 import com.superkiment.entities.logic.Interactable;
@@ -49,6 +50,7 @@ public class ConnectionToWorld {
             // System.out.println(reponse.getString("type"));
         }
         try {
+            DebugHTML.addRequest(reponse, false);
             if (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()).equals(World.BONJOUR_DU_SERVER)) {
                 System.out.println("Arrive du server :");
                 System.out.println(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
@@ -148,6 +150,7 @@ public class ConnectionToWorld {
                 JSONObject data = null;
                 try {
                     data = JSONObject.parse(part);
+                    DebugHTML.addRequest(data, false);
                 } catch (Exception e) {
                     System.out.println();
                     System.out.println("Pas réussi à parse ! " + e.getMessage());

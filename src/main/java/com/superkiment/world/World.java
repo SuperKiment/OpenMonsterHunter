@@ -1,5 +1,6 @@
 package com.superkiment.world;
 
+import com.superkiment.debug.DebugHTML;
 import com.superkiment.entities.Dog;
 import com.superkiment.entities.Player;
 import com.superkiment.entities.logic.Entity;
@@ -20,57 +21,57 @@ public class World extends PApplet {
     /**
      * Délimiteur entre les blocs de data
      */
-    final static String DELIMITER_ENTETE = ":::::";
+    final public static String DELIMITER_ENTETE = ":::::";
 
     /**
      * Premier envoi des données du client au server
      */
-    final static String BONJOUR_DU_CLIENT = "buongiorno toi hihi";
+    final public static String BONJOUR_DU_CLIENT = "buongiorno toi hihi";
 
     /**
      * Premier envoi des données du server au client
      */
-    final static String BONJOUR_DU_SERVER = "yeepii cest moi le serv de la mort qui tue";
+    final public static String BONJOUR_DU_SERVER = "yeepii cest moi le serv de la mort qui tue";
 
     /**
      * Envoi des données du player du client au server
      */
-    final static String UPDATE_PLAYER_DATA = "coucoujupdate lez gooooooo";
+    final public static String UPDATE_PLAYER_DATA = "coucoujupdate lez gooooooo";
 
     /**
      * Envoi des données d'une entité créée par le client vers le server
      */
-    final static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
+    final public static String NEW_ENT_FROM_PLAYER = "draw her giving birth mouahahaha";
 
     /**
      * Envoi des données d'une entité existante sur le server mais pas sur le client
      */
-    final static String NEW_ENT_FROM_SERVER = "here is johnnnnyyyyyyyyyyyy";
+    final public static String NEW_ENT_FROM_SERVER = "here is johnnnnyyyyyyyyyyyy";
 
     /**
      * Retire une entité des EntityManagers (détruite ou hors vue)
      */
-    final static String REMOVE_ENT_FROM_SERVER = "oh my god he died";
+    final public static String REMOVE_ENT_FROM_SERVER = "oh my god he died";
 
     /**
      * Envoi d'un chat ou d'une commande du client au server
      */
-    final static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";
+    final public static String NEW_CONSOLE_INPUT = "A chicken burger and uuuuuuuuuuuuhhhhhh";
 
     /**
      * Envoi des données de toutes les entités à montrer au client du server
      */
-    final static String UPDATE_WORLD_STATE_ENTITIES = "thats tim thats tom thats cthulhu";
+    final public static String UPDATE_WORLD_STATE_ENTITIES = "thats tim thats tom thats cthulhu";
 
     /**
      * Envoi d'un nouvel input de console du server à tous les clients
      */
-    final static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
+    final public static String CONSOLE_INPUT_FOR_EVERYONE = "hear me out boyyyzzz";
 
     /**
      * Envoi d'un nouvel input de console du server à tous les clients
      */
-    final static String INTERACTION_ENTITIES = "heyyy i just wanna interact ykykykyk";
+    final public static String INTERACTION_ENTITIES = "heyyy i just wanna interact ykykykyk";
 
     public String name = "NoName";
     private Server server;
@@ -117,8 +118,9 @@ public class World extends PApplet {
         json.put(JSONFieldName.REQUEST_DATA.getValue(), data);
         json.put(JSONFieldName.REQUEST_SENDER.getValue(), sender);
 
-        return json;
+        DebugHTML.addRequest(json, true);
 
+        return json;
     }
 
     public void settings() {
@@ -222,6 +224,7 @@ public class World extends PApplet {
         // println("fullData : " + fullData);
 
         JSONObject requete = JSONObject.parse(fullData);
+        DebugHTML.addRequest(requete, false);
 
         // println("requete : " + requete);
         switch (requete.getString(JSONFieldName.REQUEST_TYPE.getValue())) {
