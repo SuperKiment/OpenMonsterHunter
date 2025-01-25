@@ -19,7 +19,7 @@ public class ConnectionToWorld {
     public ConnectionToWorld(OpenMonsterHunter omh, String address, Game game) {
         this.omh = omh;
 
-        client = new Client(omh, address, 5204);
+        client = new Client(omh, address, World.PORT);
 
         JSONObject dataPlayer = new JSONObject();
         dataPlayer.put(JSONFieldName.PLAYER_NAME.getValue(), omh.playerName);
@@ -50,7 +50,6 @@ public class ConnectionToWorld {
             // System.out.println(reponse.getString("type"));
         }
         try {
-            DebugHTML.addRequest(reponse, false);
             if (reponse.getString(JSONFieldName.REQUEST_TYPE.getValue()).equals(World.BONJOUR_DU_SERVER)) {
                 System.out.println("Arrive du server :");
                 System.out.println(reponse.getJSONObject(JSONFieldName.REQUEST_DATA.getValue()));
@@ -150,7 +149,6 @@ public class ConnectionToWorld {
                 JSONObject data = null;
                 try {
                     data = JSONObject.parse(part);
-                    DebugHTML.addRequest(data, false);
                 } catch (Exception e) {
                     System.out.println();
                     System.out.println("Pas réussi à parse ! " + e.getMessage());

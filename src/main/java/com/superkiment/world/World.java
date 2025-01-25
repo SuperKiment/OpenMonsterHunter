@@ -1,6 +1,5 @@
 package com.superkiment.world;
 
-import com.superkiment.debug.DebugHTML;
 import com.superkiment.entities.Dog;
 import com.superkiment.entities.Player;
 import com.superkiment.entities.logic.Entity;
@@ -11,7 +10,6 @@ import com.superkiment.entities.logic.Interactable;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
-// import processing.net.Client;
 import processing.net.Server;
 
 import java.util.HashMap;
@@ -73,6 +71,8 @@ public class World extends PApplet {
      */
     final public static String INTERACTION_ENTITIES = "heyyy i just wanna interact ykykykyk";
 
+    final public static int PORT = 5204;
+
     public String name = "NoName";
     private Server server;
     private boolean render = false;
@@ -118,8 +118,6 @@ public class World extends PApplet {
         json.put(JSONFieldName.REQUEST_DATA.getValue(), data);
         json.put(JSONFieldName.REQUEST_SENDER.getValue(), sender);
 
-        DebugHTML.addRequest(json, true);
-
         return json;
     }
 
@@ -130,7 +128,7 @@ public class World extends PApplet {
     }
 
     public void setup() {
-        server = new Server(this, 5204);
+        server = new Server(this, World.PORT);
         frameRate(100);
     }
 
@@ -224,7 +222,6 @@ public class World extends PApplet {
         // println("fullData : " + fullData);
 
         JSONObject requete = JSONObject.parse(fullData);
-        DebugHTML.addRequest(requete, false);
 
         // println("requete : " + requete);
         switch (requete.getString(JSONFieldName.REQUEST_TYPE.getValue())) {

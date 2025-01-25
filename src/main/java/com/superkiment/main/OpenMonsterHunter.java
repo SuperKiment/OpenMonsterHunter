@@ -47,7 +47,7 @@ public class OpenMonsterHunter extends PApplet {
      */
     private boolean testMode = false;
 
-    private float debugTime = 0;
+    private DebugHTML debugHTML;
 
     public static void main(String[] args) {
         try {
@@ -82,9 +82,6 @@ public class OpenMonsterHunter extends PApplet {
          * System.setOut(outStream);
          * System.setErr(errStream);
          */
-
-        DebugHTML.FileCheckAndCreate();
-
         setupModules();
     }
 
@@ -92,14 +89,11 @@ public class OpenMonsterHunter extends PApplet {
         gameManager = new GameManager();
         ui = new UI(gameManager, this);
         println(playerName);
+        debugHTML = new DebugHTML(this);
     }
 
     @Override
     public void draw() {
-        if (millis() - debugTime > 1000) {
-            DebugHTML.loop();
-            debugTime = millis();
-        }
 
         Time.Update(this);
 
