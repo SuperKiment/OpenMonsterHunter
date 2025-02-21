@@ -1,7 +1,7 @@
 package com.superkiment.main;
 
-import com.superkiment.main.UI.Boutton;
-import com.superkiment.main.UI.TextInput;
+import com.superkiment.main.components.Boutton;
+import com.superkiment.main.components.TextInput;
 import com.superkiment.utils.Pair;
 import processing.core.PApplet;
 import java.util.ArrayList;
@@ -59,12 +59,12 @@ public class Console {
         // commands = new HashMap<String, Consumer<String[]>>();
 
         // Texte
-        textInput = ui.new TextInput(0, ui.omh.height - 50, ui.omh.width, 50, new GameManager.GameState[] {});
-        ui.allBouttons.add(textInput);
+        textInput = new TextInput(0, ui.omh.height - 50, ui.omh.width, 50);
         textInput.actif = false;
+        ui.allBouttons.add(textInput);
 
         // Boutton
-        bouttonInput = ui.new Boutton(ui.omh.height - 150, ui.omh.height - 50 * 2, 150, 50,
+        bouttonInput = new Boutton(ui.gameManager, ui.omh.height - 150, ui.omh.height - 50 * 2, 150, 50,
                 new GameManager.GameState[] {}, "Envoyer") {
             public void Action() {
                 Enter();
