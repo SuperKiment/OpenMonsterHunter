@@ -36,4 +36,13 @@ public class EntityCreator extends PApplet {
         background(0);
         creatorUI.Render();
     }
+
+    public void keyPressed() {
+
+    }
+
+    public void mousePressed() {
+        this.creatorUI.mousePressed(mouseX, mouseY);
+    }
+
 }
